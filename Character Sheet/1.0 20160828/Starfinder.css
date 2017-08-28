@@ -1,0 +1,1163 @@
+* {
+    font-family:Arial;
+}
+.sheet-section.sheet-label,
+.sheet-tab-button + span,
+.sheet-initiative-container button{
+    font-family:Contrail One;
+    font-weight:400 !important;
+}
+input[hidden='true'] {
+    display:none !important;
+}
+input:not([type='checkbox']):not([type='radio']), {
+    height:15px;
+}
+input:not([type='checkbox']):not([type='radio']),
+textarea {
+    border-bottom: 1px solid #D3D3D3;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    background: none;
+    box-shadow: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    color: black;
+    font-size:10pt;
+    padding:0px;
+    display:inline-block;
+}
+select {
+    border: 0px;
+    background: none;
+    box-shadow: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    padding:0px 0px 0px 0px;
+    color: black;
+    position:relative;
+    top:-5px;
+    width:4em;
+    font-size:7pt;
+    font-weight:bold;
+    text-align:center;
+    height:20px !important;
+    margin:0px !important;
+    padding:0px !important;
+}
+button[type=roll] {
+    background-color: transparent;
+    color: black;
+    border: none;
+    line-height: 12px;
+    background-image: none;
+    text-shadow: none;
+    box-shadow: none;
+    padding: 0px;
+    margin: 0px;
+    font-weight: bold;
+    text-align:left;
+    position:relative;
+}
+button[type=roll]::before
+{
+    content: "" !important;
+}
+button[type=roll]:hover,
+button[type=roll]:hover *,
+button[type=roll]:hover input[type=text],
+button[type=roll]:hover *
+{
+    color: #f86f1a !important;
+}
+.sheet-pc,
+.sheet-npc {
+    display: none;
+}
+.sheet-npcship_toggle[value="0"] ~ .sheet-pc,
+.sheet-npcship_toggle[value="1"] ~ .sheet-npc{
+    display: grid;
+}
+.sheet-label,
+.sheet-mod,
+button[type=roll] {
+    font-weight:bold;
+    font-size:8pt !important;
+}
+.sheet-mod{
+    border-bottom:0px !important;
+    text-align:center !important;
+}
+.sheet-section {
+    position:absolute;
+    top:-17px;
+    left:-1px;
+    background-image:url('https://cdn.rawgit.com/Kurohyou/Starfinder-Character-Sheet/533e5c9f/Selected%20Starfinder%20Header.png');
+    background-repeat: no-repeat;
+    background-size:140px;
+    color:white;
+    text-align:left;
+    text-indent:10px;
+    width:150px;
+    font-size:10pt !important;
+    line-height:12pt;
+    z-index:10;
+    text-shadow:0px 0px 5px #550aa2,0px 0px 20px #0a4ba1;
+}
+.sheet-pc {
+    position:relative;
+    grid-template-columns: [name-container-start tab-container-start header-start]160px [name-container-end ] 240px [header-end in-play-start] 380px [in-play-end tab-container-end];
+    grid-template-rows: [name-container-start] 30px [header-start in-play-start] 120px [name-container-end header-end in-play-end] 0px [tab-container-start]  1090px [tab-container-end];
+    grid-gap:20px;
+}
+.sheet-name-container {
+    display:inline-block;
+    grid-area:name-container;
+    width:100%;
+    padding:0px;
+    margin:0px;
+}
+.sheet-name-container .sheet-section {
+    position:initial !important;
+}
+.sheet-header-content span {
+    display: block;
+    font-size: 9px;
+    line-height: 12px;
+}
+.sheet-header-content {
+    outline:1px solid black;
+    grid-area:header;
+    width:100%;
+    height:100%;
+    position:relative;
+    padding:0px;
+    margin:0px;
+}
+.sheet-header-content,
+.sheet-buffs,
+.sheet-menus {
+    display:none;
+    padding:0px;
+    margin:0px;
+    height:100%;
+    width:100%;
+}/*
+.sheet-header-content {
+    width:396px;
+}*/
+.sheet-buffs,
+.sheet-menus {
+    width: 376px;
+}
+.sheet-in-play {
+    grid-area:in-play;
+    position:relative;
+    width:100%;
+    height:100%;
+    padding:0px;
+    margin:0px;
+}
+input[type=radio].sheet-in-play-tab.sheet-menu-tab:checked ~ .sheet-menus,
+input[type=radio].sheet-in-play-tab.sheet-buff-tab:checked ~ .sheet-buffs {
+    display: flex;
+    justify-content:flex-start;
+    align-items: flex-start;
+    flex-direction:column;
+}
+.sheet-buff-head,
+.sheet-menu-head,
+.sheet-char-details,
+.sheet-class-details{
+    background-image:url('https://cdn.rawgit.com/Kurohyou/Starfinder-Character-Sheet/533e5c9f/UnSelected%20Starfinder%20Header.png');
+    z-index:1;
+    top:-10px!important;
+    
+}
+.sheet-menu-head,
+.sheet-char-details {
+    left:1px!important;
+}
+.sheet-header-content,
+.sheet-buffs,
+.sheet-menus,
+.sheet-section-container {
+    border:0px solid transparent;
+    border-radius:0px 15px 15px;
+    /*border-image:url('https://cdn.rawgit.com/Kurohyou/Starfinder-Character-Sheet/bed46a76/border.png') 35% stretch;*/
+    box-shadow:0px 0px 5px #550aa2,0px 0px 20px #0a4ba1;
+    margin-top:5px;
+    padding:5px 0px;
+}
+.sheet-buff-head,
+.sheet-class-details {
+    position:absolute;
+    left:135px;
+}
+.sheet-class-details * {
+    margin-right:10px;
+}
+.sheet-in-play-tab,
+.sheet-char-tab{
+    opacity:0;
+    z-index:10;
+    position:absolute;
+    top:-8px!important;
+}
+.sheet-char-tab,
+.sheet-char-details,
+.sheet-class-tab,
+.sheet-class-details{
+    grid-area:header;
+}
+.sheet-in-play-tab,
+.sheet-menu-head,
+.sheet-buff-head{
+    grid-area:in-play;
+}
+.sheet-menu-tab {
+    position:absolute;
+    top:10px;
+    width:145px;
+}
+.sheet-buff-tab {
+    left:145px;
+    width:145px;
+}
+.sheet-char-details-tab {
+    position:absolute;
+    top:10px;
+    width:145px;
+}
+.sheet-class-details-tab {
+    width:145px;
+    left:145px;
+}
+input[type=radio].sheet-in-play-tab:checked + h1,
+input[type=radio].sheet-char-tab:checked + h1 {
+    background-image:url('https://cdn.rawgit.com/Kurohyou/Starfinder-Character-Sheet/533e5c9f/Selected%20Starfinder%20Header.png');
+    z-index:2;
+}
+.sheet-description {
+    position:relative;
+    top:5px;
+    max-width:100%;
+    height:5.5em;
+}
+input[type=radio].sheet-char-tab.sheet-char-details-tab:checked ~ .sheet-char-info {
+    display: inline-flex;
+    -webkit-flex-wrap:wrap;
+    -moz-flex-wrap:wrap;
+    flex-wrap:wrap;
+    justify-content:flex-start;
+    align-content:flex-start;
+    width:inherit;
+}
+input[type=radio].sheet-char-tab.sheet-class-details-tab:checked ~ .sheet-class-info {
+    display:grid;
+    grid-template-columns:100px 20px repeat(2,10px) 20px repeat(3,30px) 30px 20px;
+    grid-column-gap:10px;
+    justify-content:stretch;
+    align-items:stretch;
+}
+.sheet-class-info * {
+    width:100%;
+    height:100%;
+}
+.sheet-hlabel-container {
+    display: inline-block;
+    margin-right:5px;
+    padding:0px;
+}
+.sheet-hlabel-container select {
+    padding:-5px;
+    margin:0px;
+    position:relative;
+    top:-1px;
+}
+.sheet-char-name{
+    width:180px !important;
+}
+.sheet-class-level {
+    width:180px !important;
+}
+.sheet-player,
+.sheet-home-world {
+    width:100px !important;
+}
+.sheet-theme,
+.sheet-deity{
+    width:115px !important;
+}
+.sheet-alignment,
+.sheet-race,
+.sheet-size {
+    width:77px !important;
+}
+.sheet-speed {
+    width:60px !important;
+}
+.sheet-race-hp {
+    width:15px !important;
+    text-align:center;
+}
+.sheet-gender {
+    width:60px !important;
+}
+.sheet-menus button[type=roll] {
+    position:relative;
+    top:0px;
+}
+.sheet-language {
+    width:265px;
+}
+.sheet-class-info span {
+    text-align:center;
+}
+input.sheet-class-skills {
+    text-align:center;
+}
+.sheet-tab-container{
+    position:relative;
+    display:grid;
+    grid-area:tab-container;
+    grid-template-columns:[tab-button-start page-start] 160px [tab-button-end] 780px [page-end];
+    grid-template-rows:[tab-button-start page-start] 20px [tab-button-end] 870px [page-end];
+    justify-items:start;
+}
+.sheet-tab-button,
+.sheet-tab-button + span {
+	position:absolute;
+	grid-area:tab-button;
+}
+input[type=radio].sheet-tab-button.sheet-core,
+input[type=radio].sheet-tab-button.sheet-core + span {
+	left: 0px;
+	width: 42px;
+}
+input[type=radio].sheet-tab-button.sheet-bio,
+input[type=radio].sheet-tab-button.sheet-bio + span {
+	left: 49px;
+	width: 42px;
+}
+input[type=radio].sheet-tab-button.sheet-abilities,
+input[type=radio].sheet-tab-button.sheet-abilities + span {
+	left: 98px;
+	width: 70px;
+}
+input[type=radio].sheet-tab-button.sheet-spells,
+input[type=radio].sheet-tab-button.sheet-spells + span {
+	left: 175px;
+	width: 62px;
+}
+input[type=radio].sheet-tab-button.sheet-options,
+input[type=radio].sheet-tab-button.sheet-options + span {
+    left:244px;
+	width: 20px;
+}
+input[type=radio].sheet-tab-button {
+	opacity: 0;
+	height:20px;
+	z-index: 2;
+}
+input[type=radio].sheet-tab-button + span {
+	height: 20px;
+	border: 1px solid black;
+	border-radius: 5px;
+	background-color: #404040;
+	color: white;
+	text-align: center;
+	font-weight: bold;
+}
+input[type=radio].sheet-item-equip:checked + span,
+input[type=radio].sheet-tab-button:checked + span {
+	background-color: #333398;
+}
+input[type=radio]:hover + span,
+input[type=radio]:hover + h1 {
+	color: #f86f1a;
+}
+.sheet-page {
+	display: none;
+	grid-area:page;
+}
+input[type=radio].sheet-tab-button.sheet-core:checked ~ .sheet-page.sheet-core,
+input[type=radio].sheet-tab-button.sheet-bio:checked ~ .sheet-page.sheet-bio,
+input[type=radio].sheet-tab-button.sheet-abilities:checked ~ .sheet-page.sheet-abilities,
+input[type=radio].sheet-tab-button.sheet-spells:checked ~ .sheet-page.sheet-spells,
+input[type=radio].sheet-tab-button.sheet-options:checked ~ .sheet-page.sheet-options {
+	display:grid;
+}
+.sheet-page.sheet-core {
+    grid-template-columns:[attribute-start skills-start] 245px [attribute-end] 20px [health-start] 5px [skills-end] 20px [initiative-start weapons-start] 147px [health-end] 20px [armor-start initiative-end] 93px [weapons-end] 20px [equipment-start] 68px [armor-end] 20px [saves-start] 182px [saves-end equipment-end];
+    grid-template-rows:[initiative-start] 20px [initiative-end] 20px [attribute-start armor-start saves-start health-start] 200px [health-end attribute-end armor-end saves-end] 20px [skills-start equipment-start weapons-start] 620px [weapons-end equipment-end skills-end];
+    grid-gap:0px;
+}
+.sheet-attribute-container {
+    grid-area:attribute;
+}
+.sheet-ac-container {
+    grid-area:armor;
+}
+.sheet-saving-container {
+    grid-area:saves;
+}
+.sheet-equipment {
+    grid-area:equipment;
+    align-content:flex-start;
+    justify-content:flex-start !important;
+    flex-direction:column;
+}
+.sheet-initiative-container button{
+    background-image:url('https://cdn.rawgit.com/Kurohyou/Starfinder-Character-Sheet/533e5c9f/Selected%20Starfinder%20Header.png')!important;
+    position:relative!important;
+    left:0px;
+    top:0px;
+    font-size:10px !important;
+    color:white;
+}
+.sheet-initiative-container {
+    display:flex;
+    align-content:flex-start !important;
+    justify-content:flex-start !important;
+    height:20px;
+    width:250px;
+    grid-area:initiative;
+}
+/*172X200*/
+.sheet-health-resolve-container {
+    grid-area:health;
+}
+.sheet-health-container {
+    display:inline-grid !important;
+    grid-template-columns:[label-start]40px[label-end current-start]50px[current-end slash-start] 10px [slash-end max-start] 50px [max-end];
+    grid-template-rows:[stamina-start]45px[stamina-end hp-start]45px[hp-end rp-start]45px[rp-end temp-start]45px[temp-end];
+}
+.sheet-current,
+.sheet-max,
+.sheet-slash,
+.sheet-health-label {
+    text-align:center;
+    width:100% !important;
+}
+.sheet-health-label {
+    font-size:12pt !important;
+    font-color:black;
+}
+.sheet-current,
+.sheet-max,
+.sheet-slash {
+    font-weight:900;
+    font-family:Contrail One;
+    font-size:10pt !important;
+}
+.sheet-health-label {
+    margin:auto 0px;
+    grid-column-start: label-start;
+    grid-column-end:   label-end;
+}
+.sheet-current {
+    margin:auto 0px;
+    grid-column-start: current-start;
+    grid-column-end:   current-end;
+}
+.sheet-slash {
+    margin:auto 0px;
+    grid-column-start: slash-start;
+    grid-column-end:   slash-end;
+}
+.sheet-max {
+    margin:auto 0px;
+    grid-column-start: max-start;
+    grid-column-end:   max-end;
+}
+.sheet-stamina {
+    grid-row-start:stamina-start;
+    grid-row-end:stamina-end;
+}
+.sheet-hp {
+    grid-row-start:hp-start;
+    grid-row-end:hp-end;
+}
+.sheet-resolve {
+    grid-row-start:rp-start;
+    grid-row-end:rp-end;
+}
+.sheet-temp {
+    grid-row-start:temp-start;
+    grid-row-end:temp-end;
+}
+.sheet-weapons {
+    grid-area:weapons;
+    justify-content:space-between !important;
+    align-content:flex-start !important;
+}
+.sheet-skills-container {
+    grid-area:skills;
+    position:relative;
+}
+.sheet-initiative-container,
+.sheet-section-container {
+	display: flex;
+	flex-wrap:wrap;
+    justify-content:flex-end;
+    align-items:flex-start;
+    align-content:flex-start;
+    position:relative;
+    width:100%
+    height:100%;
+}
+.sheet-armor-container,
+.sheet-attr-container,
+.sheet-save-container,
+.sheet-init-container,
+.sheet-health-container,
+.sheet-skill-container {
+    width:100%;
+	margin:5px 5px 0px auto;
+	padding:0px;
+	display: flex;
+    justify-content:space-between;
+    align-content:flex-start;
+}
+.sheet-attr-container .sheet-button{
+    width:90px;
+	top:0px;
+	z-index:1;
+}
+.sheet-attr-container span {
+	top:0px;
+	display:inline;
+	text-align:center;
+}
+.sheet-attr-container .sheet-mod {
+    width:20px;
+}
+.sheet-attr-total-container{
+    position:relative;
+    padding:0px;
+}
+.sheet-base-attr,
+.sheet-modified-attr{
+    position:absolute;
+}
+.sheet-base-attr {
+    opacity:0;
+    z-index:2;
+    top:0px;
+    left:-5px;
+}
+.sheet-modified-attr {
+    text-align:center;
+    display:block;
+    border-bottom:1px solid #D3D3D3;
+    top:-4px !important;
+    left:-10px !important;
+}
+.sheet-base-attr:focus{
+    opacity:100;
+}
+.sheet-base-attr:focus ~ .sheet-modified-attr{
+    opacity:0;
+}
+.sheet-attr-total-container,
+.sheet-attr,
+.sheet-enh,
+.sheet-pen,
+.sheet-drain {
+	width:30px !important;
+	margin-left:5px;
+}
+.sheet-attribute-container span {
+	text-align:center;
+}
+.sheet-armor-container span {
+	height:15px;
+}
+.sheet-armor-container {
+	margin-right:5px;
+}
+.sheet-ac {
+	display:inline;
+	text-align:left;
+	width:20px;
+	margin-right:5px !important;
+}
+.sheet-arith {
+    width:10px !important;
+    font-weight:bold;
+}
+.sheet-tot,
+.sheet-base,
+.sheet-ranks {
+	display:block;
+	width:37px !important;
+	text-align:center !important;
+}
+.sheet-arm {
+	display:block;
+	width:40px;
+	margin-right:5px;
+	text-align:center !important;
+}
+.sheet-abi {
+    display:block;
+    width:30px !important;
+    margin:0px 5px !important;
+}
+.sheet-misc {
+	text-align:center !important;
+	width:80px !important;
+}
+.sheet-dr-span {
+    margin-left:0px;
+}
+.sheet-dr {
+	margin-left:5px;
+	width:80px;
+}
+span.sheet-resist {
+	margin-right:5px;
+}
+.sheet-armor-container textarea {
+	height:2.5em;
+	width:145px;
+	max-width:145px;
+}
+
+.sheet-save-container textarea {
+    height:2.5em;
+	width:141px;
+	max-width:141px;
+}
+.sheet-health-resolve-container span,
+.sheet-ac-container span {
+	display:block;
+}
+.sheet-no-sp:checked ~ .sheet-health-resolve-container {
+    box-shadow:0px 0px 20px #fa893a;
+}
+.sheet-no-hp:checked ~ .sheet-health-resolve-container {
+    box-shadow:0px 0px 40px #fa893a, 0px 0px 20px red;
+}
+.sheet-no-rp:checked ~ .sheet-health-resolve-container {
+    box-shadow:0px 0px 40px red,0px 0px 60px black;
+}
+.sheet-save-container button {
+	width:25px;
+}
+/*Equipment Styling*/
+.sheet-bulk-container {
+    width:80px;
+    height:35px;
+    margin-bottom:5px;
+    margin-left:5px;
+    padding:0px 2px;
+    border: 1px solid #276fad;
+    border-radius:3px;
+    position:relative;
+    text-align:center;
+}
+.sheet-bulk-container .sheet-number,
+.sheet-bulk-container .sheet-label,
+.sheet-credits-container .sheet-number,
+.sheet-credits-container .sheet-label {
+    display:inline-block;
+    width:80px;
+}
+.sheet-credits-container {
+    width:80px;
+    height:56px;
+    margin-bottom:5px;
+    margin-left:5px;
+    padding:0px 2px;
+    border: 1px solid #276fad;
+    border-radius:3px;
+    text-align:center;
+    position:relative;
+}
+.sheet-credits-container input {
+    width:78px !important;
+}
+.sheet-credits-container .sheet-number,
+.sheet-credits-container .sheet-label {
+    position:relative;
+    top:10px;
+}
+.sheet-item-container {
+    margin-left:25px;
+    position:relative;
+}
+.sheet-item-name-col {
+    width:45%;
+    height:15px;
+    text-align:center;
+    display:block;
+    margin-right:5%;
+}
+.sheet-item-name-container {
+    width:340px;
+    height:15px;
+    border-bottom:1px solid black;
+    display: flex;
+    display: -webkit-flex;
+    display: -moz-flex;
+    -webkit-flex-wrap:wrap;
+    -moz-flex-wrap:wrap;
+    flex-wrap:wrap;
+    -webkit-justify-content:flex-start;
+    -moz-justify-content:flex-start;
+    justify-content:flex-start;
+    -webkit-align-content:flex-start;
+    -moz-align-content:flex-start;
+    align-content:flex-start;
+}
+.sheet-summary,
+.sheet-display {
+    margin:0px !important;
+    padding:0px !important;
+}
+.sheet-summary {
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+}
+.repcontainer[data-groupname='repeating_item']  .repitem {
+    position:relative;
+    width:160px !important;
+    padding:0px;
+    margin-right:5px;
+}
+.repcontainer[data-groupname='repeating_item']  .repitem .sheet-display,
+.repcontainer[data-groupname='repeating_item']  .repitem .sheet-display input {
+    width:100%;
+}
+.repcontainer[data-groupname='repeating_item'] {
+    width:360px;
+    height:140px;
+    padding:0px;
+    display:flex;
+    flex-wrap:wrap;
+    align-content:flex-start;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+.sheet-item .sheet-show-options {
+    position:relative;
+    top:-8px;
+}
+.sheet-item *,
+.sheet-attack *{
+    padding:0px;
+    margin:0px;
+}
+.sheet-item-name {
+    width:80% !important;
+}
+.sheet-item-bulk {
+    width: 10% !important;
+    text-align:center;
+}
+.sheet-item-cost {
+    width:20% !important;
+}
+.sheet-item-quantity {
+    width:10% !important;
+    text-align:center;
+}
+.sheet-item-mods {
+    width:90% !important;
+}
+.sheet-item-equip {
+    position:absolute;
+}
+input[type=radio].sheet-item-equip.sheet-equipped,
+input[type=radio].sheet-item-equip.sheet-equipped + span {
+    left: 0px;
+}
+input[type=radio].sheet-item-equip.sheet-carried,
+input[type=radio].sheet-item-equip.sheet-carried + span {
+    left: 25px;
+}
+input[type=radio].sheet-item-equip.sheet-not-carried,
+input[type=radio].sheet-item-equip.sheet-not-carried + span {
+    left: 50px;
+}
+input[type=radio].sheet-item-equip {
+    opacity: 0;
+    width: 20px;
+    height: 20px;
+    z-index: 10;
+}
+input[type=radio].sheet-item-equip + span {
+    width: 17px;
+    height: 17px;
+    border: 1px solid black;
+    border-radius: 100%;
+    background-color: #E8E8E8;
+    color: black;
+    text-align: center;
+    font-weight: bold;
+    padding-left:5px;
+    padding-right:5px;
+}
+.sheet-item-description {
+    max-width:182px !important;
+    height:3em !important;
+    z-index:1;
+}
+.sheet-item-container .repcontrol .repcontrol_add:before {
+    top:5px;
+    left:-23px;
+}
+.sheet-item-container .repcontrol .repcontrol_edit:after {
+    left:-23px;
+    top:108px;
+}
+/*Repeating attack styling*/
+.repcontrol {
+	min-height: 27px;
+}
+.repcontrol .btn {
+	visibility: hidden;
+	border: medium none;
+	color: white !important;
+	background: none;
+	box-shadow: none;
+}
+.repcontrol .btn:focus {
+	outline: 0;
+}
+.repcontrol .repcontrol_edit:after {
+	content: '(';
+	visibility: visible;
+	font-family: pictos;
+	background-color: #EFEFEF;
+	border: 1px solid black;
+	border-radius: 2px;
+	font-size: 12px;
+	height: 12px;
+	width: 12px;
+	padding: 4px;
+	color: black;
+	position:absolute;
+}
+.editmode ~ .repcontrol .repcontrol_edit:after {
+	content: ')';
+}
+.repcontrol .repcontrol_add:before {
+	content: '&';
+	visibility: visible;
+	font-family: pictos;
+	background-color: #EFEFEF;
+	border: 1px solid black;
+	border-radius: 2px;
+	font-size: 12px;
+	height: 12px;
+	width: 12px;
+	padding: 4px;
+	color: black;
+	position:absolute;
+}
+.sheet-weapons .repcontrol .repcontrol_add:before {
+	top:320px;
+	left:5px;
+}
+.sheet-weapons .repcontrol .repcontrol_edit:after {
+	left:256px;
+	top:320px;
+}
+.repcontainer[data-groupname='repeating_attack'] {
+    width:296px;
+    height:328px;
+    margin:0px 0px 0px 5px;
+    padding:0px;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+.repcontainer[data-groupname='repeating_attack'] .repitem {
+    width:270px;
+    padding:0px;
+    margin:5px 0px;
+}
+.repcontainer[data-groupname='repeating_attack'] .repitem .sheet-display {
+    width:100%;
+    padding:0px;
+    margin:0px;
+}
+.repcontrol .repcontrol_edit:hover,
+.repcontrol .repcontrol_add:hover
+{
+	background-color: #EFEFEF;
+}
+.itemcontrol {
+	z-index: 10;
+}
+.itemcontrol .repcontrol_del {
+	font-size: 10px;
+	margin-top: 3px;
+	padding: 0px;
+	height: 18px;
+	width: 18px;
+    font-family:pictos;
+	content:'#';
+}
+.itemcontrol .repcontrol_move {
+	font-size: 10px;
+	margin-top: 3px;
+	padding: 0px;
+	height: 18px;
+	width: 18px;
+}
+.sheet-attack .sheet-show-options,
+.sheet-spell .sheet-show-options,
+.sheet-item .sheet-show-options,
+.sheet-npc .sheet-npc_show-options,
+.sheet-trait .sheet-show-options,
+.sheet-action .sheet-show-options,
+.sheet-equipment .sheet-inventorysubflag
+{
+	opacity: 0;	
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 18px;
+	height: 18px;
+	z-index: 6;
+}
+ 
+.sheet-attack .sheet-show-options + span,
+.sheet-spell .sheet-show-options + span,
+.sheet-item .sheet-show-options + span,
+.sheet-npc .sheet-npc_show-options + span,
+.sheet-trait .sheet-show-options + span,
+.sheet-action .sheet-show-options + span,
+.sheet-equipment .sheet-inventorysubflag + span
+{
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	white-space: nowrap;
+	width: 18px;
+	height: 18px;
+	font-size: 20px;
+	font-family: pictos;
+	color: #A0A0A0;
+	cursor: pointer;
+	margin-top: 0px;
+	display: none;
+	z-index:5;
+}
+ 
+.sheet-attack:hover .sheet-show-options:checked + span,
+.sheet-spell:hover .sheet-show-options:checked + span,
+.sheet-item:hover .sheet-show-options:checked + span,
+.sheet-npc .sheet-npc_show-options:checked + span,
+.sheet-trait .sheet-show-options:checked + span,
+.sheet-action .sheet-show-options:checked + span,
+.sheet-equipment .sheet-inventorysubflag:checked + span
+{
+	color: black;
+	display: block;
+}
+ 
+.sheet-attack:hover .sheet-show-options + span,
+.sheet-spell:hover .sheet-show-options + span,
+.sheet-item:hover .sheet-show-options + span,
+.sheet-npc:hover > .sheet-npc_show-options + span,
+.sheet-trait:hover .sheet-show-options + span,
+.sheet-action:hover .sheet-npc_show-options + span,
+.sheet-item:hover .sheet-inventorysubflag + span
+{
+	display: block;
+}
+.sheet-atk-options,
+.sheet-item-options{
+	display:none;
+}
+.sheet-attack .sheet-show-options:checked ~ .sheet-atk-options,
+.sheet-spell .sheet-show-options:checked ~ .sheet-options,
+.sheet-item .sheet-show-options:checked ~ .sheet-item-options,
+.sheet-npc .sheet-npc_show-options:checked ~ .sheet-npc_options,
+.sheet-trait .sheet-show-options:checked ~ .sheet-options,
+.sheet-action .sheet-show-options:checked ~ .sheet-options
+{
+	display: inherit;
+}
+.sheet-display input {
+	border-bottom:0px !important;
+    background-color:#dbdbdb !important;
+	font-size:7pt;
+	line-height:7pt;
+	z-index:-2;
+	text-align:center;
+	cursor:pointer;
+}
+.sheet-init-container {
+    width:280px;
+}
+.sheet-health-container input[readonly=true] {
+    border-bottom:1px solid transparent;
+}
+.sheet-attack-header {
+    display:flex;
+    justify-content:space-between;
+    width:270px;
+    margin-left:5px;
+}
+.sheet-atk-name-col {
+	width:137px;
+	background-color:#333398;
+	text-align:center;
+	color:white;
+}
+.sheet-atk-mod-col{
+	width:39px;
+	background-color:#333398;
+	text-align:center;
+	color:white;
+}
+.sheet-atk-dmg-col {
+    background-color:#333398;
+	width:88px;
+	text-align:center;
+	color:white;
+}
+.sheet-attack {
+	position:relative;
+	width:270px;
+}
+.sheet-attack .sheet-atk-options {
+    padding:5px 5px 5px 0px;
+}
+.sheet-attack .sheet-atk-options .sheet-row {
+    width:100%;
+    padding:0px;
+    margin:0px;
+    display:flex;
+    justify-content:flex-start;
+}
+.sheet-attack .sheet-atk-options .sheet-row input {
+    margin:0px 5px;
+}
+.sheet-atk-name {
+    width:150px;
+}
+.sheet-atk-level{
+    width:20px;
+}
+.sheet-atk-type,
+.sheet-atk-crit{
+	width:60px !important;
+}
+.sheet-bab {
+    width:20px;
+    border-bottom:0px !important;
+    text-align:center;
+}
+.sheet-atk,
+.sheet-atk-damage,
+.sheet-atk-usage,
+.sheet-atk-special{
+	width:80px !important;
+}
+.sheet-atk-range,
+.sheet-dmg-dice{
+	width:40px !important;
+}
+.sheet-atk-description {
+	height:2.5em;
+	max-width:270px;
+}
+.sheet-cs {
+	opacity:0;
+	position:absolute;
+}
+.sheet-class-skill {
+    width:10px;
+    display:flex;
+    justify-content:center;
+    align-content:center;
+}
+.sheet-skill-container > * {
+    margin: auto 0px;
+}
+.sheet-class-skill * {
+    margin:auto !important;
+}
+.sheet-skill-container .sheet-label.sheet-tot {
+    width:55px !important;
+}
+.sheet-skill-container button {
+    width:100px;
+}
+.sheet-class-skill input[type=checkbox] {
+	z-index:2;
+}
+.sheet-class-skill input[type=checkbox]:checked {
+	opacity:0;
+}
+.sheet-class-skill input[type=checkbox]:checked ~ .sheet-cs {
+	opacity:100;
+}
+.sheet-skill-container textarea {
+    max-width:360px;
+    width:360px;
+    height:90px;
+    max-height:90px;
+}
+.repcontainer[data-groupname='repeating_profession'] {
+    position:relative;
+    max-height:80px;
+    overflow-y:visible;
+    overflow-x:visible;
+}
+.repcontainer[data-groupname='repeating_profession'] .sheet-skill-container {
+    background-color:white;
+}
+.sheet-skills-container .repcontrol .repcontrol_add:before {
+    position:relative;
+    left:-230px !important;
+}
+.sheet-skills-container .repcontrol .repcontrol_edit:after {
+    position:relative;
+    left:-0px !important;
+}
+.sheet-profession-placeholder{
+    position:absolute;
+    top:420px;
+    color:gray;
+    width:100%;
+    text-align:center;
+}
+.sheet-prof-name {
+    position:absolute;
+    width:30px;
+    left:80px;
+}
+
+.sheet-mod-buff:checked ~ .sheet-modified-attr {
+    color:#7395cc !important;
+    font-weight:900 !important;
+    font-family:Contrail One !important;
+}
+.sheet-mod-buff:checked ~ .sheet-modified-attr:after{
+    font-family:Pictos;
+    position:absolute;
+    content:'{';
+}
+.sheet-mod-debuff:checked ~ .sheet-modified-attr {
+    color:#fa893a;
+    font-weight:900 !important;
+    font-family:Contrail One !important;
+}
+.sheet-mod-debuff:checked ~ .sheet-modified-attr:after{
+    font-family:Pictos;
+    position:absolute;
+    content:'}' !important;
+}
