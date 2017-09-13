@@ -1042,8 +1042,7 @@
                                     <input hidden='true' name='attr_attack_ability_value' value='0'>
                                     <span class='arith'>+</span>
                                     <input class='bab' name='attr_attack_bab' disabled='true' title='@{bab}' value='@{bab}'>
-                                    <span class='arith'>+</span>
-                                    <input class='atk-misc misc' type='text' name='attr_attack_bonus' placeholder='@{attr}/2 + ?{Query}'>
+                                    <input class='atk-misc misc' type='text' name='attr_attack_bonus' placeholder='+@{attr}/2 + ?{Query}'>
                                     <span class='label' data-i18n='atk_range'>RNG</span>
                                     <input class='atk-range' type='text' name='attr_attack_range' placeholder='30 ft'>
                                 </div>
@@ -1060,8 +1059,7 @@
                                         <option value='charisma_mod'>CHA</option>
                                     </select>
                                     <input hidden='true' name='attr_attack_dmg_ability_value' value='0'>
-                                    <span class='arith'>+</span>
-                                    <input class='atk-damage' type='text' name='attr_attack_dmg_bonus' placeholder='@{attr}/2 + ?{Query}'>
+                                    <input class='atk-damage' type='text' name='attr_attack_dmg_bonus' placeholder='+@{attr}/2 + ?{Query}'>
                                 </div>
                                 <div class='row'>
                                     <span class='label' data-i18n='atk_type'>TYPE</span>
@@ -1832,7 +1830,7 @@
     /*start starfinder.js*/
     var starfinder = starfinder || (function(){
         'use strict';
-        var version = 0.011505149153,
+        var version = 0.011505259318,
             attributeObjs=[
                 /*
                 {
@@ -2602,7 +2600,13 @@
                                 +_.reduce(obj.textAdds,(memo,add)=>{return memo+(setObj[add]*1||attributes[add]||'')},''),
                                 ((setObj[attributes[repeatFormat+i+obj.ability]]*1||attributes[attributes[repeatFormat+i+obj.ability]]*1||0)+obj.numAdds
                                 +_.reduce(obj.attrAdds,(memo,add)=>{return memo+(setObj[add]*1||attributes[add]*1||0)},0)
-                                +_.reduce(obj.repeatAdds,(memo,add)=>{return memo+(setObj[repeatFormat+i+add]*1||attributes[repeatFormat+i+add]*1||0)},0)+bTotal
+                                +_.reduce(obj.repeatAdds,(memo,add)=>{
+                                    let csMatch = add.match('class_skill');
+                                    if(!csMatch || attributes[repeatFormat+i+add.replace(/class_skill/,'ranks')]*1>0){
+                                        memo+=(setObj[add]*1||attributes[add]*1||0);
+                                    }
+                                    return memo;
+                                },0)+bTotal
                                 +(obj.attr==='attack_total' && attributes[repeatFormat+i+'attack_proficiency']==='no' ? -4 : (obj.attr==='attack_dmg_total' && attributes[repeatFormat+i+'attack_proficiency']==='specialized' ? (attributes[repeatFormat+i+'attack_category'].match(/small arms|operative/i) ? Math.floor((setObj.level||attributes.level)/2) : setObj.level*1||attributes.level*1):0)))])
                             .reject((v)=>{return !v})
                             .value().join(' + ');
@@ -2615,16 +2619,8 @@
                     setObj[obj.attr]=(((setObj[attributes[obj.ability]]||attributes[attributes[obj.ability]])*1+obj.numAdds
                     +_.reduce(obj.attrAdds,(memo,add)=>{
                         let csMatch = add.match('class_skill');
-                        if(csMatch){
-                            TAS.log(add);
-                            TAS.log(attributes[add.replace(/class_skill/,'ranks')]);
-                            TAS.log(attributes[add]);
-                        }
                         if(!csMatch || attributes[add.replace(/class_skill/,'ranks')]*1>0){
-                            if(csMatch){
-                                TAS.log('IF PASSED');
-                            }
-                                memo+=(setObj[add]*1||attributes[add]*1||0);
+                            memo+=(setObj[add]*1||attributes[add]*1||0);
                         }
                         return memo;
                     },0)+bTotal)
