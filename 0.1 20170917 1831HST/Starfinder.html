@@ -256,7 +256,7 @@
         <!--<div class='in-play'>-->
             <input class='in-play-tab menu-tab' type='radio' name='attr_in-play-tab' value='menus' checked='checked'><h1 class='section label menu-head' data-i18n='menus'>MENUS</h1>
             <div class='menus in-play'>
-                <button type='roll' name='roll_initiative' value='MACRO NEEDED' data-i18n='initiative'>INITIATIVE</button>
+                <button type='roll' name='roll_initiative' value="@{initiative}" data-i18n='initiative'>INITIATIVE</button>
                 <button type='roll' name='roll_attacks' value='MACRO NEEDED' data-i18n='attacks'>ATTACKS</button>
                 <button type='roll' name='roll_saves' value='MACRO NEEDED' data-i18n='saves'>SAVES</button>
                 <button type='roll' name='roll_spells' value='MACRO NEEDED' data-i18n='spells'>SPELLS</button>
@@ -291,7 +291,7 @@
             <input class="tab-button options" hidden='true' type="radio" name="attr_tab" value="options">
             <div class='page core'>
                 <div class='initiative-container'>
-                    <button class='section label' type='roll' name='roll_initiative' value='/w @{character_name} &{template:default} {{Initiative}} {{@{character_name}}} {{[[1d20+@{initiative}]]}}' data-i18n='initiative' title='%{initiative}'>INITIATIVE</button>
+                    <button class='section label' type='roll' name='roll_initiative' value='&{template:sf_generic} {{name=@{character_name}}} {{title=Initiative}} {{check=[[1d20+@{initiative}+(@{initiative}/100)&{tracker}]]}}' data-i18n='initiative' title='%{initiative}'>INITIATIVE</button>
                     <input class='mod-debuff' type='radio' name='attr_initiative_change' value='-1' hidden='true'>
                     <input class='mod-normal' type='radio' name='attr_initiative_change' value='0' hidden='true' checked='checked'>
                     <input class='mod-buff' type='radio' name='attr_initiative_change' value='1' hidden='true'>
@@ -316,7 +316,7 @@
                         <span class='label drain' data-i18n='drain'>DRAIN</span>
                     </div>
                     <div class='attr-container'>
-                        <button class='button' type='roll' name='roll_strength' value='/w @{character_name} &{template:default} {{Strength Check=[[1d20+@{strength_mod}]]}} {{@{character_name}}}' data-i18n='strength' title=%{strength}>STRENGTH</button>
+                        <button class='button' type='roll' name='roll_strength' value='&{template:sf_generic} {{name=@{character_name}}} {{title=Strength}} {{check=[[1d20+@{strength_mod}]]}}' data-i18n='strength' title=%{strength}>STRENGTH</button>
                         <input class='mod' type='text' name='attr_strength_mod' readonly='true' title='@{strength_mod}' value='0'>
                         <div class='attr-total-container'>
                             <input class='base-attr attr' type='number' name='attr_strength_base' value='10' title='@{strength}'>
@@ -329,7 +329,7 @@
                         <input class='drain' type='number' name='attr_strength_drain' value='' title='@{strength_drain}'>
                     </div>
                     <div class='attr-container'>
-                        <button class='button' type='roll' name='roll_dexterity' value='/w @{character_name} &{template:default} {{Dexterity Check=[[1d20+@{dexterity_mod}]]}} {{@{character_name}}}' data-i18n='dexterity' title=%{dexterity}>DEXTERITY</button>
+                        <button class='button' type='roll' name='roll_dexterity' value='&{template:sf_generic} {{name=@{character_name}}} {{title=Dexterity}} {{check=[[1d20+@{dexterity_mod}]]}}' data-i18n='dexterity' title=%{dexterity}>DEXTERITY</button>
                         <input class='mod' type='text' name='attr_dexterity_mod' readonly='true' title='@{dexterity_mod}' value='0'>
                         <div class='attr-total-container'>
                             <input class='base-attr attr' type='number' name='attr_dexterity_base' value='10' title='@{dexterity}'>
@@ -342,7 +342,7 @@
                         <input class='drain' type='number' name='attr_dexterity_drain' value='' title='@{dexterity_drain}'>
                     </div>
                     <div class='attr-container'>
-                        <button class='button' type='roll' name='roll_constitution' value='/w @{character_name} &{template:default} {{Constitution Check=[[1d20+@{constitution_mod}]]}} {{@{character_name}}}' data-i18n='constitution' title=%{constitution}>CONSTITUTION</button>
+                        <button class='button' type='roll' name='roll_constitution' value='&{template:sf_generic} {{name=@{character_name}}} {{title=Constitution}} {{check=[[1d20+@{constitution_mod}]]}}' data-i18n='constitution' title=%{constitution}>CONSTITUTION</button>
                         <input class='mod' type='text' name='attr_constitution_mod' readonly='true' title='@{constitution_mod}' value='0' value='0'>
                         <div class='attr-total-container'>
                             <input class='base-attr attr' type='number' name='attr_constitution_base' value='10' title='@{constitution}'>
@@ -355,7 +355,7 @@
                         <input class='drain' type='number' name='attr_constitution_drain' value='' title='@{constitution_drain}'>
                     </div>
                     <div class='attr-container'>
-                        <button class='button' type='roll' name='roll_intelligence' value='/w @{character_name} &{template:default} {{Intelligence Check=[[1d20+@{intelligence_mod}]]}} {{@{character_name}}}' data-i18n='intelligence' title=%{intelligence}>INTELLIGENCE</button>
+                        <button class='button' type='roll' name='roll_intelligence' value='&{template:sf_generic} {{name=@{character_name}}} {{title=Intelligence}} {{check=[[1d20+@{intelligence_mod}]]}}' data-i18n='intelligence' title=%{intelligence}>INTELLIGENCE</button>
                         <input class='mod' type='text' name='attr_intelligence_mod' readonly='true' title='@{intelligence_mod}' value='0'>
                         <div class='attr-total-container'>
                             <input class='base-attr attr' type='number' name='attr_intelligence_base' value='10' title='@{intelligence}'>
@@ -368,7 +368,7 @@
                         <input class='drain' type='number' name='attr_intelligence_drain' value='' title='@{intelligence_drain}'>
                     </div>
                     <div class='attr-container'>
-                        <button class='button' type='roll' name='roll_wisdom' value='/w @{character_name} &{template:default} {{Wisdom Check=[[1d20+@{wisdom_mod}]]}} {{@{character_name}}}' data-i18n='wisdom' title=%{wisdom}>WISDOM</button>
+                        <button class='button' type='roll' name='roll_wisdom' value='&{template:sf_generic} {{name=@{character_name}}} {{title=Wisdom}} {{check=[[1d20+@{wisdom_mod}]]}}' data-i18n='wisdom' title=%{wisdom}>WISDOM</button>
                         <input class='mod' type='text' name='attr_wisdom_mod' readonly='true' title='@{wisdom_mod}' value='0'>
                         <div class='attr-total-container'>
                             <input class='base-attr attr' type='number' name='attr_wisdom_base' value='10' title='@{wisdom}'>
@@ -381,7 +381,7 @@
                         <input class='drain' type='number' name='attr_wisdom_drain' value='' title='@{wisdom_drain}'>
                     </div>
                     <div class='attr-container'>
-                        <button class='button' type='roll' name='roll_charisma' value='/w @{character_name} &{template:default} {{Charisma Check=[[1d20+@{charisma_mod}]]}} {{@{character_name}}}' data-i18n='charisma' title=%{charisma}>CHARISMA</button>
+                        <button class='button' type='roll' name='roll_charisma' value='&{template:sf_generic} {{name=@{character_name}}} {{title=Charisma}} {{check=[[1d20+@{charisma_mod}]]}}' data-i18n='charisma' title=%{charisma}>CHARISMA</button>
                         <input class='mod' type='text' name='attr_charisma_mod' readonly='true' title='@{charisma_mod}' value='0'>
                         <div class='attr-total-container'>
                             <input class='base-attr attr' type='number' name='attr_charisma_base' value='10' title='@{charisma}'>
@@ -404,7 +404,7 @@
                         <span class='health-label label stamina' data-i18n='sp'>SP</span>
                         <span class='health-label label hp' data-i18n='hp'>HP</span>
                         <span class='health-label label resolve' data-i18n='rp'>RP</span>
-                        <span class='health-label label temp' data-i18n='temp-hp'>TMP</span>
+                        <span class='health-label label temp' data-i18n='temp-hp'>Temp HP</span>
                         <input class='current stamina' type='number' name='attr_sp' value='0' title=@{sp}>
                         <span class='slash stamina'>/</span>
                         <div class='attr-total-container'>
@@ -519,7 +519,7 @@
                         <div class='label abi'></div>
                     </div>
                     <div class='save-container'>
-                        <button type='roll' name='roll_fort' value='/w @{character_name} &{template:default} {{Fort save=[[1d20+@{fort}]]}} {{@{character_name}}}' data-i18n='fort' title='%{fort}'>FORT</button>
+                        <button type='roll' name='roll_fort' value='&{template:sf_generic} {{name=@{character_name}}} {{type=Fortitude}} {{check=[[1d20+@{fort}]] }}' data-i18n='fort' title='%{fort}'>FORT</button>
                         <div class='attr-total-container'>
                             <input class='mod-debuff' type='radio' name='attr_fort_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_fort_change' value='0' hidden='true' checked='checked'>
@@ -537,7 +537,7 @@
                         </select>
                     </div>
                     <div class='save-container'>
-                        <button type='roll' name='roll_ref' value='/w @{character_name} &{template:default} {{Ref Save=[[1d20+@{ref}]]}} {{@{character_name}}}' data-i18n='ref' title='%{ref}'>REF</button>
+                        <button type='roll' name='roll_ref' value='&{template:sf_generic} {{name=@{character_name}}} {{type=Reflex}} {{check=[[1d20+@{ref}]] }}' data-i18n='ref' title='%{ref}'>REF</button>
                         <div class='attr-total-container'>
                             <input class='mod-debuff' type='radio' name='attr_ref_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_ref_change' value='0' hidden='true' checked='checked'>
@@ -555,7 +555,7 @@
                         </select>
                     </div>
                     <div class='save-container'>
-                        <button type='roll' name='roll_will' value='/w @{character_name} &{template:default} {{Will Save=[[1d20+@{will}]]}} {{@{character_name}}}' data-i18n='will' title='%{will}'>WILL</button>
+                        <button type='roll' name='roll_will' value='&{template:sf_generic} {{name=@{character_name}}} {{type=Will}} {{check=[[1d20+@{will}]] }}' data-i18n='will' title='%{will}'>WILL</button>
                         <div class='attr-total-container'>
                             <input class='mod-debuff' type='radio' name='attr_will_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_will_change' value='0' hidden='true' checked='checked'>
@@ -1077,7 +1077,7 @@
                                 </div>
                                 
                                 <div class='row'>
-                                    <textarea class='atk-description' name='attr_attack_macro' title='@{repeatin_attack_$X_attack_macro}' value='/w "@{character_name}" &{template:default} {{@{attack_name}}} {{@{character_name}}} {{attack=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus} ]]}} {{Damage=[[@{attack_dmg_dice}+@{attack_dmg_ability_value}[ABILITY]@{attack_dmg_misc}@{attack_dmg_bonus}]]}}'>/w "@{character_name}" &{template:default} {{@{attack_name}}} {{@{character_name}}} {{attack=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus} ]]}} {{Damage=[[@{attack_dmg_dice}+@{attack_dmg_ability_value}[ABILITY]@{attack_dmg_misc}@{attack_dmg_bonus}]]}}</textarea>
+                                    <textarea class='atk-description' name='attr_attack_macro' title='@{repeatin_attack_$X_attack_macro}' value='&{template:sf_attack} {{name=@{character_name}}} {{title=@{attack_name}}} {{attack=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damage=[[@{attack_dmg_dice}+@{attack_dmg_ability_value}[ABILITY]@{attack_dmg_misc}@{attack_dmg_bonus}]]}} {{dmgcrit=[[@{attack_dmg_dice}+@{attack_dmg_ability_value}[ABILITY]@{attack_dmg_misc}@{attack_dmg_bonus}]]}} }}'>&{template:sf_attack} {{name=@{character_name}}} {{title=@{attack_name}}} {{attack=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damage=[[@{attack_dmg_dice}+@{attack_dmg_ability_value}[ABILITY]@{attack_dmg_misc}@{attack_dmg_bonus}]]}} {{dmgcrit=[[@{attack_dmg_dice}+@{attack_dmg_ability_value}[ABILITY]@{attack_dmg_misc}@{attack_dmg_bonus}]]}} }}</textarea>
                                 </div>
                                 <div class='row'>
                                     <textarea class='atk-description' name='attr_attack_description' title='@{repeatin_attack_$X_atk_description}' placeholder='Description'></textarea>
@@ -1179,7 +1179,95 @@
     </div>
     <div class="container ship">
         
-    </div>'
+    </div>
+	<div class="sheet-section-roll_templates" style="display:none; opacity:0; height:1em; overflow:hidden;" role="contentinfo" aria-label="rolltemplates" >
+		<!-- Generic Roll Templates -->
+		<!-- Macro Text: 
+            &{template:sf_generic} {{name=@{character_name}}} {{title= }} {{check= }} {{save= }} {{notes= }} }}
+        -->
+        <rolltemplate class="sheet-rolltemplate-sf_generic">
+            <div class='sheet-rolltemplate-sf_generic-header'>
+                <span class='sheet-rolltemplate-sf_generic-character_name'>{{name}}</span><span> : {{title}}</span>
+            </div>
+            <div class='sheet-rolltemplate-sf_generic-spacer'></div>
+            <div class='sheet-rolltemplate-sf_generic-info'>
+                {{#check}}
+                <div class='sheet-rolltemplate-sf_generic-info_check'>
+                    <div class='sheet-rolltemplate-sf_generic-info_check_left'>
+                        <span>Check:</span>
+                    </div>
+                    <div class='sheet-rolltemplate-sf_generic-info_check_right'>
+                        <span>{{check}}</span>
+                    </div>
+                </div>
+                {{/check}}
+                {{#save}}
+                <div class="sheet-rolltemplate-sf_generic-info_notes">
+                    <span>Save vs: </span> <span>{{save}}</span>
+                </div>
+                {{/save}}
+                {{#notes}}
+                <div class="sheet-rolltemplate-sf_generic-info_notes">
+                    <span>Notes: </span> <span>{{notes}}</span>
+                </div>
+                {{/notes}}
+            </div>
+        </rolltemplate>
+		<!-- Attack Roll Templates -->
+		<!-- Macro Text: 
+            &{template:sf_attack} {{name=@{character_name}}} {{title=@{attack_name}}} {{attack=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damage=[[@{attack_dmg_dice}+@{attack_dmg_ability_value}[ABILITY]@{attack_dmg_misc}@{attack_dmg_bonus}]]}} {{dmgcrit=[[@{attack_dmg_dice}+@{attack_dmg_ability_value}[ABILITY]@{attack_dmg_misc}@{attack_dmg_bonus}]]}} {{notes= }} }}
+        -->
+        <rolltemplate class="sheet-rolltemplate-sf_attack">
+            <div class='sheet-rolltemplate-sf_attack-header'>
+                <span class='sheet-rolltemplate-sf_attack-character_name'>{{name}}</span><span> : {{title}}</span>
+            </div>
+            <div class='sheet-rolltemplate-sf_attack-spacer'></div>
+            <div class='sheet-rolltemplate-sf_attack-info'>
+                <div class='sheet-rolltemplate-sf_attack-info_check'>
+                    {{#attack}}
+                    <div class='sheet-rolltemplate-sf_attack-info_att'>
+                        <div class='sheet-rolltemplate-sf_attack-info_att_left'>
+                            <span>Attack:</span>
+                        </div>
+                        <div class='sheet-rolltemplate-sf_attack-info_att_right'>
+                            <span>{{attack}}</span>
+                        </div>
+                    </div>
+                    {{/attack}}
+                    <br>
+                    {{#damage}}
+                    <div class='sheet-rolltemplate-sf_attack-info_dmg'>
+                        <div class='sheet-rolltemplate-sf_attack-info_dmgn_left'>
+                            <span>Damage:</span>
+                        </div>
+                        <div class='sheet-rolltemplate-sf_attack-info_dmgn_right'>
+                            <span>{{damage}}</span>
+                        </div>
+                        <br>
+                        {{#rollWasCrit() attack}}
+                        <div class='sheet-rolltemplate-sf_attack-info_dmg_crit'>
+                            <div class='sheet-rolltemplate-sf_attack-info_dmgc_left'>
+                                <span>Crit Damage:</span>
+                            </div>
+                            <div class='sheet-rolltemplate-sf_attack-info_dmgc_right'>
+                                <span>{{dmgcrit}}</span>
+                            </div>
+                        </div>
+                        {{/rollWasCrit() attack}}
+                    </div>
+                    {{/damage}}
+                </div>
+                {{#notes}}
+                    <div class="sheet-rolltemplate-sf_attack-info_notes">
+                        <span>Notes: </span> <span>{{notes}}</span>
+                    </div>
+                {{/notes}}
+            </div>
+        </rolltemplate>
+        
+        
+        
+	</div>
 </div>
 <script type='text/worker'>
     /* ---- BEGIN: TheAaronSheet.js ---- */
@@ -2366,18 +2454,15 @@
             var convertSave = {
                     poor:(lvl)=>Math.floor(lvl/3),
                     good:(lvl)=>lvl>0 ? (Math.floor(lvl/2) + 2) : 0
-                },
-                temp;
+                };
             return _.reduce([1,2,3,4,5],(memo,n)=>{
                 memo.level+=(attributes['class-'+n+'-level']*1||0);
                 memo.bab+=Math.floor(attributes['class-'+n+'-bab']*attributes['class-'+n+'-level']||0);
                 _.each(['fort','ref','will'],(save)=>{
                     memo[save+'_base']+=convertSave[attributes['class-'+n+'-'+save]](attributes['class-'+n+'-level']*1||0);
                 });
-                temp=(attributes['class-'+n+'-name']||'')+((attributes['class-'+n+'-name']&&attributes['class-'+n+'-name']!==''&&attributes['class-'+n+'-level']&&attributes['class-'+n+'-level']!=='') ? ' ' : '')+(attributes['class-'+n+'-level']||'');
-                memo['class&level']+=temp.length>0 ? (memo['class&level'].length>0 ? ' / ' : '')+temp : '';
                 return memo;
-            },{level:0,fort_base:0,ref_base:0,will_base:0,bab:0,'class&level':''});
+            },{level:0,fort_base:0,ref_base:0,will_base:0,bab:0});
         },
         
         classHealthHandler = function(){
@@ -2510,15 +2595,13 @@
                 setObj[abi+'_change']=bTotal > 0 ? 1 : bTotal<0 ? -1 :0;
             });
             //Encumbrance
-            setObj.carried_bulk = 0;
-            setObj.wealth=0;
             setObj = _.reduce(_.keys(attributes),(memo,a)=>{
                 let aMatch =a.match(/repeating_item_-[^_]+_item_(bulk|cost)/);
                 if(aMatch){
                     if(aMatch[1]==='bulk'){
-                        memo.carried_bulk = memo.carried_bulk + ((attributes[a]+'').match(/l/i) ? 0.1 : attributes[a]*1||0)*attributes[a.replace(/bulk/,'quantity')]||0;
+                        memo.carried_bulk = (memo.carried_bulk||0) + ((attributes[a]+'').match(/l/i) ? 0.1 : attributes[a]*1||0)*attributes[a.replace(/bulk/,'quantity')]||0;
                     }else{
-                        memo.wealth=memo.wealth + (attributes[a]*1||0)*attributes[a.replace(/cost/,'quantity')]||0;
+                        memo.wealth=(memo.wealth||0) + (attributes[a]*1||0)*attributes[a.replace(/bulk/,'quantity')]||0;
                     }
                 }
                 return memo;
@@ -2536,7 +2619,7 @@
                 bTotal = calcBuffs(attributes,bonus[h],setObj).total;
                 setObj[h+'_max']=(h!=='temp_hp' ? _.reduce([1,2,3,4,5],(memo,n)=>{
                     if(h!=='rp'){
-                        memo += attributes['class-'+n+'-'+h]*attributes['class-'+n+'-level']||0;
+                        memo += attributes['class-'+n+'-'+h]*attributes['class-'+n+'-level']||0 + (h==='sp' ? (setObj.constitution_mod||attributes.constitution_mod)*attributes['class-'+n+'-level']||0 : 0);
                         if(n===5 && h==='hp'){
                             memo+=attributes['race_hp']*1||0;
                         }
@@ -2548,9 +2631,6 @@
                     }
                     return memo;
                 },(h==='rp' ? [] : 0)) : 0) + bTotal;
-                if(h==='sp'){
-                    setObj[h+'_max']+=(setObj.constitution_mod||(setObj.constitution_mod!==0 ? attributes.constitution_mod : 0)||0)*(setObj.level||attributes.level||0);
-                }
                 if(h==='rp'){
                     setObj[h+'_max']=Math.max(setObj[h+'_max']+Math.max(Math.floor((setObj.level*1||attributes.level*1||0)/2),1),1);
                 }
@@ -2561,10 +2641,13 @@
             _.each(['eac','kac'],(ac)=>{
                 bonus[ac] = calcBuffs(attributes,bonus[ac],setObj);
                 bonus[ac+'_armor'] = calcBuffs(attributes,bonus[ac+'_armor'],setObj);
+                TAS.log('bonus['+ac+']: '+JSON.stringify(bonus[ac]));
                 bTotal = bonus[ac].total;
                 armbTotal = bonus[ac+'_armor'].total;
                 let maxDex = calcBuffs(attributes,bonus.max_dex,setObj);
+                TAS.log('maxDex: '+JSON.stringify(maxDex));
                 maxDex = bonus[ac].max_dex || bonus[ac].max_dex===0 ? maxDex.total+maxDex.armor+bonus[ac].max_dex : undefined;
+                TAS.log('post maxDex: '+maxDex);
                 setObj[ac+'_armor']=Math.max(bonus[ac+'_armor'].armor,bonus[ac].armor) + armbTotal;
                 setObj[ac+'_armor_change']=armbTotal > 0 ? 1 : (armbTotal < 0 ? -1 : 0);
                 setObj[ac]=10+(_.min([setObj[attributes[ac+'_ability']]*1||0,maxDex]))+(setObj[ac+'_armor']*1||0)+bTotal;
@@ -2613,21 +2696,7 @@
                 }else{
                     setObj[obj.attr+'_change']=bTotal > 0 ? 1 : (bTotal < 0 ? -1 : 0);
                     setObj[obj.attr]=(((setObj[attributes[obj.ability]]||attributes[attributes[obj.ability]])*1+obj.numAdds
-                    +_.reduce(obj.attrAdds,(memo,add)=>{
-                        let csMatch = add.match('class_skill');
-                        if(csMatch){
-                            TAS.log(add);
-                            TAS.log(attributes[add.replace(/class_skill/,'ranks')]);
-                            TAS.log(attributes[add]);
-                        }
-                        if(!csMatch || attributes[add.replace(/class_skill/,'ranks')]*1>0){
-                            if(csMatch){
-                                TAS.log('IF PASSED');
-                            }
-                                memo+=(setObj[add]*1||attributes[add]*1||0);
-                        }
-                        return memo;
-                    },0)+bTotal)
+                    +_.reduce(obj.attrAdds,(memo,add)=>{return memo+(setObj[add]*1||attributes[add]*1||0)},0)+bTotal)
                     +_.reduce(obj.textAdds,(memo,add)=>{return memo+(setObj[add]*1||attributes[add]||'')},''));
                 }
             });
@@ -2646,3 +2715,30 @@
     starfinder.RegisterEventHandlers();
     /*end of starfinder.js*/
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
