@@ -3,17 +3,48 @@
         <img class='header-image' src='https://s3.amazonaws.com/files.d20.io/images/37233401/rLKhHmqX51cO05GJ9r0BpA/max.png'>
     </div>
     <div class='nav'>
-        <input class='is-not-caster' name='attr_caster_select' type='radio' value='0' checked='checked' hidden='true'>
+        <input class='is-not-caster' name='attr_is_caster' type='radio' value='0' checked='checked' hidden='true'>
         <input class="tab-button core" type="radio" name="attr_tab_select" value="core" checked="checked"><span data-i18n='core'>CORE</span>
-        <input class='is-caster' name='attr_caster_select' type='radio' value='1' hidden='true'>
+        <input class='is-caster' name='attr_is_caster' type='radio' value='1' hidden='true'>
         <input class="tab-button spells" type="radio" name="attr_tab_select" value="spells"><span data-i18n='spells'>SPELLS</span>
         <input class="tab-button options" type="radio" name="attr_tab_select" value="options"><span style='font-style:pictos;'>y</span>
     </div>
     <!-- Toggles -->
-    <input class="npcship_toggle" name="attr_npcship_toggle" type="hidden" value="0">
-    <input class="npcship_toggle" name="attr_npcship_toggle" type="hidden" value="1">
-    <input class="npcship_toggle" name="attr_npcship_toggle" type="hidden" value="2">
+    <input class="container_toggle pc" name="attr_npcship_toggle" type="radio" hidden='true' value="pc">
+    <input class="container_toggle npc" name="attr_npcship_toggle" type="radio" hidden='true' value="npc">
+    <input class="container_toggle ship" name="attr_npcship_toggle" type="radio" hidden='true' value="ship">
+    <input class="container_toggle settings" name="attr_npcship_toggle" type="radio" hidden='true' value="settings" checked='checked'>
     <!-- Containers -->
+    <div class='container settings'>
+        <div class='section-container type-container'>
+            <h1 class='section label' data-i18n='comms'>COMMS</h1>
+            <div class='row'>
+                <span class='label' data-i18n='rolls-are'>ROLLS ARE</span>
+                <label class='label'><input type='radio' name='attr_whisper_state' value='' checked='checked'> <span class='label' data-i18n='public'>PUBLIC</span></label>
+                <label class='label'><input type='radio' name='attr_whisper_state' value='/w gm '> <span class='label' data-i18n='private'>PRIVATE</span></label>
+            </div>
+        </div>
+        <div class='section-container house-container'>
+            <h1 class='section label' data-i18n='sheet-type'>SHEET TYPE</h1>
+            <div class='row'>
+                <label><input type='radio' name='attr_sheet_type' value='pc' checked='checked'> <span class='label' data-i18n='pc' >PC</span></label>
+                <label><input type='radio' name='attr_sheet_type' value='npc'> <span class='label' data-i18n='npc'>NPC</span></label>
+                <label><input type='radio' name='attr_sheet_type' value='ship'> <span class='label' data-i18n='ship'>SHIP</span></label>
+            </div>
+        </div>
+        <div class='section-container house-container'>
+            <h1 class='section label' data-i18n='house-rules'>HOUSE RULES</h1>
+            <div class='row'>
+                <span class='label' data-i18n='resolve'>RESOLVE</span>
+                <label><input type='radio' name='attr_resolve_source' value='key' checked='checked'> <span class='label' data-i18n='key-ability'>KEY ABILITY</span></label>
+                <label><input type='radio' name='attr_resolve_source' value='highest'> <span class='label' data-i18n='highest-ability'>HIGHEST ABILITY</span></label>
+            </div>
+            <div class='row'>
+                <span class='label' data-i18n='buff-stacking'>BUFF STACKING</span>
+            </div>
+            <textarea class='buff-stack' name='attr_stackable_buffs'>Circumstance,Luck</textarea>
+        </div>
+    </div>
     <div class="container npc">
         
     </div>
@@ -264,12 +295,43 @@
         <!--<div class='in-play'>-->
             <input class='in-play-tab menu-tab' type='radio' name='attr_in-play-tab' value='menus' checked='checked'><h1 class='section label menu-head' data-i18n='menus'>MENUS</h1>
             <div class='menus in-play'>
-                <button type='roll' name='roll_initiative' value='MACRO NEEDED' data-i18n='initiative'>INITIATIVE</button>
-                <button type='roll' name='roll_attacks' value='MACRO NEEDED' data-i18n='attacks'>ATTACKS</button>
-                <button type='roll' name='roll_saves' value='MACRO NEEDED' data-i18n='saves'>SAVES</button>
-                <button type='roll' name='roll_spells' value='MACRO NEEDED' data-i18n='spells'>SPELLS</button>
-                <button type='roll' name='roll_abilities' value='MACRO NEEDED' data-i18n='abilities-u'>ABILITIES</button>
-                <button type='roll' name='roll_ability_checks' value='MACRO NEEDED' data-i18n='ability_checks'>ABILITY CHECKS</button>
+                <button type='roll' name='roll_initiative' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Initiative}} {{r1=[[1d20+@{initiative}+(@{initiative}/100)&{tracker}]]}}' data-i18n='initiative'>INITIATIVE</button>
+                <button type='roll' name='roll_attacks' value='@{attacks_menu}' data-i18n='attacks'>ATTACKS</button>
+                <button type='roll' name='roll_saves' value='@{saves_menu}' data-i18n='saves'>SAVES</button>
+                <button type='roll' name='roll_abilities' value='@{abilities_menu}' data-i18n='abilities-u'>ABILITIES</button>
+                <button type='roll' name='roll_ability_checks' value='@{ability_checks_menu}' data-i18n='ability_checks'>ABILITY CHECKS</button>
+                <button type='roll' name='roll_skills' value='@{skills_menu}' data-i18n='skills'>SKILLS</button>
+                <input type='text' name='attr_attacks_menu' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} {{title=ATTACKS}}' hidden='true'>
+                <input type='text' name='attr_saves_menu' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=SAVES}} {{buttons1=[Fort](~Starfinder|fort) | [Ref](~Starfinder|ref) | [Will](~Starfinder|will)}}' hidden='true'>
+                <input class='is-caster' name='attr_caster_select' type='radio' value='1' hidden='true'>
+                <div class='spell-button-container spells'>
+                    <button type='roll' name='roll_spells' value='@{spells_menu}' data-i18n='spells'>SPELLS</button>
+                    <input type='text' name='attr_spells_menu' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} {{title=SPELLBOOKS}}' hidden='true'>
+                    
+                    <input class='class-1 class-spells' name='attr_class_1_spells' title='@{class_1_spells' type='checkbox' value='1' hidden='true'>
+                    <button type='roll' name='roll_class_1_spellbook' value='@{class_1_spellbook}'><span class='class-1 class-name' type='text' name='attr_class_1_name' value=''></span></button>
+                    
+                    <input class='class-2 class-spells' name='attr_class_2_spells' title='@{class_1_spells' type='checkbox' value='1' hidden='true'>
+                    <button type='roll' name='roll_class_2_spellbook' value='@{class_2_spellbook}'><span class='class-1 class-name' type='text' name='attr_class_2_name' value=''></span></button>
+                    
+                    <input class='class-3 class-spells' name='attr_class_3_spells' title='@{class_1_spells' type='checkbox' value='1' hidden='true'>
+                    <button type='roll' name='roll_class_3_spellbook' value='@{class_3_spellbook}'><span class='class-1 class-name' type='text' name='attr_class_3_name' value=''></span></button>
+                    
+                    <input class='class-4 class-spells' name='attr_class_4_spells' title='@{class_1_spells' type='checkbox' value='1' hidden='true'>
+                    <button type='roll' name='roll_class_4_spellbook' value='@{class_4_spellbook}'><span class='class-1 class-name' type='text' name='attr_class_4_name' value=''></span></button>
+                    
+                    <input class='class-5 class-spells' name='attr_class_5_spells' title='@{class_1_spells' type='checkbox' value='1' hidden='true'>
+                    <button type='roll' name='roll_class_5_spellbook' value='@{class_5_spellbook}'><span class='class-1 class-name' type='text' name='attr_class_5_name' value=''></span></button>
+                    
+                    <input type='text' name='attr_class_1_spellbook' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} ' hidden='true'>
+                    <input type='text' name='attr_class_2_spellbook' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} ' hidden='true'>
+                    <input type='text' name='attr_class_3_spellbook' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} ' hidden='true'>
+                    <input type='text' name='attr_class_4_spellbook' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} ' hidden='true'>
+                    <input type='text' name='attr_class_5_spellbook' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} ' hidden='true'>
+                </div>
+                <input type='text' name='attr_abilities_menu' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} {{title=ABILITIES}}' hidden='true'>
+                <input type='text' name='attr_ability_checks_menu' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=ABILITY CHECKS}} {{buttons1=[Strength](~Starfinder|strength) | [Dexterity](~Starfinder|dexterity) | [Constitution](~Starfinder|constitution) | [Intelligence](~Starfinder|intelligence) | [Wisdom](~Starfinder|wisdom) | [Charisma](~Starfinder|charisma)}}' hidden='true'>
+                <input type='text' name='attr_skills_menu' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} {{title=SKILLS}}' hidden='true'>
             </div>
             <input class='in-play-tab buff-tab' type='radio' name='attr_in-play-tab' value='buffs'><h1 class='section label buff-head' data-i18n='buffs'>BUFFS</h1>
             <div class='buffs in-play'>
@@ -298,7 +360,7 @@
             <input class="tab-button options" hidden='true' type="radio" name="attr_tab" value="options">
             <div class='page core'>
                 <div class='initiative-container'>
-                    <button class='section label' type='roll' name='roll_initiative' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Initiative}} {{r1=[[1d20+@{initiative}+(@{initiative}/100)&{tracker}]]}}' data-i18n='initiative' title='%{initiative}'>INITIATIVE</button>
+                    <button class='section label' type='roll' name='roll_initiative' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Initiative}} {{r1=[[1d20+@{initiative}+(@{initiative}/100)&{tracker}]]}}' data-i18n='initiative' title='%{initiative}'>INITIATIVE</button>
                     <input class='mod-debuff' type='radio' name='attr_initiative_change' value='-1' hidden='true'>
                     <input class='mod-normal' type='radio' name='attr_initiative_change' value='0' hidden='true' checked='checked'>
                     <input class='mod-buff' type='radio' name='attr_initiative_change' value='1' hidden='true'>
@@ -320,10 +382,10 @@
                         <span class='mod'></span>
                         <span class='attr-total-container'></span>
                         <span class='label pen' data-i18n='pen'>PEN</span>
-                        <span class='label drain' data-i18n='drain'>DRAIN</span>
+                        <span class='label drain' data-i18n='drain'>DRN</span>
                     </div>
                     <div class='attr-container'>
-                        <button class='button' type='roll' name='roll_strength' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Strength}} {{r1=[[1d20+@{strength_mod}]]}}' data-i18n='strength' title=%{strength}>STRENGTH</button>
+                        <button class='button' type='roll' name='roll_strength' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Strength}} {{r1=[[1d20+@{strength_mod}]]}}' data-i18n='strength' title=%{strength}>STRENGTH</button>
                         <input class='mod' type='text' name='attr_strength_mod' readonly='true' title='@{strength_mod}' value='0'>
                         <div class='attr-total-container'>
                             <input class='base-attr attr' type='number' name='attr_strength_base' value='10' title='@{strength}'>
@@ -336,7 +398,7 @@
                         <input class='drain' type='number' name='attr_strength_drain' value='' title='@{strength_drain}'>
                     </div>
                     <div class='attr-container'>
-                        <button class='button' type='roll' name='roll_dexterity' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Dexterity}} {{r1=[[1d20+@{dexterity_mod}]]}}' data-i18n='dexterity' title=%{dexterity}>DEXTERITY</button>
+                        <button class='button' type='roll' name='roll_dexterity' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Dexterity}} {{r1=[[1d20+@{dexterity_mod}]]}}' data-i18n='dexterity' title=%{dexterity}>DEXTERITY</button>
                         <input class='mod' type='text' name='attr_dexterity_mod' readonly='true' title='@{dexterity_mod}' value='0'>
                         <div class='attr-total-container'>
                             <input class='base-attr attr' type='number' name='attr_dexterity_base' value='10' title='@{dexterity}'>
@@ -349,7 +411,7 @@
                         <input class='drain' type='number' name='attr_dexterity_drain' value='' title='@{dexterity_drain}'>
                     </div>
                     <div class='attr-container'>
-                        <button class='button' type='roll' name='roll_constitution' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Constitution}} {{r1=[[1d20+@{constitution_mod}]]}}' data-i18n='constitution' title=%{constitution}>CONSTITUTION</button>
+                        <button class='button' type='roll' name='roll_constitution' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Constitution}} {{r1=[[1d20+@{constitution_mod}]]}}' data-i18n='constitution' title=%{constitution}>CONSTITUTION</button>
                         <input class='mod' type='text' name='attr_constitution_mod' readonly='true' title='@{constitution_mod}' value='0' value='0'>
                         <div class='attr-total-container'>
                             <input class='base-attr attr' type='number' name='attr_constitution_base' value='10' title='@{constitution}'>
@@ -362,7 +424,7 @@
                         <input class='drain' type='number' name='attr_constitution_drain' value='' title='@{constitution_drain}'>
                     </div>
                     <div class='attr-container'>
-                        <button class='button' type='roll' name='roll_intelligence' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Intelligence}} {{r1=[[1d20+@{intelligence_mod}]]}}' data-i18n='intelligence' title=%{intelligence}>INTELLIGENCE</button>
+                        <button class='button' type='roll' name='roll_intelligence' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Intelligence}} {{r1=[[1d20+@{intelligence_mod}]]}}' data-i18n='intelligence' title=%{intelligence}>INTELLIGENCE</button>
                         <input class='mod' type='text' name='attr_intelligence_mod' readonly='true' title='@{intelligence_mod}' value='0'>
                         <div class='attr-total-container'>
                             <input class='base-attr attr' type='number' name='attr_intelligence_base' value='10' title='@{intelligence}'>
@@ -375,7 +437,7 @@
                         <input class='drain' type='number' name='attr_intelligence_drain' value='' title='@{intelligence_drain}'>
                     </div>
                     <div class='attr-container'>
-                        <button class='button' type='roll' name='roll_wisdom' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Wisdom}} {{r1=[[1d20+@{wisdom_mod}]]}}' data-i18n='wisdom' title=%{wisdom}>WISDOM</button>
+                        <button class='button' type='roll' name='roll_wisdom' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Wisdom}} {{r1=[[1d20+@{wisdom_mod}]]}}' data-i18n='wisdom' title=%{wisdom}>WISDOM</button>
                         <input class='mod' type='text' name='attr_wisdom_mod' readonly='true' title='@{wisdom_mod}' value='0'>
                         <div class='attr-total-container'>
                             <input class='base-attr attr' type='number' name='attr_wisdom_base' value='10' title='@{wisdom}'>
@@ -388,7 +450,7 @@
                         <input class='drain' type='number' name='attr_wisdom_drain' value='' title='@{wisdom_drain}'>
                     </div>
                     <div class='attr-container'>
-                        <button class='button' type='roll' name='roll_charisma' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Charisma}} {{r1=[[1d20+@{charisma_mod}]]}}' data-i18n='charisma' title=%{charisma}>CHARISMA</button>
+                        <button class='button' type='roll' name='roll_charisma' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Charisma}} {{r1=[[1d20+@{charisma_mod}]]}}' data-i18n='charisma' title=%{charisma}>CHARISMA</button>
                         <input class='mod' type='text' name='attr_charisma_mod' readonly='true' title='@{charisma_mod}' value='0'>
                         <div class='attr-total-container'>
                             <input class='base-attr attr' type='number' name='attr_charisma_base' value='10' title='@{charisma}'>
@@ -526,7 +588,7 @@
                         <div class='label abi'></div>
                     </div>
                     <div class='save-container'>
-                        <button type='roll' name='roll_fort' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Fortitude}} {{r1=[[1d20+@{fort}]] }}' data-i18n='fort' title='%{fort}'>FORT</button>
+                        <button type='roll' name='roll_fort' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Fortitude}} {{r1=[[1d20+@{fort}]] }}' data-i18n='fort' title='%{fort}'>FORT</button>
                         <div class='attr-total-container'>
                             <input class='mod-debuff' type='radio' name='attr_fort_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_fort_change' value='0' hidden='true' checked='checked'>
@@ -544,7 +606,7 @@
                         </select>
                     </div>
                     <div class='save-container'>
-                        <button type='roll' name='roll_ref' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Reflex}} {{r1=[[1d20+@{ref}]] }}' data-i18n='ref' title='%{ref}'>REF</button>
+                        <button type='roll' name='roll_ref' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Reflex}} {{r1=[[1d20+@{ref}]] }}' data-i18n='ref' title='%{ref}'>REF</button>
                         <div class='attr-total-container'>
                             <input class='mod-debuff' type='radio' name='attr_ref_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_ref_change' value='0' hidden='true' checked='checked'>
@@ -562,7 +624,7 @@
                         </select>
                     </div>
                     <div class='save-container'>
-                        <button type='roll' name='roll_will' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Will}} {{r1=[[1d20+@{will}]] }}' data-i18n='will' title='%{will}'>WILL</button>
+                        <button type='roll' name='roll_will' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Will}} {{r1=[[1d20+@{will}]] }}' data-i18n='will' title='%{will}'>WILL</button>
                         <div class='attr-total-container'>
                             <input class='mod-debuff' type='radio' name='attr_will_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_will_change' value='0' hidden='true' checked='checked'>
@@ -596,7 +658,7 @@
                         <input class="show-options" type="checkbox" name="attr_acrobatics_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_acrobatics_acp' hidden='true' value='1' checked='checked'>
-                            <button class='acp' type='roll' name='roll_acrobatics' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Acrobatics}}  {{r1=[[1d20+@{acrobatics}]]}}' data-i18n='acrobatics' title='%{acrobatics}'>ACROBATICS</button>
+                            <button class='acp' type='roll' name='roll_acrobatics' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Acrobatics}}  {{r1=[[1d20+@{acrobatics}]]}}' data-i18n='acrobatics' title='%{acrobatics}'>ACROBATICS</button>
                             <input class='mod-debuff' type='radio' name='attr_acrobatics_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_acrobatics_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_acrobatics_change' value='1' hidden='true'>
@@ -628,7 +690,7 @@
                         <input class="show-options" type="checkbox" name="attr_athletics_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_athletics_acp' hidden='true' value='1' checked='checked'>
-                            <button class='acp' type='roll' name='roll_athletics' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Athletics}}  {{r1=[[1d20+@{athletics}]]}}' data-i18n='athletics' title='%{athletics}'>ATHLETICS</button>
+                            <button class='acp' type='roll' name='roll_athletics' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Athletics}}  {{r1=[[1d20+@{athletics}]]}}' data-i18n='athletics' title='%{athletics}'>ATHLETICS</button>
                             <input class='mod-debuff' type='radio' name='attr_athletics_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_athletics_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_athletics_change' value='1' hidden='true'>
@@ -660,7 +722,7 @@
                         <input class="show-options" type="checkbox" name="attr_bluff_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_bluff_acp' hidden='true' value='1'>
-                            <button class='acp' type='roll' name='roll_bluff' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Bluff}}  {{r1=[[1d20+@{bluff}]]}}' data-i18n='bluff' title='%{bluff}'>BLUFF </button>
+                            <button class='acp' type='roll' name='roll_bluff' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Bluff}}  {{r1=[[1d20+@{bluff}]]}}' data-i18n='bluff' title='%{bluff}'>BLUFF </button>
                             <input class='mod-debuff' type='radio' name='attr_bluff_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_bluff_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_bluff_change' value='1' hidden='true'>
@@ -692,7 +754,7 @@
                         <input class="show-options" type="checkbox" name="attr_computers_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_computers_acp' hidden='true' value='1'>
-                            <button class='acp' type='roll' name='roll_computers' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Computers}}  {{r1=[[1d20+@{computers}]]}}' data-i18n='computers' title='%{computers}'>COMPUTERS</button>
+                            <button class='acp' type='roll' name='roll_computers' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Computers}}  {{r1=[[1d20+@{computers}]]}}' data-i18n='computers' title='%{computers}'>COMPUTERS</button>
                             <input class='mod-debuff' type='radio' name='attr_computers_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_computers_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_computers_change' value='1' hidden='true'>
@@ -724,7 +786,7 @@
                         <input class="show-options" type="checkbox" name="attr_culture_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_culture_acp' hidden='true' value='1'>
-                            <button class='acp' type='roll' name='roll_culture' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Culture}}  {{r1=[[1d20+@{culture}]]}}' data-i18n='culture' title='%{culture}'>CULTURE</button>
+                            <button class='acp' type='roll' name='roll_culture' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Culture}}  {{r1=[[1d20+@{culture}]]}}' data-i18n='culture' title='%{culture}'>CULTURE</button>
                             <input class='mod-debuff' type='radio' name='attr_culture_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_culture_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_culture_change' value='1' hidden='true'>
@@ -756,7 +818,7 @@
                         <input class="show-options" type="checkbox" name="attr_diplomacy_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_diplomacy_acp' hidden='true' value='1'>
-                            <button class='acp' type='roll' name='roll_diplomacy' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Diplomacy}}  {{r1=[[1d20+@{diplomacy}]]}}' data-i18n='diplomacy' title='%{diplomacy}'>DIPLOMACY</button>
+                            <button class='acp' type='roll' name='roll_diplomacy' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Diplomacy}}  {{r1=[[1d20+@{diplomacy}]]}}' data-i18n='diplomacy' title='%{diplomacy}'>DIPLOMACY</button>
                             <input class='mod-debuff' type='radio' name='attr_diplomacy_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_diplomacy_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_diplomacy_change' value='1' hidden='true'>
@@ -788,7 +850,7 @@
                         <input class="show-options" type="checkbox" name="attr_disguise_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_disguise_acp' hidden='true' value='1'>
-                            <button class='acp' type='roll' name='roll_disguise' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Disguise}}  {{r1=[[1d20+@{disguise}]]}}' data-i18n='disguise' title='%{disguise}'>DISGUISE</button>
+                            <button class='acp' type='roll' name='roll_disguise' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Disguise}}  {{r1=[[1d20+@{disguise}]]}}' data-i18n='disguise' title='%{disguise}'>DISGUISE</button>
                             <input class='mod-debuff' type='radio' name='attr_disguise_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_disguise_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_disguise_change' value='1' hidden='true'>
@@ -820,7 +882,7 @@
                         <input class="show-options" type="checkbox" name="attr_engineering_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_engineering_acp' hidden='true' value='1'>
-                            <button class='acp' type='roll' name='roll_engineering' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Engineering}}  {{r1=[[1d20+@{engineering}]]}}' data-i18n='engineering' title='%{engineering}'>ENGINEERING</button>
+                            <button class='acp' type='roll' name='roll_engineering' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Engineering}}  {{r1=[[1d20+@{engineering}]]}}' data-i18n='engineering' title='%{engineering}'>ENGINEERING</button>
                             <input class='mod-debuff' type='radio' name='attr_engineering_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_engineering_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_engineering_change' value='1' hidden='true'>
@@ -852,7 +914,7 @@
                         <input class="show-options" type="checkbox" name="attr_intimidate_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_intimidate_acp' hidden='true' value='1'>
-                            <button class='acp' type='roll' name='roll_intimidate' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Intimidate}}  {{r1=[[1d20+@{intimidate}]]}}' data-i18n='intimidate' title='%{intimidate}'>INTIMIDATE</button>
+                            <button class='acp' type='roll' name='roll_intimidate' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Intimidate}}  {{r1=[[1d20+@{intimidate}]]}}' data-i18n='intimidate' title='%{intimidate}'>INTIMIDATE</button>
                             <input class='mod-debuff' type='radio' name='attr_intimidate_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_intimidate_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_intimidate_change' value='1' hidden='true'>
@@ -884,7 +946,7 @@
                         <input class="show-options" type="checkbox" name="attr_life_science_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_life_science_acp' hidden='true' value='1'>
-                            <button class='acp' type='roll' name='roll_life_science' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Life Science}}  {{r1=[[1d20+@{life_science}]]}}' data-i18n='life_science' title='%{life_science}'>LIFE SCIENCE</button>
+                            <button class='acp' type='roll' name='roll_life_science' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Life Science}}  {{r1=[[1d20+@{life_science}]]}}' data-i18n='life_science' title='%{life_science}'>LIFE SCIENCE</button>
                             <input class='mod-debuff' type='radio' name='attr_life_science_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_life_science_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_life_science_change' value='1' hidden='true'>
@@ -916,7 +978,7 @@
                         <input class="show-options" type="checkbox" name="attr_medicine_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_medicine_acp' hidden='true' value='1'>
-                            <button class='acp' type='roll' name='roll_medicine' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Medicine}}  {{r1=[[1d20+@{medicine}]]}}' data-i18n='medicine' title='%{medicine}'>MEDICINE </button>
+                            <button class='acp' type='roll' name='roll_medicine' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Medicine}}  {{r1=[[1d20+@{medicine}]]}}' data-i18n='medicine' title='%{medicine}'>MEDICINE </button>
                             <input class='mod-debuff' type='radio' name='attr_medicine_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_medicine_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_medicine_change' value='1' hidden='true'>
@@ -948,7 +1010,7 @@
                         <input class="show-options" type="checkbox" name="attr_mysticism_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_mysticism_acp' hidden='true' value='1'>
-                            <button class='acp' type='roll' name='roll_mysticism' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Mysticism}}  {{r1=[[1d20+@{mysticism}]]}}' data-i18n='mysticism' title='%{mysticism}'>MYSTICISM </button>
+                            <button class='acp' type='roll' name='roll_mysticism' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Mysticism}}  {{r1=[[1d20+@{mysticism}]]}}' data-i18n='mysticism' title='%{mysticism}'>MYSTICISM </button>
                             <input class='mod-debuff' type='radio' name='attr_mysticism_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_mysticism_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_mysticism_change' value='1' hidden='true'>
@@ -980,7 +1042,7 @@
                         <input class="show-options" type="checkbox" name="attr_perception_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_perception_acp' hidden='true' value='1'>
-                            <button class='acp' type='roll' name='roll_perception' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Perception}}  {{r1=[[1d20+@{perception}]]}}' data-i18n='perception' title='%{perception}'>PERCEPTION </button>
+                            <button class='acp' type='roll' name='roll_perception' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Perception}}  {{r1=[[1d20+@{perception}]]}}' data-i18n='perception' title='%{perception}'>PERCEPTION </button>
                             <input class='mod-debuff' type='radio' name='attr_perception_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_perception_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_perception_change' value='1' hidden='true'>
@@ -1012,7 +1074,7 @@
                         <input class="show-options" type="checkbox" name="attr_physical_science_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_physical_science_acp' hidden='true' value='1'>
-                            <button class='acp' type='roll' name='roll_physical_science' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Physical Science}}  {{r1=[[1d20+@{physical_science}]]}}' data-i18n='physical_science' title='%{physical_science}'>PHYSICAL SCIENCE</button>
+                            <button class='acp' type='roll' name='roll_physical_science' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Physical Science}}  {{r1=[[1d20+@{physical_science}]]}}' data-i18n='physical_science' title='%{physical_science}'>PHYSICAL SCIENCE</button>
                             <input class='mod-debuff' type='radio' name='attr_physical_science_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_physical_science_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_physical_science_change' value='1' hidden='true'>
@@ -1044,7 +1106,7 @@
                         <input class="show-options" type="checkbox" name="attr_piloting_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_piloting_acp' hidden='true' value='1'>
-                            <button class='acp' type='roll' name='roll_piloting' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Piloting}}  {{r1=[[1d20+@{piloting}]]}}' data-i18n='piloting' title='%{piloting}'>PILOTING</button>
+                            <button class='acp' type='roll' name='roll_piloting' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Piloting}}  {{r1=[[1d20+@{piloting}]]}}' data-i18n='piloting' title='%{piloting}'>PILOTING</button>
                             <input class='mod-debuff' type='radio' name='attr_piloting_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_piloting_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_piloting_change' value='1' hidden='true'>
@@ -1080,7 +1142,7 @@
                                 <input class="show-options" type="checkbox" name="attr_show_options"><span>y</span>
                                 <div class='display'>
                                     <input class='acp' type='checkbox' name='attr_acp' hidden='true' value='1'>
-                                    <button class='acp' type='roll' name='roll_roll' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}}  {{r1=[[1d20+@{profession}]]}}' title='%{repeating_profession_$X_roll}'><input class='profession-name' type='text' name='attr_name' value='Profession'></button>
+                                    <button class='acp' type='roll' name='roll_roll' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}}  {{r1=[[1d20+@{profession}]]}}' title='%{repeating_profession_$X_roll}'><span class='profession-name' type='text' name='attr_name' value='Profession'>Profession</span></button>
                                     <input class='mod-debuff' type='radio' name='attr_change' value='-1' hidden='true'>
                                     <input class='mod-normal' type='radio' name='attr_change' value='0' hidden='true' checked='checked'>
                                     <input class='mod-buff' type='radio' name='attr_change' value='1' hidden='true'>
@@ -1089,7 +1151,7 @@
                                     <div class='arith'>=</div>
                                     <input class='ranks' type='number' name='attr_ranks' value='' title='@{repeating_profession_$X_ranks}'>
                                     <div class='arith'>+</div>
-                                    <div class='class-skill'><input type='checkbox' name='attr_class_skill' title='@{repeating_profession_$X_class_skill}' value='3'><span class='cs'>3</span></div>
+                                    <div class='class-skill'><input type='checkbox' name='attr_class_skill' title='@{repeating_profession_$X_class_skill}' checked='checked' value='3'><span class='cs'>3</span></div>
                                     <div class='arith'>+</div>
                                     <select class='label abi' name='attr_ability' style='width; .5em;'>
                                         <option value='strength_mod'>STR</option>
@@ -1116,7 +1178,7 @@
                         <input class="show-options" type="checkbox" name="attr_sense_motive_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_sense_motive_acp' hidden='true' value='1'>
-                            <button class='acp' type='roll' name='roll_sense_motive' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Sense Motive}}  {{r1=[[1d20+@{sense_motive}]]}}' data-i18n='sense_motive' title='%{sense_motive}'>SENSE MOTIVE</button>
+                            <button class='acp' type='roll' name='roll_sense_motive' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Sense Motive}}  {{r1=[[1d20+@{sense_motive}]]}}' data-i18n='sense_motive' title='%{sense_motive}'>SENSE MOTIVE</button>
                             <input class='mod-debuff' type='radio' name='attr_sense_motive_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_sense_motive_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_sense_motive_change' value='1' hidden='true'>
@@ -1148,7 +1210,7 @@
                         <input class="show-options" type="checkbox" name="attr_sleight_of_hand_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_sleight_of_hand_acp' hidden='true' value='1' checked='checked'>
-                            <button class='acp' type='roll' name='roll_sleight_of_hand' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Sleight of Hand}}  {{r1=[[1d20+@{sleight_of_hand}]]}}' data-i18n='sleight_of_hand' title='%{sleight_of_hand}'>SLEIGHT OF HAND</button>
+                            <button class='acp' type='roll' name='roll_sleight_of_hand' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Sleight of Hand}}  {{r1=[[1d20+@{sleight_of_hand}]]}}' data-i18n='sleight_of_hand' title='%{sleight_of_hand}'>SLEIGHT OF HAND</button>
                             <input class='mod-debuff' type='radio' name='attr_sleight_of_hand_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_sleight_of_hand_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_sleight_of_hand_change' value='1' hidden='true'>
@@ -1180,7 +1242,7 @@
                         <input class="show-options" type="checkbox" name="attr_stealth_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_stealth_acp' hidden='true' value='1' checked='checked'>
-                            <button class='acp' type='roll' name='roll_stealth' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Stealth}}  {{r1=[[1d20+@{stealth}]]}}' data-i18n='stealth' title='%{stealth}'>STEALTH</button>
+                            <button class='acp' type='roll' name='roll_stealth' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Stealth}}  {{r1=[[1d20+@{stealth}]]}}' data-i18n='stealth' title='%{stealth}'>STEALTH</button>
                             <input class='mod-debuff' type='radio' name='attr_stealth_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_stealth_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_stealth_change' value='1' hidden='true'>
@@ -1212,7 +1274,7 @@
                         <input class="show-options" type="checkbox" name="attr_survival_show_options"><span>y</span>
                         <div class='display'>
                             <input class='acp' type='checkbox' name='attr_survival_acp' hidden='true' value='1'>
-                            <button class='acp' type='roll' name='roll_survival' value='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Survival}}  {{r1=[[1d20+@{survival}]]}}' data-i18n='survival' title='%{survival}'>SURVIVAL</button>
+                            <button class='acp' type='roll' name='roll_survival' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Survival}}  {{r1=[[1d20+@{survival}]]}}' data-i18n='survival' title='%{survival}'>SURVIVAL</button>
                             <input class='mod-debuff' type='radio' name='attr_survival_change' value='-1' hidden='true'>
                             <input class='mod-normal' type='radio' name='attr_survival_change' value='0' hidden='true' checked='checked'>
                             <input class='mod-buff' type='radio' name='attr_survival_change' value='1' hidden='true'>
@@ -1269,6 +1331,8 @@
                                         <option value='yes' data-i18n='proficient' selected='selected'>PROFICIENT</option>
                                         <option value='specialized' data-i18n='specialized'>SPECIALIZED</option>
                                     </select>
+                                    <input hidden='true' type='text' name='attr_proficiency_value' value='0'>
+                                    <input hidden='true'  type='text' name='attr_damage_proficiency_value' value='0'>
                                     <span class='label' data-i18n='category'>CATEGORY</span>
                                     <input class='weapon-cat' type='text' name='attr_category' placeholder='Longarm' value=''>
                                 </div>
@@ -1282,9 +1346,9 @@
                                         <option value='wisdom_mod'>WIS</option>
                                         <option value='charisma_mod'>CHA</option>
                                     </select>
-                                    <input hidden='true' name='attr_ability_value' value='0'>
+                                    <input hidden='true' type='text' name='attr_ability_value' value='0'>
                                     <span class='arith'>+</span>
-                                    <input class='bab' name='attr_bab' disabled='true' title='@{bab}' value='@{bab}'>
+                                    <input class='bab' name='attr_bab' disabled='true' title='@{bab}' value='0'>
                                     <input class='atk-misc misc' type='text' name='attr_bonus' placeholder='+@{attr}/2 + ?{Query}' value=''>
                                     <span class='label' data-i18n='atk_range'>RNG</span>
                                     <input class='atk-range' type='text' name='attr_range' placeholder='30 ft' value=''>
@@ -1301,7 +1365,7 @@
                                         <option value='wisdom_mod'>WIS</option>
                                         <option value='charisma_mod'>CHA</option>
                                     </select>
-                                    <input hidden='true' name='attr_damage_ability_value' value='0'>
+                                    <input hidden='true' type='text' name='attr_damage_ability_value' value='0'>
                                     <input class='atk-damage' type='text' name='attr_damage_bonus' placeholder='+@{attr}/2 + ?{Query}' value=''>
                                 </div>
                                 <div class='row'>
@@ -1318,7 +1382,7 @@
                                 </div>
                                 
                                 <div class='row'>
-                                    <textarea class='atk-description' name='attr_macro' title='@{repeatin_attack_$X_attack_macro}'>&{template:sf_attack} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{r1=[[1d20+@{bab}[BAB]+@{ability_value}[ABILITY]@{misc}@{bonus}]]}} {{damagetype=@{type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}@{damage_bonus}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}@{damage_bonus}]]}} {{crit1effect=@{crit}}} {{range=[[@{range}]]}} {{notes=@{description}}}</textarea>
+                                    <textarea class='atk-description' name='attr_macro' title='@{repeatin_attack_$X_attack_macro}'>@{whisper_state}&{template:sf_attack} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{r1=[[1d20+@{bab}[BAB]+@{ability_value}[ABILITY]+@{proficiency_value}[PROF]@{misc}@{bonus}]]}} {{damagetype=@{type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit1effect=@{crit}}} {{range=@{range}}} {{notes=@{description}}}</textarea>
                                 </div>
                                 <div class='row'>
                                     <textarea class='atk-description' name='attr_description' title='@{repeating_attack_$X_description}' placeholder='Description' value=''></textarea>
@@ -1412,7 +1476,7 @@
                                     </div>
                                 </div>
                                 <div class='display'>
-                                <button class='summary' type='roll' name='roll_roll' value='Item Macros not programmed yet'><input name='attr_name'></button>
+                                <button class='summary' type='roll' name='roll_roll' value='Item Macros not programmed yet'><span name='attr_name'></span></button>
                                 </div>
                             </div>
                         </fieldset>
@@ -1564,7 +1628,7 @@
                                 <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                 <div class='row field-container mod-container'>
                                     <input class='field-tab macro-tab' type='checkbox' name='attr_macro_checkbox' value='1'><span class='label field' data-i18n='macro'>MACRO</span>
-                                    <textarea class='field row abi-description' type='text' name='attr_macro'>&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
+                                    <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
                                 </div>
                                 <div class='row'>
                                     <textarea class='abi-description' name='attr_description' title='@{repeatin_ability_$X_description}' placeholder='Description'></textarea>
@@ -1603,7 +1667,7 @@
                             <div class='overflow-container'>
                                 <div class='spellclass-details'>
                                     <!-- Caster 1 -->
-                                    <input class='class-1 class-spells' name='attr_class_1_spells' title='@{class_1_spells' type='checkbox' checked='checked' value='1' hidden='true'>
+                                    <input class='class-1 class-spells' name='attr_class_1_spells' title='@{class_1_spells' type='checkbox' value='1' hidden='true'>
                                     <div class='spellclass-container'>
                                         <input class='class-1 class-show' name='attr_class_1_show' titel='@{class_1_show}' type=checkbox checked='checked' value='1'>
                                         <span class='class-1 class-name' name='attr_class_1_name' title='@{class_1_name}' placeholder='1st Class' readonly='true'></span>
@@ -1667,7 +1731,7 @@
                                         <input class='label class-spells-day max aspell9' name='attr_class_1_level_9_spells_per_day_max'>
                                     </div>
                                     <!-- Caster 2 -->
-                                    <input class='class-2 class-spells' name='attr_class_2_spells' title='@{class_2_spells' type='checkbox' checked='checked' value='1' hidden='true'>
+                                    <input class='class-2 class-spells' name='attr_class_2_spells' title='@{class_2_spells' type='checkbox' value='1' hidden='true'>
                                     <div class='spellclass-container'>
                                         <input class='class-2 class-show' name='attr_class_2_show' titel='@{class_2_show}' type=checkbox checked='checked' value='1'>
                                         <span class='class-2 class-name' name='attr_class_2_name' title='@{class_2_name}' placeholder='1st Class' readonly='true'></span>
@@ -1731,7 +1795,7 @@
                                         <input class='label class-spells-day max aspell9' name='attr_class_2_level_9_spells_per_day_max'>
                                     </div>
                                     <!-- Caster 3 -->
-                                    <input class='class-3 class-spells' name='attr_class_3_spells' title='@{class_3_spells' type='checkbox' checked='checked' value='1' hidden='true'>
+                                    <input class='class-3 class-spells' name='attr_class_3_spells' title='@{class_3_spells' type='checkbox' value='1' hidden='true'>
                                     <div class='spellclass-container'>
                                         <input class='class-3 class-show' name='attr_class_3_show' titel='@{class_3_show}' type=checkbox checked='checked' value='1'>
                                         <span class='class-3 class-name' name='attr_class_3_name' title='@{class_3_name}' placeholder='1st Class' readonly='true'></span>
@@ -1795,7 +1859,7 @@
                                         <input class='label class-spells-day max aspell9' name='attr_class_3_level_9_spells_per_day_max'>
                                     </div>
                                     <!-- Caster 4 -->
-                                    <input class='class-4 class-spells' name='attr_class_4_spells' title='@{class_4_spells' type='checkbox' checked='checked' value='1' hidden='true'>
+                                    <input class='class-4 class-spells' name='attr_class_4_spells' title='@{class_4_spells' type='checkbox' value='1' hidden='true'>
                                     <div class='spellclass-container'>
                                         <input class='class-4 class-show' name='attr_class_4_show' titel='@{class_4_show}' type=checkbox checked='checked' value='1'>
                                         <span class='class-4 class-name' name='attr_class_4_name' title='@{class_4_name}' placeholder='1st Class' readonly='true'></span>
@@ -1859,7 +1923,7 @@
                                         <input class='label class-spells-day max aspell9' name='attr_class_4_level_9_spells_per_day_max'>
                                     </div>
                                     <!-- Caster 5 -->
-                                    <input class='class-5 class-spells' name='attr_class_5_spells' title='@{class_5_spells' type='checkbox' checked='checked' value='1' hidden='true'>
+                                    <input class='class-5 class-spells' name='attr_class_5_spells' title='@{class_5_spells' type='checkbox' value='1' hidden='true'>
                                     <div class='spellclass-container'>
                                         <input class='class-5 class-show' name='attr_class_5_show' titel='@{class_5_show}' type=checkbox checked='checked' value='1'>
                                         <span class='class-5 class-name' name='attr_class_5_name' title='@{class_5_name}' placeholder='1st Class' readonly='true'></span>
@@ -2059,7 +2123,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab macro-tab' type='checkbox' name='attr_macro_checkbox' value='1'><span class='label field' data-i18n='macro'>MACRO</span>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeatin_ability_$X_description}' placeholder='Description'></textarea>
@@ -2212,7 +2276,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab macro-tab' type='checkbox' name='attr_macro_checkbox' value='1'><span class='label field' data-i18n='macro'>MACRO</span>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeatin_ability_$X_description}' placeholder='Description'></textarea>
@@ -2365,7 +2429,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab macro-tab' type='checkbox' name='attr_macro_checkbox' value='1'><span class='label field' data-i18n='macro'>MACRO</span>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeatin_ability_$X_description}' placeholder='Description'></textarea>
@@ -2530,7 +2594,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab macro-tab' type='checkbox' name='attr_macro_checkbox' value='1'><span class='label field' data-i18n='macro'>MACRO</span>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeatin_ability_$X_description}' placeholder='Description'></textarea>
@@ -2683,7 +2747,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab macro-tab' type='checkbox' name='attr_macro_checkbox' value='1'><span class='label field' data-i18n='macro'>MACRO</span>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeatin_ability_$X_description}' placeholder='Description'></textarea>
@@ -2836,7 +2900,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab macro-tab' type='checkbox' name='attr_macro_checkbox' value='1'><span class='label field' data-i18n='macro'>MACRO</span>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeatin_ability_$X_description}' placeholder='Description'></textarea>
@@ -3003,7 +3067,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab macro-tab' type='checkbox' name='attr_macro_checkbox' value='1'><span class='label field' data-i18n='macro'>MACRO</span>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeatin_ability_$X_description}' placeholder='Description'></textarea>
@@ -3156,7 +3220,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab macro-tab' type='checkbox' name='attr_macro_checkbox' value='1'><span class='label field' data-i18n='macro'>MACRO</span>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeatin_ability_$X_description}' placeholder='Description'></textarea>
@@ -3309,7 +3373,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab macro-tab' type='checkbox' name='attr_macro_checkbox' value='1'><span class='label field' data-i18n='macro'>MACRO</span>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeatin_ability_$X_description}' placeholder='Description'></textarea>
@@ -3462,7 +3526,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab macro-tab' type='checkbox' name='attr_macro_checkbox' value='1'><span class='label field' data-i18n='macro'>MACRO</span>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf<0]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}} {{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeatin_ability_$X_description}' placeholder='Description'></textarea>
@@ -3501,287 +3565,427 @@
     </div>
     <input name='attr_bab' type='text' hidden='true' readonly='true' value='0'>
     <input name='attr_character_level' type='text' hidden='true' readonly='true' value='0'>
+    <input name='attr_character_sheet' type='text' hidden='true' value='Starfinder v'>
     </div>
     <div class="container ship">
         
     </div>
 </div>
-<div class='rolltemplates'>
+<div class='rolltemplates' hidden='true'>
     <!-- Roll Template Definitions -->
     <!-- Generic Roll Template -->
     <!-- Macro Text: 
-        &{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title= }} {{r1name= }} {{r1= }} {{notes= }}
+        @{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title= }} {{r1name= }} {{r1= }} {{notes= }}
     -->
     <rolltemplate class="sheet-rolltemplate-sf_generic">
-        <div class='template-container'>
-            <!-- <div class='header-placeholder'>
-                {{title}}
-            </div> -->
-            <span class='generic-header'>
-                {{title}}
-            </span>
-            <div class='generic-body'>
-                {{#r1}}
-                    <div class='highlighted split r1name'>
-                        {{#r1name}}
-                            {{r1name}}
-                        {{/r1name}}
-                        {{^r1name}}
-                            <span data-i18n='check'>CHECK</span>
-                        {{/r1name}}
-                    </div>
-                    <div class='highlighted split roll'>
-                        {{r1}}
-                    </div>
-                {{/r1}}
-                {{#notes}}
-                    <div class='highlighted across notes-row'>
-                        <span class='notes' data-i18n='notes:'>NOTES</span>{{notes}}
-                    </div>
-                {{/notes}}
-            </div>
-            <div class='generic-footer'>
-                {{#characterid}}
-                    {{#name}}
-                        <span>[</span>{{name}}<span>](https://journal.roll20.net/character/</span>{{characterid}}<span>)</span>
-                    {{/name}}
-                {{/characterid}}
-                {{^characterid}}
-                    {{name}}
-                {{/characterid}}
-            </div>
+        <span class='generic-header'>
+            {{title}}
+        </span>
+        <div class='generic-body'>
+            {{#r1}}
+                <div class='highlighted split r1name'>
+                    {{#r1name}}
+                        {{r1name}}
+                    {{/r1name}}
+                    {{^r1name}}
+                        <span data-i18n='check'>CHECK</span>
+                    {{/r1name}}
+                </div>
+                <div class='highlighted split roll'>
+                    {{r1}}
+                </div>
+            {{/r1}}
+            {{#notes}}
+                <div class='highlighted across notes-row'>
+                    <span class='notes' data-i18n='notes:'>NOTES:</span><span> {{notes}}</span>
+                </div>
+            {{/notes}}
+            {{#buttons0}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons0}}</span>
+                </div>
+            {{/buttons0}}
+            {{#buttons1}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons1}}</span>
+                </div>
+            {{/buttons1}}
+            {{#buttons2}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons2}}</span>
+                </div>
+            {{/buttons2}}
+            {{#buttons3}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons3}}</span>
+                </div>
+            {{/buttons3}}
+            {{#buttons4}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons4}}</span>
+                </div>
+            {{/buttons4}}
+            {{#buttons5}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons5}}</span>
+                </div>
+            {{/buttons5}}
+            {{#buttons6}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons6}}</span>
+                </div>
+            {{/buttons6}}
+            {{#buttons7}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons7}}</span>
+                </div>
+            {{/buttons7}}
+            {{#buttons8}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons8}}</span>
+                </div>
+            {{/buttons8}}
+            {{#buttons9}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons9}}</span>
+                </div>
+            {{/buttons9}}
+        </div>
+        <div class='generic-footer'>
+            {{#characterid}}
+                {{#name}}
+                    [{{name}}](https://journal.roll20.net/character/{{characterid}})
+                {{/name}}
+            {{/characterid}}
+            {{^characterid}}
+                {{name}}
+            {{/characterid}}
         </div>
     </rolltemplate>
     <!-- Attack Roll Templates -->
     <!-- Macro Text: 
-        &{template:sf_attack} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[@{level}d1]]}} {{r1=[[1d20+@{bab}[BAB]+@{ability_value}[ABILITY]@{misc}@{bonus}]]}} 
+        @{whisper_state}&{template:sf_attack} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[@{level}d1]]}} {{r1=[[1d20+@{bab}[BAB]+@{ability_value}[ABILITY]@{misc}@{bonus}]]}} 
         {{damagetype=@{type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}@{damage_bonus}]]}} 
         {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}@{damage_bonus}]]}} {{crit1effect=@{crit}}}
         {{targets=}} {{range=}}
         {{notes=@{description}}}
     -->
     <rolltemplate class="sheet-rolltemplate-sf_attack">
-        <div class='template-container'>
-            <span class='generic-header'>
-                {{title}}
-            </span>
-            <div class='generic-body'>
-                {{#rollGreater() level 0}}
-                    <div class='highlighted split r1name'>
-                        <span data-i18n='level'>LEVEL</span>
-                    </div>
-                    <div class='highlighted split roll'>
-                        {{level}}
-                    </div>
-                {{/rollGreater() level 0}}
-                {{#r1}}
-                    <div class='highlighted split r1name'>
-                        {{#r1name}}
-                            {{r1name}}
-                        {{/r1name}}
-                        {{^r1name}}
-                            <span data-i18n='attack'>ATTACK</span>
-                        {{/r1name}}
-                    </div>
-                    <div class='highlighted split roll'>
-                        {{r1}}
-                    </div>
-                {{/r1}}
-                {{#damage1}}
-                    <div class='highlighted split r1name'>
-                        {{#damage1type}}
-                            {{damage1type}}
-                        {{/damage1type}}
-                        {{^damage1type}}
-                            <span data-i18n='damage'>DAMAGE</span>
-                        {{/damage1type}}
-                    </div>
-                    <div class='highlighted split roll'>
-                        {{damage1}}
-                    </div>
-                    {{#rollWasCrit() r1}}
-                        {{#crit1effect}}
-                            <div class='highlighted split r1name'>
-                                <span data-i18n='crit-effect'>CRIT EFFECT</span>
-                            </div>
-                            <div class='highlighted split roll'>
-                                {{crit1effect}}
-                            </div>
-                        {{/crit1effect}}
-                        {{#crit1damage}}
-                            <div class='highlighted split r1name'>
-                                <span data-i18n='crit-damage'>CRIT DAMAGE</span>
-                            </div>
-                            <div class='highlighted split roll'>
-                                {{crit1damage}}
-                            </div>
-                        {{/crit1damage}}
-                    {{/rollWasCrit() r1}}
-                {{/damage1}}
-                {{#targets}}
-                    <div class='highlighted split r1name'>
-                        <span data-i18n='targets'>TARGETS</span>
-                    </div>
-                    <div class='highlighted split roll'>
-                        {{targets}}
-                    </div>
-                {{/targets}}
-                {{#range}}
-                    <div class='highlighted split r1name'>
-                        <span data-i18n='range'>RANGE</span>
-                    </div>
-                    <div class='highlighted split roll'>
-                        {{range}}
-                    </div>
-                {{/range}}
-                {{#notes}}
-                    <div class='highlighted across notes-row'>
-                        <span class='notes' data-i18n='notes:'>NOTES</span>{{notes}}
-                    </div>
-                {{/notes}}
-            </div>
-            <div class='generic-footer'>
-                {{#characterid}}
-                    {{#name}}
-                        <span>[</span>{{name}}<span>](https://journal.roll20.net/character/</span>{{characterid}}<span>)</span>
-                    {{/name}}
-                {{/characterid}}
-                {{^characterid}}
-                    {{name}}
-                {{/characterid}}
-            </div>
-            </div>
+        <span class='generic-header'>
+            {{title}}
+        </span>
+        <div class='generic-body'>
+            {{#rollGreater() level 0}}
+                <div class='highlighted split r1name'>
+                    <span data-i18n='level'>LEVEL</span>
+                </div>
+                <div class='highlighted split roll'>
+                    {{level}}
+                </div>
+            {{/rollGreater() level 0}}
+            {{#r1}}
+                <div class='highlighted split r1name'>
+                    {{#r1name}}
+                        {{r1name}}
+                    {{/r1name}}
+                    {{^r1name}}
+                        <span data-i18n='attack'>ATTACK</span>
+                    {{/r1name}}
+                </div>
+                <div class='highlighted split roll'>
+                    {{r1}}
+                </div>
+            {{/r1}}
+            {{#damage1}}
+                <div class='highlighted split r1name'>
+                    {{#damage1type}}
+                        {{damage1type}}
+                    {{/damage1type}}
+                    {{^damage1type}}
+                        <span data-i18n='damage'>DAMAGE</span>
+                    {{/damage1type}}
+                </div>
+                <div class='highlighted split roll'>
+                    {{damage1}}
+                </div>
+                {{#rollWasCrit() r1}}
+                    {{#crit1effect}}
+                        <div class='highlighted split r1name'>
+                            <span data-i18n='crit-effect'>CRIT EFFECT</span>
+                        </div>
+                        <div class='highlighted split roll'>
+                            {{crit1effect}}
+                        </div>
+                    {{/crit1effect}}
+                    {{#crit1damage}}
+                        <div class='highlighted split r1name'>
+                            <span data-i18n='crit-damage'>CRIT DAMAGE</span>
+                        </div>
+                        <div class='highlighted split roll'>
+                            {{crit1damage}}
+                        </div>
+                    {{/crit1damage}}
+                {{/rollWasCrit() r1}}
+            {{/damage1}}
+            {{#targets}}
+                <div class='highlighted split r1name'>
+                    <span data-i18n='targets'>TARGETS</span>
+                </div>
+                <div class='highlighted split roll'>
+                    {{targets}}
+                </div>
+            {{/targets}}
+            {{#range}}
+                <div class='highlighted split r1name'>
+                    <span data-i18n='range'>RANGE</span>
+                </div>
+                <div class='highlighted split roll'>
+                    {{range}}
+                </div>
+            {{/range}}
+            {{#notes}}
+                <div class='highlighted across notes-row'>
+                    <span class='notes' data-i18n='notes:'>NOTES:</span>{{notes}}
+                </div>
+            {{/notes}}
+            {{#buttons0}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons0}}</span>
+                </div>
+            {{/buttons0}}
+            {{#buttons1}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons1}}</span>
+                </div>
+            {{/buttons1}}
+            {{#buttons2}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons2}}</span>
+                </div>
+            {{/buttons2}}
+            {{#buttons3}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons3}}</span>
+                </div>
+            {{/buttons3}}
+            {{#buttons4}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons4}}</span>
+                </div>
+            {{/buttons4}}
+            {{#buttons5}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons5}}</span>
+                </div>
+            {{/buttons5}}
+            {{#buttons6}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons6}}</span>
+                </div>
+            {{/buttons6}}
+            {{#buttons7}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons7}}</span>
+                </div>
+            {{/buttons7}}
+            {{#buttons8}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons8}}</span>
+                </div>
+            {{/buttons8}}
+            {{#buttons9}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons9}}</span>
+                </div>
+            {{/buttons9}}
         </div>
+        <span class='generic-footer'>
+            {{#characterid}}
+                {{#name}}
+                    [{{name}}](https://journal.roll20.net/character/{{characterid}})
+                {{/name}}
+            {{/characterid}}
+            {{^characterid}}
+                {{name}}
+            {{/characterid}}
+        </span>
     </rolltemplate>
     <!-- Spell Roll Templates -->
-    <!-- &{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[@{level}d1}} {{activation}} {{duration=}} {{targets=}} {{range=}} {{saveflag=[[1d@{save_checkbox}]]}} {{savedc=[[@{dc}]]}} 
+    <!-- @{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[@{level}d1}} {{activation}} {{duration=}} {{targets=}} {{range=}} {{saveflag=[[1d@{save_checkbox}]]}} {{savedc=[[@{dc}]]}} 
     {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} 
     {{r1=[[1d20+@{bab}[BAB]+@{ability_value}[ABILITY]@{misc}@{bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damagetype=@{type}}} 
     {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}@{damage_bonus}]]}} 
     {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}@{damage_bonus}]]}} {{crit1effect=@{crit_effect}}} 
     {{notes=@{description}}} -->
     <rolltemplate class="sheet-rolltemplate-sf_spell">
-        <div class='template-container'>
-            <span class='generic-header'>
-                {{title}}
-            </span>
-            <div class='generic-body'>
-                {{#rollGreater() level 0}}
-                    <div class='highlighted split r1name'>
-                        <span data-i18n='level'>LEVEL</span>
-                    </div>
-                    <div class='highlighted split roll'>
-                        {{level}}
-                    </div>
-                {{/rollGreater() level 0}}
-                {{#activation}}
-                    <div class='highlighted split r1name'>
-                        <span data-i18n='activation'>ACTIVATION</span>
-                    </div>
-                    <div class='highlighted split roll'>
-                        {{activation}}
-                    </div>
-                {{/activation}}
-                {{#duration}}
-                    <div class='highlighted split r1name'>
-                        <span data-i18n='duration'>DURATION</span>
-                    </div>
-                    <div class='highlighted split roll'>
-                        {{duration}}
-                    </div>
-                {{/duration}}
-                {{#targets}}
-                    <div class='highlighted split r1name'>
-                        <span data-i18n='targets'>TARGETS</span>
-                    </div>
-                    <div class='highlighted split roll'>
-                        {{targets}}
-                    </div>
-                {{/targets}}
-                {{#range}}
-                    <div class='highlighted split r1name'>
-                        <span data-i18n='range'>RANGE</span>
-                    </div>
-                    <div class='highlighted split roll'>
-                        {{range}}
-                    </div>
-                {{/range}}
-                {{#rollGreater() saveflag 0}}
-                    <div class='highlighted across notes-row'>
-                        <span class='notes' data-i18n='full-effect:'>FULL EFFECT:</span> <span>{{effect}}</span>
-                    </div>
-                    <div class='highlighted split r1name'>
-                        <span class='savetype'>{{savetype}} </span><span data-i18n='_save'> SAVE</span>
-                    </div>
-                    <div class='highlighted split roll'>
-                        <span data-i18n='dc'>DC</span> <span>{{savedc}}</span>
-                    </div>
-                    <div class='highlighted across notes-row'>
-                        <span class='notes' data-i18n='save-effect:'>SAVE EFFECT:</span> <span>{{saveeffect}}</span>
-                    </div>
-                {{/rollGreater() saveflag 0}}
-                {{#rollGreater() attackflag 0}}
-                    <div class='highlighted split r1name'>
-                        {{#r1name}}
-                            {{r1name}}
-                        {{/r1name}}
-                        {{^r1name}}
-                            <span data-i18n='attack'>ATTACK</span>
-                        {{/r1name}}
-                    </div>
-                    <div class='highlighted split roll'>
-                        {{r1}}
-                    </div>
-                {{/rollGreater() attackflag 0}}
-                {{#rollGreater() damageflag 0}}
-                    <div class='highlighted split r1name'>
-                        {{#damage1type}}
-                            {{damage1type}}
-                        {{/damage1type}}
-                        {{^damage1type}}
-                            <span data-i18n='damage'>DAMAGE</span>
-                        {{/damage1type}}
-                    </div>
-                    <div class='highlighted split roll'>
-                        {{damage1}}
-                    </div>
-                    {{#rollWasCrit() r1}}
-                        {{#crit1effect}}
-                            <div class='highlighted split r1name'>
-                                <span data-i18n='crit-effect'>CRIT EFFECT</span>
-                            </div>
-                            <div class='highlighted split roll'>
-                                {{crit1effect}}
-                            </div>
-                        {{/crit1effect}}
-                        {{#crit1damage}}
-                            <div class='highlighted split r1name'>
-                                <span data-i18n='crit-damage'>CRIT DAMAGE</span>
-                            </div>
-                            <div class='highlighted split roll'>
-                                {{crit1damage}}
-                            </div>
-                        {{/crit1damage}}
-                    {{/rollWasCrit() r1}}
-                {{/rollGreater() damageflag 0}}
-                {{#notes}}
-                    <div class='highlighted across notes-row'>
-                        <span class='notes' data-i18n='notes:'>NOTES:</span> {{notes}}
-                    </div>
-                {{/notes}}
-            </div>
-            <div class='generic-footer'>
-                {{#characterid}}
-                    {{#name}}
-                        [{{name}}](https://journal.roll20.net/character/{{characterid}})
-                    {{/name}}
-                {{/characterid}}
-                {{^characterid}}
-                    {{name}}
-                {{/characterid}}
-            </div>
-            </div>
+        <span class='generic-header'>
+            {{title}}
+        </span>
+        <div class='generic-body'>
+            {{#rollGreater() level 0}}
+                <div class='highlighted split r1name'>
+                    <span data-i18n='level'>LEVEL</span>
+                </div>
+                <div class='highlighted split roll'>
+                    {{level}}
+                </div>
+            {{/rollGreater() level 0}}
+            {{#activation}}
+                <div class='highlighted split r1name'>
+                    <span data-i18n='activation'>ACTIVATION</span>
+                </div>
+                <div class='highlighted split roll'>
+                    {{activation}}
+                </div>
+            {{/activation}}
+            {{#duration}}
+                <div class='highlighted split r1name'>
+                    <span data-i18n='duration'>DURATION</span>
+                </div>
+                <div class='highlighted split roll'>
+                    {{duration}}
+                </div>
+            {{/duration}}
+            {{#targets}}
+                <div class='highlighted split r1name'>
+                    <span data-i18n='targets'>TARGETS</span>
+                </div>
+                <div class='highlighted split roll'>
+                    {{targets}}
+                </div>
+            {{/targets}}
+            {{#range}}
+                <div class='highlighted split r1name'>
+                    <span data-i18n='range'>RANGE</span>
+                </div>
+                <div class='highlighted split roll'>
+                    {{range}}
+                </div>
+            {{/range}}
+            {{#rollGreater() saveflag 0}}
+                <div class='highlighted across notes-row'>
+                    <span class='notes' data-i18n='full-effect:'>FULL EFFECT:</span> <span>{{effect}}</span>
+                </div>
+                <div class='highlighted split r1name'>
+                    <span class='savetype'>{{savetype}} </span><span data-i18n='_save'> SAVE</span>
+                </div>
+                <div class='highlighted split roll'>
+                    <span data-i18n='dc'>DC</span> <span>{{savedc}}</span>
+                </div>
+                <div class='highlighted across notes-row'>
+                    <span class='notes' data-i18n='save-effect:'>SAVE EFFECT:</span> <span>{{saveeffect}}</span>
+                </div>
+            {{/rollGreater() saveflag 0}}
+            {{#rollGreater() attackflag 0}}
+                <div class='highlighted split r1name'>
+                    {{#r1name}}
+                        {{r1name}}
+                    {{/r1name}}
+                    {{^r1name}}
+                        <span data-i18n='attack'>ATTACK</span>
+                    {{/r1name}}
+                </div>
+                <div class='highlighted split roll'>
+                    {{r1}}
+                </div>
+            {{/rollGreater() attackflag 0}}
+            {{#rollGreater() damageflag 0}}
+                <div class='highlighted split r1name'>
+                    {{#damage1type}}
+                        {{damage1type}}
+                    {{/damage1type}}
+                    {{^damage1type}}
+                        <span data-i18n='damage'>DAMAGE</span>
+                    {{/damage1type}}
+                </div>
+                <div class='highlighted split roll'>
+                    {{damage1}}
+                </span>
+                {{#rollWasCrit() r1}}
+                    {{#crit1effect}}
+                        <div class='highlighted split r1name'>
+                            <span data-i18n='crit-effect'>CRIT EFFECT</span>
+                        </div>
+                        <div class='highlighted split roll'>
+                            {{crit1effect}}
+                        </span>
+                    {{/crit1effect}}
+                    {{#crit1damage}}
+                        <div class='highlighted split r1name'>
+                            <span data-i18n='crit-damage'>CRIT DAMAGE</span>
+                        </div>
+                        <div class='highlighted split roll'>
+                            {{crit1damage}}
+                        </span>
+                    {{/crit1damage}}
+                {{/rollWasCrit() r1}}
+            {{/rollGreater() damageflag 0}}
+            {{#notes}}
+                <div class='highlighted across notes-row'>
+                    <span class='notes' data-i18n='notes:'>NOTES:</span> {{notes}}
+                </div>
+            {{/notes}}
+            {{#buttons0}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons0}}</span>
+                </div>
+            {{/buttons0}}
+            {{#buttons1}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons1}}</span>
+                </div>
+            {{/buttons1}}
+            {{#buttons2}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons2}}</span>
+                </div>
+            {{/buttons2}}
+            {{#buttons3}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons3}}</span>
+                </div>
+            {{/buttons3}}
+            {{#buttons4}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons4}}</span>
+                </div>
+            {{/buttons4}}
+            {{#buttons5}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons5}}</span>
+                </div>
+            {{/buttons5}}
+            {{#buttons6}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons6}}</span>
+                </div>
+            {{/buttons6}}
+            {{#buttons7}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons7}}</span>
+                </div>
+            {{/buttons7}}
+            {{#buttons8}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons8}}</span>
+                </div>
+            {{/buttons8}}
+            {{#buttons9}}
+                <div class='highlighted across notes-row'>
+                    <span>{{buttons9}}</span>
+                </div>
+            {{/buttons9}}
         </div>
+        <span class='generic-footer'>
+            {{#characterid}}
+                {{#name}}
+                    [{{name}}](https://journal.roll20.net/character/{{characterid}})
+                {{/name}}
+            {{/characterid}}
+            {{^characterid}}
+                {{name}}
+            {{/characterid}}
+        </span>
     </rolltemplate>
 </div>
 <script type='text/worker'>
@@ -4435,9 +4639,10 @@
     /*start starfinder.js*/
     var starfinder = starfinder || (function(){
         'use strict';
-        var version = 0.021508544553,
+        var version = 0.021508911567,
             sheetAttributes = [
                 //Class & Character attributes
+                'character_name','character_id',
                 'class_1_name','class_2_name','class_3_name','class_4_name','class_5_name',
                 'class_1_level','class_2_level','class_3_level','class_4_level','class_5_level','class_1_sp','class_2_sp',
                 'class_3_sp','class_4_sp','class_5_sp','class_1_hp','class_2_hp','class_3_hp','class_4_hp','class_5_hp',
@@ -4480,7 +4685,9 @@
                 //Item attributes
                 'wealth','carried_bulk','encumber_bulk','overburden_bulk',
                 //general sheet attributes
-                'bab','character_level'
+                'bab','character_level',
+                //sheet setting attributes
+                'resolve_source','stackable_buffs','sheet_type'
             ],
             repeatingAttributes = [
                 {
@@ -4489,24 +4696,24 @@
                 },
                 {
                     section:'attack',
-                    fields:['ability','bonus','dmg_dice','dmg_ability','dmg_bonus','level','bonus',
-                            'type','total','dmg_total','proficiency','category']
+                    fields:['ability','bonus','damage_dice','damage_ability','damage_bonus','level','bonus',
+                            'type','total','damage_total','proficiency','category','range','name']
                 },
                 {
                     section:'profession',
-                    fields:['ranks','class_skill','ability','acp']
+                    fields:['ranks','class_skill','ability','acp','name']
                 },
                 {
                     section:'buff',
-                    fields:['mods','toggle']
+                    fields:['mods','toggle','range','name']
                 },
                 {
                     section:'ability',
-                    fields:['mods','toggle','frequency','source','uses_max_base','attack_bonus','attack_ability','damage_ability','attack_type','save_ability']
+                    fields:['mods','toggle','frequency','source','uses_max_base','attack_bonus','range','name','attack_ability','damage_ability','attack_type','save_ability']
                 },
                 {
                     section:'spell',
-                    fields:['source','attack_bonus','attack_ability','damage_ability','attack_type','save_ability','level']
+                    fields:['source','attack_bonus','attack_ability','damage_ability','range','name','attack_type','save_ability','level']
                 }
             ],
             skillList=[
@@ -4747,6 +4954,7 @@
                     attr:'eac_armor',
                     numAdds:0,
                     attrAdds:[],
+                    addlBonus: ['armor'],
                     repeatTextAdds:[],
                     repeatAdds:[],
                     textAdds:[],
@@ -4756,6 +4964,7 @@
                     attr:'kac_armor',
                     numAdds:0,
                     attrAdds:[],
+                    addlBonus: ['armor'],
                     repeatTextAdds:[],
                     repeatAdds:[],
                     textAdds:[],
@@ -5120,10 +5329,21 @@
                     repeating:'attack',
                     attr:'ability_value',
                     numAdds:0,
-                    attrAdds:['bab'],
-                    multAdds:[1],
+                    attrAdds:[],
                     category:'category',
                     ability:'ability',
+                    repeatTextAdds:[],
+                    repeatAdds:[],
+                    textAdds:[],
+                    moddable:true
+                },
+                {
+                    repeating:'attack',
+                    attr:'damage_ability_value',
+                    numAdds:0,
+                    attrAdds:[],
+                    category:'category',
+                    ability:'damage_ability',
                     repeatTextAdds:[],
                     repeatAdds:[],
                     textAdds:[],
@@ -5399,8 +5619,41 @@
                 }
             ],
             
+        esRE = function (s) {
+            var escapeForRegexp = /(\\|\/|\[|\]|\(|\)|\{|\}|\?|\+|\*|\||\.|\^|\$)/g;
+            return s.replace(escapeForRegexp,"\\$1");
+        },
+        
+        HE = (function(){
+            var entities={
+                //' ' : '&'+'nbsp'+';',
+                '&' : '&'+'amp'+';',
+                '<' : '&'+'lt'+';',
+                '>' : '&'+'gt'+';',
+                "'" : '&'+'#39'+';',
+                '@' : '&'+'#64'+';',
+                '{' : '&'+'#123'+';',
+                '|' : '&'+'#124'+';',
+                '}' : '&'+'#125'+';',
+                ',' : '&'+'#44'+';',
+                '[' : '&'+'#91'+';',
+                ']' : '&'+'#93'+';',
+                '"' : '&'+'quot'+';',
+                ':' : '&'+'#58'+';',
+                '(' : '&'+'#40'+';',
+                ')' : '&'+'#41'+';'
+                //'-' : '&'+'mdash'+';'
+            },
+            re=new RegExp('('+_.map(_.keys(entities),esRE).join('|')+')','g');
+            return function(s){
+                return s.replace(re, function(c){ return entities[c] || c; });
+            };
+        }()),
         RegisterEventHandlers = function(){
-            on('change:tab_select '
+            on('sheet:opened',()=>{
+                setAttrs({character_sheet:'Starfinder v'+version});
+            });
+            on('change:tab_select change:resolve_source change:stackable_buffs change:sheet_type'
             +'change:class_1_name change:class_2_name change:class_3_name change:class_4_name change:class_5_name '
             +'change:class_1_level change:class_2_level change:class_3_level change:class_4_level change:class_5_level '
             +'change:class_1_sp change:class_2_sp change:class_3_sp change:class_4_sp change:class_5_sp '
@@ -5501,7 +5754,19 @@
             }
             if(attribute==='tab_select'){
                 getAttrs(['tab_select'],(objs)=>{
-                    setAttrs({tab:objs.tab_select},{silent:true});
+                    setObj={};
+                    TAS.log('objs: '+JSON.stringify(objs));
+                    if(objs.tab_select==='options'){
+                        setObj.npcship_toggle='settings';
+                    }else if(objs.tab_select==='npc'){
+                        setObj.npcship_toggle='npc';
+                    }else if(objs.tab_select==='ship'){
+                        setObj.npcship_toggle='ship';
+                    }else{
+                        setObj.npcship_toggle='pc';
+                        setObj.tab=objs.tab_select;
+                    }
+                    setAttrs(setObj,{silent:true});
                 });
             }else if(attribute.match(/(?:save|attack|mods|damage)_checkbox/)){
                 setObj={};
@@ -5529,6 +5794,7 @@
                     setObj['repeating'+createTarget.section+rowID+createTarget.attrs[n]]=createTarget.values[n];
                 });
                 setObj[attribute]=0;
+                setObj=buildMenus(attributes,setObj);
                 setAttrs(setObj,{silent:true});
             }else{
                 getID();
@@ -5655,7 +5921,7 @@
         },
         
         abilityHandler = function(attributes,attr){
-            var field = attr.replace(/repeating_ability_-[^_]+_/,''),
+            var field = attr.replace(/repeating_(?:spell|ability)_-[^_]+_/,''),
                 setObj={};
             
             switch(field){
@@ -5673,6 +5939,160 @@
                 }
                 return memo;
             },{});
+        },
+        
+        buildMenus = function(attributes,setObj){
+            var sectionIDs,
+                preMenu = '/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=';
+                setObj.attacks_menu=preMenu+'ATTACKS}} ';
+                setObj.spells_menu=preMenu+'SPELLBOOKS}} {{buttons1=';
+                setObj.ability_checks_menu=preMenu+'ABILITY CHECKS}} ';
+                setObj.abilities_menu=preMenu+'SPECIAL ABILITIES}}';
+                setObj.skills_menu=preMenu+'SKILLS}} ';
+            //attack menu build
+            sectionIDs=_.chain(_.keys(attributes))
+                .reduce((m,a)=>{
+                    if(a.match(/repeating_attack/)){
+                        m.push(a.replace(/repeating_attack_(-[^_]+)_.*/,'$1'));
+                    }
+                    return m;
+                },[])
+                .uniq()
+                .value();
+            let ranged = '{{buttons2=RANGED\n';
+            let melee = '{{buttons1=MELEE\n';
+            _.each(sectionIDs,(id)=>{
+                let preRepeat = 'repeating_attack_'+id+'_';
+                if((attributes[preRepeat+'range']+'').match(/\d+/)){
+                    if(ranged!=='{{buttons2=RANGED\n'){
+                        ranged+=' | ';
+                    }
+                    ranged+='['+HE(attributes[preRepeat+'name'])+'](~'+attributes.character_name+'|'+preRepeat+'roll)';
+                }else{
+                    if(melee!=='{{buttons1=MELEE\n'){
+                        melee+=' | ';
+                    }
+                    melee+='['+HE(attributes[preRepeat+'name'])+'](~'+attributes.character_name+'|'+preRepeat+'roll)';
+                }
+            });
+            melee+='}}';
+            ranged+='}}';
+            setObj.attacks_menu+=melee+' '+ranged;
+            //spells menu build
+            let spellClassNums = _.filter([1,2,3,4,5],(n)=>{
+                return attributes['class_'+n+'_spells']*1===1;
+            });
+            _.each(spellClassNums,(n)=>{
+                let preClass = 'class_'+n+'_';
+                if(setObj.spells_menu!==preMenu+'SPELLBOOKS}} {{buttons1='){
+                    setObj.spells_menu+=' | ';
+                }
+                setObj.spells_menu+='['+HE(attributes[preClass+'name'])+'](~'+attributes.character_name+'|'+preClass+'spellbook)';
+                let spellLevels = setObj[preClass+'max_spell']*1 + 1;
+                let classSpellBook = preMenu+attributes[preClass+'name']+' Spells}} ';
+                _.each(_.range(spellLevels),(r)=>{
+                    let spellLevel = '{{buttons'+r+'='+(r===0 ? 'CANTRIPS' : 'LEVEL '+r)+'\n';
+                    sectionIDs=_.chain(_.keys(attributes))
+                        .reduce((m,a)=>{
+                            if(a.match(/repeating_spell_(-[^_]+)_source/)){
+                                if(attributes[a]===attributes[preClass+'name'] && attributes[a.replace(/source/,'level')]*1===r){
+                                    m.push(a.replace(/repeating_spell_(-[^_]+)_.*/,'$1'));
+                                }
+                            }
+                            return m;
+                        },[])
+                        .value();
+                    _.each(sectionIDs,(id)=>{
+                        let preRepeat = 'repeating_spell_'+id+'_';
+                        if(spellLevel !== '{{buttons'+r+'='+(r===0 ? 'CANTRIPS' : 'LEVEL '+r)+'\n'){
+                            spellLevel +=' | ';
+                        }
+                        spellLevel+='['+HE(attributes[preRepeat+'name'])+'](~'+attributes.character_name+'|'+preRepeat+'roll)';
+                    });
+                    spellLevel+='}}';
+                    classSpellBook+=spellLevel.replace(/\n}}/,'}}');
+                });
+                setObj[preClass+'spellbook']=classSpellBook;
+            });
+            setObj.spells_menu+='}}';
+            //abilities menu
+            sectionIDs=_.chain(_.keys(attributes))
+                .reduce((m,a)=>{
+                    if(a.match(/repeating_ability/)){
+                        m.push(a.replace(/repeating_ability_(-[^_]+)_.*/,'$1'));
+                    }
+                    return m;
+                },[])
+                .uniq()
+                .value();
+            let racial_abilities = '{{buttons1=RACIAL\n';
+            let feat_abilities = '{{buttons2=FEATS\n';
+            let class_abilities = {
+                class_1_abilities:'{{buttons3='+attributes.class_1_name+'\n',
+                class_2_abilities:'{{buttons4='+attributes.class_2_name+'\n',
+                class_3_abilities:'{{buttons5='+attributes.class_3_name+'\n',
+                class_4_abilities:'{{buttons6='+attributes.class_4_name+'\n',
+                class_5_abilities:'{{buttons7='+attributes.class_5_name+'\n'
+            }
+            _.each(sectionIDs,(id)=>{
+                let preRepeat = 'repeating_ability_'+id+'_';
+                let classNum=0;
+                if((attributes[preRepeat+'source']+'').toLowerCase()===(attributes.race+'').toLowerCase()){
+                    if(racial_abilities!=='{{buttons1=RACIAL\n'){
+                        racial_abilities+=' | ';
+                    }
+                    racial_abilities+='['+HE(attributes[preRepeat+'name'])+'](~'+attributes.character_name+'|'+preRepeat+'roll)';
+                }else if(_.some([1,2,3,4,5],(n)=>{
+                        classNum=n;
+                        return (attributes['class_'+n+'_name']+'').toLowerCase()===(attributes[preRepeat+'source']+'').toLowerCase();
+                    })){
+                    if(class_abilities['class_'+classNum+'_abilities']!=='{{buttons'+(classNum + 2)+'='+attributes['class_'+classNum+'_name']+'\n'){
+                        class_abilities['class_'+classNum+'_abilities']+=' | ';
+                    }
+                    class_abilities['class_'+classNum+'_abilities']+='['+HE(attributes[preRepeat+'name'])+'](~'+attributes.character_name+'|'+preRepeat+'roll)';
+                }else{
+                    if(feat_abilities!=='{{buttons2=FEATS\n'){
+                        feat_abilities+=' | ';
+                    }
+                    feat_abilities+='['+HE(attributes[preRepeat+'name'])+'](~'+attributes.character_name+'|'+preRepeat+'roll)';
+                }
+            });
+            racial_abilities+='}}';
+            feat_abilities +='}}';
+            class_abilities = {
+                class_1_abilities:(class_abilities.class_1_abilities+'}}').replace(/\n}}/,''),
+                class_2_abilities:(class_abilities.class_2_abilities+'}}').replace(/\n}}/,''),
+                class_3_abilities:(class_abilities.class_3_abilities+'}}').replace(/\n}}/,''),
+                class_4_abilities:(class_abilities.class_4_abilities+'}}').replace(/\n}}/,''),
+                class_5_abilities:(class_abilities.class_5_abilities+'}}').replace(/\n}}/,'')
+            }
+            setObj.abilities_menu+=racial_abilities+' '+feat_abilities+' '+_.reduce(class_abilities,(m,ca)=>{return m+ca},'');
+            //skills
+            setObj.skills_menu+='{{buttons0=[Perception](~'+attributes.character_name+'|perception)}} '
+                +'{{buttons1=PHYSICAL\n[Acrobatics](~'+attributes.character_name+'|acrobatics) | [Athletics](~'+attributes.character_name+'|athletics) | [Piloting](~'+attributes.character_name+'|piloting)}} '
+                +'{{buttons2=SOCIAL\n[Bluff](~'+attributes.character_name+'|bluff) | [Diplomacy](~'+attributes.character_name+'|diplomacy) | [Disguise](~'+attributes.character_name+'|disguise) | [Intimidate](~'+attributes.character_name+'|intimidate) | [Sense Motive](~'+attributes.character_name+'|sense_motive)}} '
+                +'{{buttons3=THIEVERY\n[Sleight of Hand](~'+attributes.character_name+'|sleight_of_hand) | [Stealth](~'+attributes.character_name+'|stealth)}} '
+                +'{{buttons4=KNOWLEDGE\n[Computers](~'+attributes.character_name+'|computers) | [Culture](~'+attributes.character_name+'|culture) | [Engineering](~'+attributes.character_name+'|engineering) | [Life Science](~'+attributes.character_name+'|life_science) | [Medicine](~'+attributes.character_name+'|medicine) | [Mysticism](~'+attributes.character_name+'|mysticism) | [Physical Science](~'+attributes.character_name+'|physical_science) | [Survival](~'+attributes.character_name+'|survival)}} ';
+            let professionMenu='{{buttons5=PROFESSION\n'
+            sectionIDs=_.chain(_.keys(attributes))
+                .reduce((m,a)=>{
+                    if(a.match(/repeating_profession/)){
+                        m.push(a.replace(/repeating_profession_(-[^_]+)_.*/,'$1'));
+                    }
+                    return m;
+                },[])
+                .uniq()
+                .value();
+            _.each(sectionIDs,(id)=>{
+                let preRepeat = 'repeating_profession_'+id+'_';
+                if(professionMenu!=='{{buttons5=PROFESSION\n'){
+                    professionMenu+=' | ';
+                }
+                professionMenu+='['+HE(attributes[preRepeat+'name'])+'](~'+attributes.character_name+'|'+preRepeat+'roll)';
+            });
+            professionMenu+='}}';
+            setObj.skills_menu+=professionMenu.replace(/PROFESSION\n}}/,'');
+            return setObj;
         },
         
         parseBuffs = function(attributes){
@@ -5709,6 +6129,9 @@
                             buffed = buffMatch[3].toLowerCase().split(/\s+and\s+/);
                             buffType = buffMatch[2] ? buffMatch[2].toLowerCase().replace(/max dex/i,'max_dex') : 'untyped';
                             _.each(buffed,(b)=>{
+                                if((b==='eac'||b==='kac')&&buffType==='armor'){
+                                    b+='_armor';
+                                }
                                 b=b.replace(/\s+/g,'_');
                                 if(b.startsWith('category:')){
                                     b=b.replace(/category:_?/,'');
@@ -5719,7 +6142,7 @@
                                     memo.eac=memo.eac||{};
                                     memo.eac[buffType]=memo.eac[buffType]||[];
                                     memo.eac[buffType].push(buff);
-                                    memo.kac=memo.eac||{};
+                                    memo.kac=memo.kac||{};
                                     memo.kac[buffType]=memo.kac[buffType]||[];
                                     memo.kac[buffType].push(buff);
                                 }else if(b.match(/^skills?$/i)){
@@ -5766,10 +6189,10 @@
                         if(evalBuff>0){
                             if(t==='armor'){
                                 m.armor=starfinderMax(false,m.armor,evalBuff);
-                            }else if(t.match(/untyped|circumstance/)){
-                                m.buff+=evalBuff;
                             }else if(t==='max_dex'){
                                 m.max_dex=starfinderMax(true,m.max_dex,evalBuff);
+                            }else if(_.contains(attributes.stackable_buffs.toLowerCase().split(/,|\n+/),t)){
+                                m.buff+=evalBuff;
                             }else{
                                 m.buff=starfinderMax(false,m.buff,evalBuff);
                             }
@@ -5798,7 +6221,7 @@
         applyBuffs = function(attributes,bonus,setObj){
             var bTotal, sectionIDs, repeatFormat, repeatIDs,armbTotal,
                 levelClass=0,
-                rpAbility=0,
+                rpAbility,
                 convertProgress = {
                     'half':(lvl)=>lvl >= 13 ? 4 : lvl >= 10 ? 3 : lvl >= 7 ? 2 : lvl >= 4 ? 1 : 0,
                     'partial':(lvl)=> lvl >= 16 ? 6 : lvl >= 13 ? 5 : lvl >= 10 ? 4 : lvl >= 7 ? 3 : lvl >= 4 ? 2 : lvl >= 1 ? 1 : 0,
@@ -5818,7 +6241,7 @@
                         memo[preClass+'_show']=0;
                         memo[preClass+'_max_spell']=0;
                     }
-                    memo.char_max_spell_1 = _.max([memo.char_max_spell_1,setObj[preClass+'_max_spell'],0]);
+                    memo.char_max_spell_1 = _.max([memo.char_max_spell_1,memo[preClass+'_max_spell'],0]);
                     memo.caster_level_change=bTotal > 0 ? 1 : bTotal < 0 ? -1 : 0;
                     return memo;
                 },setObj);
@@ -5848,31 +6271,32 @@
                         let specificBonus = bonus[obj.attr] || {};
                         specificBonus = calcBuffs(attributes,specificBonus,setObj);
                         bTotal=specificBonus.total + (attributes[id+(obj.repeating ? 'acp' : obj.attr+'_acp')]*1===1 ? calcBuffs(attributes,bonus.acp,setObj).total : 0);
-                        if(obj.moddable){
-                            memo[id+(obj.repeating ? 'change' : obj.attr+'_change')]=bTotal > 0 ? 1 : (bTotal < 0 ? -1 : 0);
-                        }
                         if(obj.attr==='rp_max'){
-                            rpAbility=_.reduce([1,2,3,4,5],(m,n)=>{
-                                if(attributes['class_'+n+'_level']>0){
-                                    m = _.max([m,(setObj[attributes['class_'+n+'_ability']]*1||attributes[attributes['class_'+n+'_ability']]*1)])
-                                }
-                                return m;
-                            },0);
+                            if(attributes.resolve_source==='key'){
+                                rpAbility=_.reduce([1,2,3,4,5],(m,n)=>{
+                                    if(attributes['class_'+n+'_level']>0){
+                                        m = _.max([m,(setObj[attributes['class_'+n+'_ability']]*1||attributes[attributes['class_'+n+'_ability']]*1)])
+                                    }
+                                    return m;
+                                },0);
+                            }else{
+                                rpAbility=_.max([setObj.strength_mod,setObj.dexterity_mod,setObj.constitution_mod,setObj.intelligence_mod,setObj.wisdom_mod,setObj.charisma_mod,0],(v)=>{return v*1});
+                                TAS.log('rpAbility: '+rpAbility);
+                            }
                         }else{
                             rpAbility=0;
                         }
-                        memo[id+obj.attr]=_.chain([
-                                _.reduce(obj.repeatTextAdds,(m,add)=>{
-                                    return m+(setObj[id+add]||attributes[id+add]||'')
-                                },'')
-                                +_.reduce(obj.textAdds,(m,add)=>{
-                                    return m+(setObj[add]*1||attributes[add]||'')
-                                },''),
-                                _.reduce(obj.repeatParseField,(m,add)=>{
+                        let attributeMod=setObj[setObj[id+obj.ability]]*1||setObj[attributes[id+obj.ability]]*1||attributes[attributes[id+obj.ability]]*1||rpAbility*1;
+                        let abilityMax = _.min([attributeMod,specificBonus.max_dex*1])
+                        let abilityDiff = abilityMax - attributeMod;
+                        if(obj.moddable){
+                            memo[id+(obj.repeating ? 'change' : obj.attr+'_change')]=(bTotal+abilityDiff) > 0 ? 1 : ((bTotal+abilityDiff) < 0 ? -1 : 0);
+                        }
+                        let memoNum = _.reduce(obj.repeatParseField,(m,add)=>{
                                     let calculated = calcBuffs(attributes,{untyped:[attributes[id+add]]},setObj).total
                                     return m + calculated;
                                 },0)
-                                +((setObj[setObj[id+obj.ability]]*1||setObj[attributes[id+obj.ability]]*1||attributes[attributes[id+obj.ability]]*1||rpAbility||0)
+                                +abilityMax
                                 +obj.numAdds
                                 +_.reduce(_.range(obj.attrAdds.length),(m,add)=>{
                                     let csMatch = obj.attrAdds[add].match('class_skill');
@@ -5903,15 +6327,41 @@
                                     return m;
                                 },0)
                                 +bTotal
-                                +(obj.attr==='attack_total' && attributes[id+'attack_proficiency']==='no' ? -4 : (obj.attr==='attack_dmg_total' && attributes[id+'attack_proficiency']==='specialized' ? (attributes[id+'attack_category'].match(/small arms|operative/i) ? Math.floor((setObj.character_level||attributes.character_level)/2) : setObj.character_level*1||attributes.character_level*1):0)))
-                            ])
-                            .reject((v)=>{
-                                return !v&&v!==0;
-                            })
-                            .value().join(' + ');
+                                +_.reduce(obj.addlBonus,(m,add)=>{
+                                    return m+(specificBonus[add]*1||0);
+                                },0)
+                                +(obj.attr==='total' && attributes[id+'proficiency']==='no' ? -4 : (obj.attr==='damage_total' && attributes[id+'proficiency']==='specialized' ? (attributes[id+'category'].match(/small arms|operative/i) ? Math.floor((setObj.character_level||attributes.character_level)/2) : setObj.character_level*1||attributes.character_level*1):0));
+                        let memoText=_.reduce(obj.repeatTextAdds,(m,add)=>{
+                                return m+(setObj[id+add]||attributes[id+add]||'')
+                            },'')
+                            +_.reduce(obj.textAdds,(m,add)=>{
+                                return m+(setObj[add]*1||attributes[add]||'')
+                            },'');
+                        if(rpAbility>0){
+                            TAS.log('memoNum: '+memoNum);
+                            TAS.log('memoText: '+memoText);
+                        }
+                        memo[id+obj.attr]=_.chain([memoText,memoNum])
+                            .reject((m)=>{return(!m&&m!==0)||m===''})
+                            .value().join(' + ').replace(/\s*\+\s*0/,'');
                         if(obj.attr.match(/_filter/)){
                             memo[id+obj.attr]=Math.min(Math.max(memo[id+obj.attr]*1||0,0),9);
                             memo[id+obj.attr]=memo[id+obj.attr]*1===0 ? 'cantrip' : memo[id+obj.attr];
+                        }else if((obj.attr==='total' || obj.attr==='damage_total')&&obj.repeating==='attack'){
+                            if(attributes[id+'proficiency']==='no'){
+                                memo[id+'proficiency_value']=-4;
+                                memo[id+'damage_proficiency_value']=0;
+                            }else if(attributes[id+'proficiency']==='specialized'){
+                                if(attributes[id+'category'].match(/small arms|operative/i)){
+                                    memo[id+'proficiency_value']=0;
+                                    memo[id+'damage_proficiency_value']=Math.floor((setObj.character_level*1||attributes.character_level*1)/2);
+                                }else{
+                                    memo[id+'damage_proficiency_value']=setObj.character_level*1||attributes.character_level*1;
+                                }
+                            }else{
+                                memo[id+'proficiency_value']=0;
+                                memo[id+'damage_proficiency_value']=0;
+                            }
                         }
                         return memo;
                     },setObj);
@@ -5926,7 +6376,7 @@
             setObj.carried_bulk = 0;
             setObj.wealth=0;
             setObj = _.reduce(_.keys(attributes),(memo,a)=>{
-                let aMatch =a.match(/repeating_item_-[^_]+_item_(bulk|cost)/);
+                let aMatch =a.match(/repeating_item_-[^_]+_(bulk|cost)/);
                 if(aMatch){
                     if(aMatch[1]==='bulk'){
                         memo.carried_bulk = memo.carried_bulk + ((attributes[a]+'').match(/l/i) ? 0.1 : attributes[a]*1||0)*attributes[a.replace(/bulk/,'quantity')]||0;
@@ -5944,6 +6394,7 @@
             setObj.overburden_bulk = (setObj.strength*1||0)+bTotal;
             setObj.overburden_bulk_change=bTotal > 0 ? 1 : (bTotal < 0 ? -1 : 0);
             setObj.encumber_level = Math.min(Math.floor(setObj.carried_bulk/setObj.encumber_bulk),1)+Math.min(Math.floor(setObj.carried_bulk/setObj.overburden_bulk),1);
+            setObj=buildMenus(attributes,setObj);
             setAttrs(setObj,{silent:true});
         },
         
