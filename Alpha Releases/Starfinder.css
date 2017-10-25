@@ -5,6 +5,15 @@
 * {
     font-family:Aldrich,Copperplate,Monospace;
 }
+.sheet-container{
+    display:none;
+}
+.sheet-pc:checked ~ .sheet-pc,
+.sheet-npc:checked ~ .sheet-npc,
+.sheet-ship:checked ~ .sheet-ship,
+.sheet-settings:checked ~ .sheet-settings{
+    display:grid;
+}
 .sheet-tab-button + span,
 .sheet-initiative-container button,
 .sheet-label,
@@ -55,7 +64,8 @@ select {
     padding:0px !important;
     text-align-last:center;
 }
-button[type=roll] {
+button[type=roll],
+label{
     background-color: transparent;
     color: black;
     border: none;
@@ -68,6 +78,8 @@ button[type=roll] {
     font-weight: bold;
     text-align:left;
     position:relative;
+    text-shadow:0px 0px 10px #49f5ff,0px 0px 20px #6bf7ff;
+    color:#333398;
 }
 button[type=roll]::before
 {
@@ -76,17 +88,9 @@ button[type=roll]::before
 button[type=roll]:hover,
 button[type=roll]:hover *,
 button[type=roll]:hover input[type=text],
-button[type=roll]:hover *
-{
-    color: #f86f1a;
-}
-.sheet-pc,
-.sheet-npc {
-    display: none;
-}
-.sheet-npcship_toggle[value="0"] ~ .sheet-pc,
-.sheet-npcship_toggle[value="1"] ~ .sheet-npc{
-    display: grid;
+label:hover{
+    color: #ff9335;
+    text-shadow:0px 0px 10px #f86f1a,0px 0px 20px #fc6507;
 }
 .sheet-label,
 .sheet-mod,
@@ -116,8 +120,8 @@ button[type=roll] {
 }
 .sheet-starfinder {
     display:grid;
-    grid-template-columns:[name-container-start pc-start]160px[name-container-end nav-start]240px [nav-end] 380px[pc-end];
-    grid-template-rows:[name-container-start nav-start]40px[name-container-end nav-end pc-start]120px 0px 1090px[pc-end];
+    grid-template-columns:[name-container-start pc-start settings-start] 160px [name-container-end nav-start]240px [nav-end] 380px[pc-end settings-end];
+    grid-template-rows:[name-container-start nav-start] 40px [name-container-end settings-start nav-end pc-start]120px 0px 1090px[pc-end settings-end];
     grid-gap:20px;
 }
 .sheet-name-container {
@@ -140,8 +144,35 @@ button[type=roll] {
     grid-template-columns: [name-container-start tab-container-start header-start]160px [name-container-end ] 280px [header-end] 20px [in-play-start] 380px [in-play-end tab-container-end];
     grid-template-rows: [header-start in-play-start] 120px [header-end in-play-end] 40px [tab-container-start]  1090px [tab-container-end];
 }
+.sheet-settings{
+    grid-area:settings;
+    grid-template-columns:270px 270px 270px;
+    grid-auto-flow:column;
+    grid-column-gap:20px;
+    grid-row-gap:40px;
+    align-items:start;
+}
+.sheet-npc{
+    grid-area:settings;
+}
+.sheet-starship{
+    grid-area:settings;
+}
 .sheet-name-container .sheet-section {
     position:initial !important;
+}
+.sheet-section-container > .sheet-row{
+    width:100%;
+    padding:0px 5px 0px 5px;
+    display:grid;
+    grid-auto-flow:column;
+    grid-column-gap:5px;
+}
+.sheet-buff-stack{
+    min-width:100%;
+    max-width:100%;
+    height:1em;
+    min-height:1em;
 }
 .sheet-char-info span,
 .sheet-class-info span{
@@ -220,7 +251,6 @@ input[type=radio].sheet-in-play-tab.sheet-buff-tab:checked ~ .sheet-buffs{
 .sheet-section-container{
     border:0px solid transparent;
     border-radius:0px 15px 15px;
-    /*border-image:url('https://cdn.rawgit.com/Kurohyou/Starfinder-Character-Sheet/bed46a76/border.png') 35% stretch;*/
     box-shadow:0px 0px 5px #550aa2,0px 0px 20px #0a4ba1;
     margin-top:5px;
     padding:5px 0px;
@@ -371,6 +401,9 @@ input[type=radio].sheet-char-tab.sheet-caster-details-tab:checked ~ .sheet-caste
 input.sheet-class-skills,
 input.sheet-class-num-level{
     text-align:center;
+}
+.sheet-spell-button-container{
+    width:100%;
 }
 .sheet-spellclass-container {
     display:none;
@@ -618,6 +651,12 @@ input[type=checkbox].sheet-class-spells:checked + .sheet-spellclass-container,
 .sheet-spellclass-label-container{
     display:grid;
 }
+input[type=checkbox].sheet-class-spells + button{
+    display:none;
+}
+input[type=checkbox].sheet-class-spells:checked + button{
+    display:inline;
+}
 input.sheet-class-spells{
     width:initial;
 }
@@ -797,6 +836,9 @@ input[type=radio].sheet-tab-button.sheet-spells + span {
 	width: 62px;
 	display:none;
 }
+div.sheet-spells{
+    display:none;
+}
 input[type=radio].sheet-tab-button.sheet-options,
 input[type=radio].sheet-tab-button.sheet-options + span {
     left:49px;
@@ -804,8 +846,12 @@ input[type=radio].sheet-tab-button.sheet-options + span {
 	font-family:Pictos !important;
 }
 .sheet-is-caster:checked ~ input[type=radio].sheet-tab-button.sheet-spells,
-.sheet-is-caster:checked ~ input[type=radio].sheet-tab-button.sheet-spells + span {
+.sheet-is-caster:checked ~ input[type=radio].sheet-tab-button.sheet-spells + span{
     display:block;
+}
+.sheet-is-caster:checked + div.sheet-spells{
+    display:flex;
+    flex-wrap:wrap;
 }
 .sheet-is-caster:checked ~ input[type=radio].sheet-tab-button.sheet-options,
 .sheet-is-caster:checked ~ input[type=radio].sheet-tab-button.sheet-options + span {
@@ -986,7 +1032,7 @@ input[type=radio].sheet-tab-button.sheet-options:checked ~ .sheet-page.sheet-opt
 .sheet-init-container,
 .sheet-health-container{
     width:100%;
-	margin:5px 5px 0px auto;
+	margin:5px 0px 0px 0px;
 	padding:0px;
 	display: flex;
     justify-content:space-between;
@@ -1067,10 +1113,6 @@ input[type=radio].sheet-tab-button.sheet-options:checked ~ .sheet-page.sheet-opt
 .sheet-save-container select{
 	height:15px;
 }
-.sheet-armor-container {
-    margin-left:5px;
-	margin-right:5px;
-}
 .sheet-ac {
 	display:inline;
 	text-align:left;
@@ -1116,7 +1158,6 @@ span.sheet-ranks{
 	width:80px !important;
 }
 .sheet-dr {
-	margin-left:5px;
 	width:80px;
 }
 span.sheet-resist {
@@ -1828,6 +1869,8 @@ button input{
     content:'b'!important;
     font-family:Pictos Three;
     position:absolute;
+    color:black;
+    text-shadow:none;
     left:-10px;
 }
 .sheet-skill-container > * {
@@ -1948,25 +1991,23 @@ button .sheet-profession-name{
 .sheet-mod-debuff:checked ~ .sheet-modified-attr:after{
     font-family:Pictos;
     position:absolute;
-    content:'}' !important;
+    content:'@' !important;
 }
-/**********************************************ROLL TEMPLATES*****************************************************************************/
+/*############################################################ ROLL TEMPLATES ############################################################*/
 .sheet-rolltemplate-sf_generic,
 .sheet-rolltemplate-sf_attack,
 .sheet-rolltemplate-sf_spell {
-    max-width:225px;
+    display:grid;
+    grid-template-columns:[header-start body-start] 10px [footer-start] 1fr [header-end] 10px [body-end footer-end];
+    margin:0px;
+    padding:0px;
+    border:0px;
 }
 .sheet-rolltemplate-sf_generic *,
 .sheet-rolltemplate-sf_attack *,
 .sheet-rolltemplate-sf_spell *{
     font-family:Aldrich;
     color:white;
-}
-.sheet-rolltemplate-sf_generic .sheet-template-container,
-.sheet-rolltemplate-sf_attack .sheet-template-container,
-.sheet-rolltemplate-sf_spell .sheet-template-container{
-    display:flex;
-    flex-wrap:wrap;
 }
 .sheet-rolltemplate-sf_generic .inlinerollresult,
 .sheet-rolltemplate-sf_attack .inlinerollresult,
@@ -1978,7 +2019,6 @@ button .sheet-profession-name{
     text-shadow:0px 0px 10px #49f5ff,0px 0px 20px #6bf7ff;
     line-height:1.4em;
 }
-
 .sheet-rolltemplate-sf_generic a[href^="!"],
 .sheet-rolltemplate-sf_attack a[href^="!"],
 .sheet-rolltemplate-sf_spell a[href^="!"],
@@ -1988,10 +2028,21 @@ button .sheet-profession-name{
 .sheet-rolltemplate-sf_generic a[href^="https"],
 .sheet-rolltemplate-sf_attack a[href^="https"],
 .sheet-rolltemplate-sf_spell a[href^="https"]{
-    background-color:transparent;
+    background-color:transparent !important;
     border:0px transparent !important;
     color:white;
     text-shadow:0px 0px 10px #49f5ff,0px 0px 20px #6bf7ff;
+}
+.sheet-rolltemplate-sf_generic a[href^="!"]:hover,
+.sheet-rolltemplate-sf_attack a[href^="!"]:hover,
+.sheet-rolltemplate-sf_spell a[href^="!"]:hover,
+.sheet-rolltemplate-sf_generic a[href^="~"]:hover,
+.sheet-rolltemplate-sf_attack a[href^="~"]:hover,
+.sheet-rolltemplate-sf_spell a[href^="~"]:hover,
+.sheet-rolltemplate-sf_generic a[href^="https"]:hover,
+.sheet-rolltemplate-sf_attack a[href^="https"]:hover,
+.sheet-rolltemplate-sf_spell a[href^="https"]:hover{
+    text-shadow:0px 0px 10px #f86f1a,0px 0px 20px #fc6507;
 }
 .sheet-rolltemplate-sf_generic .inlinerollresult.fullcrit,
 .sheet-rolltemplate-sf_attack .inlinerollresult.fullcrit,
@@ -2014,7 +2065,7 @@ button .sheet-profession-name{
 .sheet-rolltemplate-sf_generic .inlinerollresult.fullfail:before,
 .sheet-rolltemplate-sf_attack .inlinerollresult.fullfail:before,
 .sheet-rolltemplate-sf_spell .inlinerollresult.fullfail:before{
-    font-family:dicefontd4;
+    font-family:Pictos;
     content:'@';
 }
 .sheet-rolltemplate-sf_generic .inlinerollresult.importantroll,
@@ -2025,7 +2076,7 @@ button .sheet-profession-name{
 .sheet-rolltemplate-sf_generic .sheet-generic-body,
 .sheet-rolltemplate-sf_attack .sheet-generic-body,
 .sheet-rolltemplate-sf_spell .sheet-generic-body{
-    grid-template-columns:[label-start notes-start] 112px [label-end roll-start] 111px [roll-end notes-end];
+    grid-template-columns:[label-start notes-start] 1fr [label-end roll-start] 1fr [roll-end notes-end];
     background-color:#0e5566;
     display:grid;
     justify-content:center;
@@ -2035,6 +2086,8 @@ button .sheet-profession-name{
     border:0px transparent;
     border-radius:0px 15px 0px 15px;
     box-shadow:0px 0px 10px #49f5ff,0px 0px 20px #6bf7ff;
+    grid-column-start:body-start;
+    grid-column-end:body-end;
 }
 .sheet-rolltemplate-sf_generic .sheet-generic-header,
 .sheet-rolltemplate-sf_generic .sheet-generic-footer,
@@ -2046,7 +2099,7 @@ button .sheet-profession-name{
     border:0px transparent;
     box-shadow:0px 0px 10px #49f5ff,0px 0px 20px #6bf7ff;
     padding:0px 5px;
-    max-width:218px;
+    max-width:100%;
     display:inline-block;
     line-height:1.4em;
     font-size:13pt;
@@ -2056,14 +2109,19 @@ button .sheet-profession-name{
 .sheet-rolltemplate-sf_spell .sheet-generic-header{
     border-radius:5px 5px 0px 0px;
     font-weight:700;
+    grid-column-start:header-start;
+    grid-column-end:header-end;
+    justify-self:start;
 }
 .sheet-rolltemplate-sf_generic .sheet-generic-footer,
 .sheet-rolltemplate-sf_attack .sheet-generic-footer,
 .sheet-rolltemplate-sf_spell .sheet-generic-footer{
     border-radius:0px 0px 5px 5px;
     margin-left:auto;
+    margin-right:0px;
     font-style:italic;
-    text-shadow:0px 0px 10px #49f5ff,0px 0px 20px #6bf7ff;
+    grid-column:footer-start / footer-end;
+    justify-self:end;
 }
 .sheet-rolltemplate-sf_generic .sheet-highlighted,
 .sheet-rolltemplate-sf_attack .sheet-highlighted,
@@ -2086,6 +2144,9 @@ button .sheet-profession-name{
 .sheet-rolltemplate-sf_attack .sheet-highlighted.sheet-across,
 .sheet-rolltemplate-sf_spell .sheet-highlighted.sheet-across{
     border-radius: 5px;
+    max-height:200px;
+    overflow-y:auto;
+    overflow-x:hidden;
 }
 .sheet-rolltemplate-sf_generic .sheet-r1name,
 .sheet-rolltemplate-sf_attack .sheet-r1name,
@@ -2118,4 +2179,4 @@ button .sheet-profession-name{
 .sheet-rolltemplate-sf_spell .sheet-notes-row{
     grid-column:notes-start / notes-end;
 }
-/*****************************************************************************************************************************************/
+ /* ########################################################################################################################################*/
