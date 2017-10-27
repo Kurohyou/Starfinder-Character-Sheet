@@ -5,6 +5,10 @@
 * {
     font-family:Aldrich,Copperplate,Monospace;
 }
+.repitem .sheet-row {
+    justify-content:flex-start;
+    display:flex;
+}
 .sheet-container{
     display:none;
 }
@@ -43,6 +47,9 @@ textarea {
     font-size:10pt;
     padding:0px;
 }
+textarea{
+    resize:vertical;
+}
 select {
     border: 0px;
     background: none;
@@ -80,6 +87,10 @@ label{
     position:relative;
     text-shadow:0px 0px 10px #49f5ff,0px 0px 20px #6bf7ff;
     color:#333398;
+}
+label{
+    cursor:pointer;
+    display:inline;
 }
 button[type=roll]::before
 {
@@ -137,6 +148,11 @@ button[type=roll] {
     width:100%;
     height:100%;
     position:relative;
+    display:grid;
+    grid-auto-flow:column;
+    justify-content:start;
+    align-content:center;
+    grid-gap:5px;
 }
 .sheet-pc {
     grid-area:pc;
@@ -821,9 +837,8 @@ span.sheet-aspell0{
     grid-template-rows:[tab-button-start page-start] 20px [tab-button-end] 870px [page-end];
     justify-items:start;
 }
-.sheet-tab-button,
-.sheet-tab-button + span {
-	position:absolute;
+label.sheet-tab-button *{
+	padding:5px;
 }
 input[type=radio].sheet-tab-button.sheet-core,
 input[type=radio].sheet-tab-button.sheet-core + span {
@@ -834,9 +849,9 @@ input[type=radio].sheet-tab-button.sheet-spells,
 input[type=radio].sheet-tab-button.sheet-spells + span {
 	left: 49px;
 	width: 62px;
-	display:none;
 }
-div.sheet-spells{
+div.sheet-spells,
+label.sheet-spells{
     display:none;
 }
 input[type=radio].sheet-tab-button.sheet-options,
@@ -845,9 +860,8 @@ input[type=radio].sheet-tab-button.sheet-options + span {
 	width: 20px;
 	font-family:Pictos !important;
 }
-.sheet-is-caster:checked ~ input[type=radio].sheet-tab-button.sheet-spells,
-.sheet-is-caster:checked ~ input[type=radio].sheet-tab-button.sheet-spells + span{
-    display:block;
+.sheet-is-caster:checked ~ .sheet-tab-button.sheet-spells{
+    display:inline;
 }
 .sheet-is-caster:checked + div.sheet-spells{
     display:flex;
@@ -930,7 +944,12 @@ input[type=radio].sheet-tab-button.sheet-options:checked ~ .sheet-page.sheet-opt
     grid-area:abilities;
     min-height:100%;
     width:100%;
+    display:grid;
+    grid-template-columns:[left-margin-start] 10px [left-margin-end content-start] 1fr [content-end right-margin-start] 10px;
     justify-content:center;
+}
+.sheet-abilities-container > :not(:nth-child(1)){
+    grid-column:content-start / content-end
 }
 .sheet-initiative-container button{
     background-image:url('https://cdn.rawgit.com/Kurohyou/Starfinder-Character-Sheet/533e5c9f/Selected%20Starfinder%20Header.png')!important;
@@ -1276,17 +1295,12 @@ span.sheet-resist {
     margin:0px;
 }
 .sheet-item-name {
-    width:80px !important;
 }
 .sheet-item-bulk {
-    width: 10% !important;
+    width: 15px;
     text-align:center;
 }
-.sheet-item-cost {
-    width:20% !important;
-}
 .sheet-item-quantity {
-    width:10% !important;
     text-align:center;
 }
 .sheet-item-equip {
@@ -1300,7 +1314,8 @@ span.sheet-resist {
 }
 span.sheet-buff-mod,
 span.sheet-item-mods,
-h1.sheet-item-mods{
+h1.sheet-item-mods,
+label.sheet-item-mods{
     position:absolute;
     left:0px;
     top:0px;
@@ -1313,10 +1328,6 @@ span.sheet-item-mods{
 .sheet-ability-options .sheet-row{
     display:flex;
 }
-.sheet-ability .sheet-row,
-.sheet-ability .sheet-field-container .sheet-row{
-    justify-content:flex-start;
-}
 .sheet-ability .sheet-row .sheet-attr-total-container .sheet-ability-uses,
 .sheet-ability .sheet-row .sheet-attr-total-container{
     width:100px !important;
@@ -1324,9 +1335,12 @@ span.sheet-item-mods{
 .sheet-abilities-container .repcontrol{
     width:100%;
 }
-.repcontainer[data-groupname='repeating_ability'],
-.sheet-ability-header{
-    width:90%;
+.sheet-abi-dmg-dice,
+.sheet-abi-misc,
+.sheet-scalable-input{
+    
+    width:5px;
+    flex:1 1 auto;
 }
 .repcontainer[data-groupname='repeating_ability'] .repitem{
     width:100%;
@@ -1390,13 +1404,20 @@ span.sheet-item-mods{
 }
 textarea.sheet-abi-description{
     width:100%;
-    max-width:100%;
-    min-width:100%;
+    max-width:100% !important;
+    min-width:100% !important;
     height:2.5em;
     min-height:2.5em;
 }
 .sheet-field-container{
     position:relative;
+}
+.sheet-attack .sheet-row {
+    width:100%;
+    padding:0px;
+    margin:0px;
+    display:flex;
+    justify-content:flex-start;
 }
 .sheet-filter-container,
 .sheet-field-container .sheet-row,
@@ -1458,7 +1479,7 @@ span.sheet-field{
     border-radius:2px;
     padding:1px;
 }
-.sheet-field-tab:checked + .sheet-field:not(.sheet-item-mods){
+.sheet-field-tab:checked + .sheet-field:not(.sheet-item-mods):not(.sheet-row){
     display:block;
     text-align:center;
     width:100%;
@@ -1469,7 +1490,7 @@ span.sheet-field{
 }
 .sheet-field-tab:checked + .sheet-field-container{
     display:block !important;
-    width:235px;
+    width:100%;
 }
 /*Spell Styling*/
 .sheet-spells-container .sheet-column-1{
@@ -1577,7 +1598,6 @@ textarea.sheet-item-mods{
     width:100%;
     height:40px;
     margin:0px;
-    text-indent:50px;
     max-width:100%;
     overflow-y:hidden;
     overflow-x:hidden;
@@ -1810,13 +1830,6 @@ button input{
 	width:77px;
 	text-align:center;
 	color:white;
-}
-.sheet-attack .sheet-atk-options .sheet-row {
-    width:100%;
-    padding:0px;
-    margin:0px;
-    display:flex;
-    justify-content:flex-start;
 }
 .sheet-attack .sheet-atk-options .sheet-row input {
     margin:0px 5px;
@@ -2140,13 +2153,10 @@ button .sheet-profession-name{
 .sheet-rolltemplate-sf_spell .sheet-highlighted.sheet-split.sheet-roll{
     border-radius:0px 5px 5px 0px;
 }
-.sheet-rolltemplate-sf_generic .sheet-highlighted.sheet-across,
-.sheet-rolltemplate-sf_attack .sheet-highlighted.sheet-across,
-.sheet-rolltemplate-sf_spell .sheet-highlighted.sheet-across{
-    border-radius: 5px;
-    max-height:200px;
-    overflow-y:auto;
-    overflow-x:hidden;
+.sheet-rolltemplate-sf_generic .sheet-across,
+.sheet-rolltemplate-sf_attack .sheet-across,
+.sheet-rolltemplate-sf_spell .sheet-across{
+    grid-column:notes-start / notes-end;
 }
 .sheet-rolltemplate-sf_generic .sheet-r1name,
 .sheet-rolltemplate-sf_attack .sheet-r1name,
@@ -2155,6 +2165,11 @@ button .sheet-profession-name{
     display:flex;
     align-content:center;
     align-items:center;
+}
+.sheet-rolltemplate-sf_attack .sheet-attack-label,
+.sheet-rolltemplate-sf_spell .sheet-attack-label{
+    text-align:center;
+    margin-top:10px;
 }
 .sheet-rolltemplate-sf_generic .sheet-roll,
 .sheet-rolltemplate-sf_attack .sheet-roll,
@@ -2177,6 +2192,9 @@ button .sheet-profession-name{
 .sheet-rolltemplate-sf_generic .sheet-notes-row,
 .sheet-rolltemplate-sf_attack .sheet-notes-row,
 .sheet-rolltemplate-sf_spell .sheet-notes-row{
-    grid-column:notes-start / notes-end;
+    border-radius: 5px;
+    max-height:200px;
+    overflow-y:auto;
+    overflow-x:hidden;
 }
  /* ########################################################################################################################################*/
