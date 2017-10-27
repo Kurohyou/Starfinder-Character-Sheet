@@ -1348,7 +1348,7 @@
                                     </select>
                                     <input hidden='true' type='text' name='attr_ability_value' value='0'>
                                     <span class='arith'>+</span>
-                                    <input class='bab' name='attr_bab' disabled='true' title='@{bab}' value='0'>
+                                    <input class='bab' name='attr_bab' readonly='true' title='@{bab}' value='0'>
                                     <input class='atk-misc misc' type='text' name='attr_bonus' placeholder='+@{attr}/2 + ?{Query}' value=''>
                                     <span class='label' data-i18n='atk_range'>RNG</span>
                                     <input class='atk-range' type='text' name='attr_range' placeholder='30 ft' value=''>
@@ -6084,6 +6084,19 @@
                 },
                 {
                     repeating:'attack',
+                    attr:'bab',
+                    numAdds:0,
+                    attrAdds:['bab'],
+                    multAdds:[1],
+                    category:'category',
+                    ability:'',
+                    repeatTextAdds:[],
+                    repeatAdds:[],
+                    textAdds:[],
+                    moddable:true
+                },
+                {
+                    repeating:'attack',
                     attr:'ability_value',
                     numAdds:0,
                     attrAdds:[],
@@ -6128,6 +6141,19 @@
                     repeatAdds:[],
                     textAdds:[],
                     repeatParseField:['uses_max_base'],
+                    moddable:true
+                },
+                {
+                    repeating:'ability',
+                    attr:'bab',
+                    numAdds:0,
+                    attrAdds:['bab'],
+                    multAdds:[1],
+                    category:'category',
+                    ability:'',
+                    repeatTextAdds:[],
+                    repeatAdds:[],
+                    textAdds:[],
                     moddable:true
                 },
                 {
@@ -6202,6 +6228,20 @@
                     repeatAdds:[],
                     textAdds:[],
                     repeatParseField:['level'],
+                    moddable:true
+                },
+                
+                {
+                    repeating:'spell',
+                    attr:'bab',
+                    numAdds:0,
+                    attrAdds:['bab'],
+                    multAdds:[1],
+                    category:'category',
+                    ability:'',
+                    repeatTextAdds:[],
+                    repeatAdds:[],
+                    textAdds:[],
                     moddable:true
                 },
                 {
@@ -6877,7 +6917,9 @@
                     })
                     .reject((f)=>{return _.isEmpty(f)})
                     .reduce((memo,f)=>{
-                        buffSplit = f.split(/\s*,\s*|\s*\n\s*/);
+                        TAS.log('f: '+f);
+                        buffSplit = f.split(/\s*\n\s*/);
+                        TAS.log('buffSplit: '+JSON.stringify(buffSplit));
                         memo=memo.concat(buffSplit);
                         return memo;
                     },[])
@@ -6926,6 +6968,7 @@
                         return memo;
                     },{})
                     .value();
+                    TAS.log('buffFields: '+JSON.stringify(buffFields));
             return buffFields;
         },
         
@@ -7031,6 +7074,10 @@
                     setObj = _.reduce(repeatIDs,(memo,id) =>{
                         let specificBonus = bonus[obj.attr] || {};
                         specificBonus = calcBuffs(attributes,specificBonus,setObj);
+                        if(obj.attr==='damage_total'){
+                            TAS.log('specificBonus: '+JSON.stringify(specificBonus));
+                        }
+                        memo[id+obj.attr.replace(/total/,'')+'misc']=specificBonus.misc;
                         bTotal=specificBonus.total + (attributes[id+(obj.repeating ? 'acp' : obj.attr+'_acp')]*1===1 ? calcBuffs(attributes,bonus.acp,setObj).total : 0);
                         if(obj.attr==='rp_max'){
                             if(attributes.resolve_source==='key'){
