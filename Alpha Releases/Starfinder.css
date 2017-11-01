@@ -91,6 +91,7 @@ label{
 label{
     cursor:pointer;
     display:inline;
+    position:relative;
 }
 button[type=roll]::before
 {
@@ -1102,7 +1103,7 @@ input[type=radio].sheet-tab-button.sheet-options:checked ~ .sheet-page.sheet-opt
 }
 .sheet-modified-attr {
     text-align:center;
-    display:block;
+    display:inline;
 }
 .sheet-attr-container .sheet-modified-attr {
     border-bottom:1px solid #D3D3D3;
@@ -1264,6 +1265,8 @@ span.sheet-resist {
     width:100%;
     display:flex;
     justify-content:space-between;
+    padding:0px;
+    margin:0px;
 }
 .repcontainer[data-groupname='repeating_item']  .repitem {
     position:relative;
@@ -1371,6 +1374,12 @@ span.sheet-item-mods{
     text-align:center;
     background-color:#333398 !important;
     color:white;
+}
+button.sheet-summary span{
+    display:block;
+    text-align:center;
+    min-height:12px;
+    padding:2px;
 }
 .sheet-ability .sheet-display .sheet-summary,
 .sheet-ability-header{
@@ -1990,6 +1999,7 @@ button .sheet-profession-name{
     color:#2dafeb;
     font-weight:900 !important;
     font-family:Aldrich,Copperplate !important;
+    text-shadow:none;
 }
 .sheet-mod-buff:checked ~ .sheet-modified-attr:after{
     font-family:Pictos;
@@ -2000,20 +2010,22 @@ button .sheet-profession-name{
     color:#fa893a;
     font-weight:900 !important;
     font-family:Aldrich,Copperplate !important;
+    text-shadow:none;
 }
 .sheet-mod-debuff:checked ~ .sheet-modified-attr:after{
     font-family:Pictos;
     position:absolute;
-    content:'@' !important;
+    content:'*' !important;
 }
 /*############################################################ ROLL TEMPLATES ############################################################*/
 .sheet-rolltemplate-sf_generic,
 .sheet-rolltemplate-sf_attack,
 .sheet-rolltemplate-sf_spell {
     display:grid;
-    grid-template-columns:[header-start body-start] 10px [footer-start] 1fr [header-end] 10px [body-end footer-end];
-    margin:0px;
-    padding:0px;
+    grid-template-columns:[left-start] 24px [left-end header-start body-start] 10px [footer-start] minmax(100px,1fr) [header-end] 10px [body-end footer-end right-start] 24px [right-end];
+    grid-template-rows:[header-start] auto [header-end body-start left-start right-start] auto [body-end left-end right-end footer-start] auto [footer-end];
+    margin:0px 0px 0px -42px;
+    padding:10px 0px 0px 0px;
     border:0px;
 }
 .sheet-rolltemplate-sf_generic *,
@@ -2021,6 +2033,36 @@ button .sheet-profession-name{
 .sheet-rolltemplate-sf_spell *{
     font-family:Aldrich;
     color:white;
+}
+.sheet-rolltemplate-sf_generic .sheet-side-banner,
+.sheet-rolltemplate-sf_attack .sheet-side-banner,
+.sheet-rolltemplate-sf_spell .sheet-side-banner{
+    background-color:#0e5566;
+    border-radius:0px 5px 5px 0px;
+    border:0px transparent;
+    box-shadow:0px 0px 10px #49f5ff,0px 0px 20px #6bf7ff;
+    padding:5px 0px;
+    display:inline;
+    writing-mode:vertical-rl;
+    line-height:1.4em;
+    font-size:13pt;
+    max-width:100%;
+    overflow:hidden;
+    position:relative;
+}
+.sheet-rolltemplate-sf_generic .sheet-left,
+.sheet-rolltemplate-sf_attack .sheet-left,
+.sheet-rolltemplate-sf_spell .sheet-left{
+    max-height:100%;
+    transform:rotate(180deg);
+    grid-area:left;
+    align-self:start;
+}
+.sheet-rolltemplate-sf_generic .sheet-right,
+.sheet-rolltemplate-sf_attack .sheet-right,
+.sheet-rolltemplate-sf_spell .sheet-right{
+    grid-area:right;
+    align-self:end;
 }
 .sheet-rolltemplate-sf_generic .inlinerollresult,
 .sheet-rolltemplate-sf_attack .inlinerollresult,
@@ -2079,7 +2121,7 @@ button .sheet-profession-name{
 .sheet-rolltemplate-sf_attack .inlinerollresult.fullfail:before,
 .sheet-rolltemplate-sf_spell .inlinerollresult.fullfail:before{
     font-family:Pictos;
-    content:'@';
+    content:'*';
 }
 .sheet-rolltemplate-sf_generic .inlinerollresult.importantroll,
 .sheet-rolltemplate-sf_attack .inlinerollresult.importantroll,
@@ -2099,8 +2141,8 @@ button .sheet-profession-name{
     border:0px transparent;
     border-radius:0px 15px 0px 15px;
     box-shadow:0px 0px 10px #49f5ff,0px 0px 20px #6bf7ff;
-    grid-column-start:body-start;
-    grid-column-end:body-end;
+    grid-area:body;
+    position:relative;
 }
 .sheet-rolltemplate-sf_generic .sheet-generic-header,
 .sheet-rolltemplate-sf_generic .sheet-generic-footer,
@@ -2122,8 +2164,7 @@ button .sheet-profession-name{
 .sheet-rolltemplate-sf_spell .sheet-generic-header{
     border-radius:5px 5px 0px 0px;
     font-weight:700;
-    grid-column-start:header-start;
-    grid-column-end:header-end;
+    grid-area:header;
     justify-self:start;
 }
 .sheet-rolltemplate-sf_generic .sheet-generic-footer,
@@ -2133,7 +2174,7 @@ button .sheet-profession-name{
     margin-left:auto;
     margin-right:0px;
     font-style:italic;
-    grid-column:footer-start / footer-end;
+    grid-area:footer;
     justify-self:end;
 }
 .sheet-rolltemplate-sf_generic .sheet-highlighted,
@@ -2170,6 +2211,12 @@ button .sheet-profession-name{
 .sheet-rolltemplate-sf_spell .sheet-attack-label{
     text-align:center;
     margin-top:10px;
+}
+.sheet-rolltemplate-sf_attack .sheet-attack-label:nth-child(1),
+.sheet-rolltemplate-sf_spell .sheet-attack-label:nth-child(1),
+.sheet-rolltemplate-sf_attack .sheet-attack-label:nth-child(2),
+.sheet-rolltemplate-sf_spell .sheet-attack-label:nth-child(2){
+    margin-top:0px;
 }
 .sheet-rolltemplate-sf_generic .sheet-roll,
 .sheet-rolltemplate-sf_attack .sheet-roll,
