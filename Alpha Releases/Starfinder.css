@@ -12,10 +12,10 @@
 .sheet-container{
     display:none;
 }
-.sheet-pc:checked ~ .sheet-pc,
-.sheet-npc:checked ~ .sheet-npc,
-.sheet-ship:checked ~ .sheet-ship,
-.sheet-settings:checked ~ .sheet-settings{
+input[type=radio].sheet-pc:checked ~ .sheet-pc,
+input[type=radio].sheet-npc:checked ~ .sheet-npc,
+input[type=radio].sheet-ship:checked ~ .sheet-ship,
+input[type=radio].sheet-settings:checked ~ .sheet-settings{
     display:grid;
 }
 .sheet-tab-button + span,
@@ -155,7 +155,14 @@ button[type=roll] {
     align-content:center;
     grid-gap:5px;
 }
-.sheet-pc {
+.sheet-nav > div{
+    position:relative;
+    grid-auto-flow:column;
+    justify-content:start;
+    align-content:center;
+    grid-gap:5px;
+}
+.sheet-starfinder > .sheet-pc {
     grid-area:pc;
     position:relative;
     grid-template-columns: [name-container-start tab-container-start header-start]160px [name-container-end ] 280px [header-end] 20px [in-play-start] 380px [in-play-end tab-container-end];
@@ -2016,6 +2023,20 @@ button .sheet-profession-name{
     font-family:Pictos;
     position:absolute;
     content:'*' !important;
+}
+/*############################################################ NPC ############################################################*/
+.sheet-container.sheet-npc{
+    grid-template-columns:[statblock-start] 1fr [statblock-end creator-start] 1fr [creator-end];
+    grid-template-rows:[statblock-start creator-start] 1fr [statblock-end creator-end];
+    grid-gap:5px;
+}
+.sheet-statblock{
+    grid-area:statblock;
+    outline:1px solid;
+}
+.sheet-creator{
+    grid-area:creator;
+    outline:1px solid;
 }
 /*############################################################ ROLL TEMPLATES ############################################################*/
 .sheet-rolltemplate-sf_generic,
