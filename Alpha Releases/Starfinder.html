@@ -3,15 +3,26 @@
         <img class='header-image' src='https://s3.amazonaws.com/files.d20.io/images/37233401/rLKhHmqX51cO05GJ9r0BpA/max.png'>
     </div>
     <div class='nav'>
-        <input class='is-not-caster' name='attr_is_caster' type='radio' value='0' hidden='true' checked='checked'>
-        <label class="tab-button core"><input class="tab-button core" type="radio" name="attr_tab_select" value="core" checked="checked" hidden='true'><span data-i18n='core'>CORE</span></label>
-        <input class='is-caster' name='attr_is_caster' type='radio' value='1' hidden='true'>
-        <label class="tab-button spells"><input class="tab-button spells" type="radio" name="attr_tab_select" value="spells" hidden='true'><span data-i18n='spells'>SPELLS</span></label>
-        <label class="tab-button options"><input class="tab-button options" type="radio" name="attr_tab_select" value="options" hidden='true'><span style='font-style:pictos;'>y</span></label>
+        <input class='pc' type='radio' name='attr_sheet_type_nav' value='pc' checked='checked' hidden='true'>
+        <input class='npc' type='radio' name='attr_sheet_type_nav' value='npc' hidden='true'>
+        <input class='ship' type='radio' name='attr_sheet_type_nav' value='ship' hidden='true'>
+        <div class='pc container'>
+            <input class='is-not-caster' name='attr_is_caster' type='radio' value='0' hidden='true' checked='checked'>
+            <label class="tab-button core"><input class="tab-button core" type="radio" name="attr_tab_select" value="core" checked="checked" hidden='true'><span data-i18n='core'>CORE</span></label>
+            <input class='is-caster' name='attr_is_caster' type='radio' value='1' hidden='true'>
+            <label class="tab-button spells"><input class="tab-button spells" type="radio" name="attr_tab_select" value="spells" hidden='true'><span data-i18n='spells'>SPELLS</span></label>
+            <label class="tab-button options"><input class="tab-button options" type="radio" name="attr_tab_select" value="options" hidden='true'><span style='font-style:pictos;'>y</span></label>
+        </div>
+        <div class='npc container'>
+            
+        </div>
+        <div class='ship container'>
+            
+        </div>
     </div>
     <!-- Toggles -->
-    <input class="container_toggle pc" name="attr_npcship_toggle" type="radio" hidden='true' value="pc" checked='checked'>
-    <input class="container_toggle npc" name="attr_npcship_toggle" type="radio" hidden='true' value="npc">
+    <input class="container_toggle pc" name="attr_npcship_toggle" type="radio" hidden='true' value="pc">
+    <input class="container_toggle npc" name="attr_npcship_toggle" type="radio" hidden='true' value="npc" checked='checked'>
     <input class="container_toggle ship" name="attr_npcship_toggle" type="radio" hidden='true' value="ship">
     <input class="container_toggle settings" name="attr_npcship_toggle" type="radio" hidden='true' value="settings">
     <!-- Containers -->
@@ -53,7 +64,12 @@
         </div>
     </div>
     <div class="container npc">
-        
+            <div class='statblock'>
+                
+            </div>
+            <div class='creator'>
+                
+            </div>
     </div>
     <div class="container pc">
         <!--<div class='header'>-->
@@ -304,12 +320,11 @@
             <div class='menus in-play'>
                 <button type='roll' name='roll_initiative' value='@{whisper_state}&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=Initiative}} {{r1=[[1d20+@{initiative_ability}[ABILITY]@{initiative_misc}+[[(@{initiative_ability}@{initiative_misc})/100)]][TIE BREAKER]&{tracker}]]}}' data-i18n='initiative'>INITIATIVE</button>
                 <button type='roll' name='roll_attacks' value='@{attacks_menu}' data-i18n='attacks'>ATTACKS</button>
-                <button type='roll' name='roll_saves' value='@{saves_menu}' data-i18n='saves'>SAVES</button>
+                <button type='roll' name='roll_saves' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=SAVES}} {{buttons1=[Fort](~@{character_name}|fort) | [Ref](~@{character_name}|ref) | [Will](~@{character_name}|will)}}' data-i18n='saves'>SAVES</button>
                 <button type='roll' name='roll_abilities' value='@{abilities_menu}' data-i18n='abilities-u'>ABILITIES</button>
-                <button type='roll' name='roll_ability_checks' value='@{ability_checks_menu}' data-i18n='ability_checks'>ABILITY CHECKS</button>
+                <button type='roll' name='roll_ability_checks' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=ABILITY CHECKS}} {{buttons1=[Strength](~@{character_name}|strength) | [Dexterity](~@{character_name}|dexterity) | [Constitution](~@{character_name}|constitution) | [Intelligence](~@{character_name}|intelligence) | [Wisdom](~@{character_name}|wisdom) | [Charisma](~@{character_name}|charisma)}}' data-i18n='ability_checks'>ABILITY CHECKS</button>
                 <button type='roll' name='roll_skills' value='@{skills_menu}' data-i18n='skills'>SKILLS</button>
                 <input type='text' name='attr_attacks_menu' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} {{title=ATTACKS}}' hidden='true'>
-                <input type='text' name='attr_saves_menu' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=SAVES}} {{buttons1=[Fort](~Starfinder|fort) | [Ref](~Starfinder|ref) | [Will](~Starfinder|will)}}' hidden='true'>
                 <input class='is-caster' name='attr_caster_select' type='radio' value='1' hidden='true'>
                 <div class='spell-button-container spells'>
                     <button type='roll' name='roll_spells' value='@{spells_menu}' data-i18n='spells'>SPELLS</button>
@@ -337,7 +352,6 @@
                     <input type='text' name='attr_class_5_spellbook' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} ' hidden='true'>
                 </div>
                 <input type='text' name='attr_abilities_menu' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} {{title=ABILITIES}}' hidden='true'>
-                <input type='text' name='attr_ability_checks_menu' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=ABILITY CHECKS}} {{buttons1=[Strength](~Starfinder|strength) | [Dexterity](~Starfinder|dexterity) | [Constitution](~Starfinder|constitution) | [Intelligence](~Starfinder|intelligence) | [Wisdom](~Starfinder|wisdom) | [Charisma](~Starfinder|charisma)}}' hidden='true'>
                 <input type='text' name='attr_skills_menu' value='/w "@{character_name}" &{template:sf_generic} {{name=@{character_name}}} {{title=SKILLS}}' hidden='true'>
             </div>
             <input class='in-play-tab buff-tab' type='radio' name='attr_in-play-tab' value='buffs'><h1 class='section label buff-head' data-i18n='buffs'>BUFFS</h1>
@@ -5386,7 +5400,7 @@
     /*start starfinder.js*/
     var starfinder = starfinder || (function(){
         'use strict';
-        var version = 0.021509511359,
+        var version = 0.021509724456,
             sheetAttributes = [
                 //Class & Character attributes
                 'character_name','character_id','bab','character_level','race',
@@ -6494,6 +6508,9 @@
                                 setObj[event.sourceAttribute.replace(/frequency/,'uses_freq_dependency')]=objs[event.sourceAttribute];
                             }else{
                                 setObj = attribute.match(/class_\d/) ? classHandler(objs,attribute) : attribute.match(/repeating_ability|repeating_spell/) ? abilityHandler(objs,attribute) : {};
+                            }
+                            if(attribute==='sheet_type'){
+                                setObj.sheet_type_nav=event.newValue;
                             }
                             if(setObj){
                                 bonuses=parseBuffs(objs);
