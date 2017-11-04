@@ -11,14 +11,14 @@
             <label class="tab-button core"><input class="tab-button core" type="radio" name="attr_tab_select" value="core" checked="checked" hidden='true'><span data-i18n='core'>CORE</span></label>
             <input class='is-caster' name='attr_is_caster' type='radio' value='1' hidden='true'>
             <label class="tab-button spells"><input class="tab-button spells" type="radio" name="attr_tab_select" value="spells" hidden='true'><span data-i18n='spells'>SPELLS</span></label>
-            <label class="tab-button options"><input class="tab-button options" type="radio" name="attr_tab_select" value="options" hidden='true'><span style='font-style:pictos;'>y</span></label>
         </div>
         <div class='npc container'>
-            
+            <label class="tab-button npc"><input class="tab-button npc" type="radio" name="attr_tab_select" value="npc" checked="checked" hidden='true'><span name='attr_character_name'></span></label>
         </div>
         <div class='ship container'>
-            
+            <label class="tab-button ship"><input class="tab-button ship" type="radio" name="attr_tab_select" value="ship" checked="checked" hidden='true'><span name='attr_character_name'></span></label>
         </div>
+        <label class="tab-button options"><input class="tab-button options" type="radio" name="attr_tab_select" value="options" hidden='true'><span style='font-style:pictos;'>y</span></label>
     </div>
     <!-- Toggles -->
     <input class="container_toggle pc" name="attr_npcship_toggle" type="radio" hidden='true' value="pc">
@@ -65,7 +65,50 @@
     </div>
     <div class="container npc">
             <div class='statblock'>
-                
+                <div class='statblock-header'>
+                    <input class='scalable-input char-name' type='text' name='attr_character_name'>
+                    <span class='cr label' data-i18n='cr'>CR</span>
+                    <input class='cr' type='text' name='attr_cr' value=''>
+                </div>
+                <div class='row'>
+                    <span class='xp label' data-i18n='xp'>XP</span>
+                    <input class='xp scalable-input' type='text' name='attr_xp'>
+                </div>
+                <div class='row'>
+                    <input class='scalable-input' type='text' name='attr_race'>
+                    <input class='scalable-input' type='text' name='attr_graft'>
+                </div>
+                <div>
+                    <input class='scalable-input' type='text' name='attr_alignment'>
+                    <select class='size' name='attr_size' title=@{size}>
+                        <option value='-4'>FINE</option>
+                        <option value='-3'>DIMINUTIVE</option>
+                        <option value='-2'>TINY</option>
+                        <option value='-1'>SMALL</option>
+                        <option value='0'selected='selected'>MEDIUM</option>
+                        <option value='1'>LARGE</option>
+                        <option value='2'>HUGE</option>
+                        <option value='3'>GARGANTUAN</option>
+                        <option value='4'>COLOSSAL</option>
+                    </select>
+                    <input class='scalable-input' type='text' name='attr_type_subtype'>
+                </div>
+                <div class='row'>
+                    <span class='label' data-i18n='init'>INIT</span>
+                    <input class='init' type='text' name='attr_initiative'>
+                    <span class='senses label' data-i81n='senses'>SENSES</span>
+                    <input class='senses scalable-input' type='text' name='attr_senses'>
+                    <span class='perception label' data-i18n='perception'>PERCEPTION</span>
+                    <input class='perception' type='text' name='attr_perception' value='0'>
+                </div>
+                <div class='row'>
+                    
+                </div>
+                <div class='statblock-section-header defense-header'></div>
+                <div class='statblock-section-header offense-header'></div>
+                <div class='statblock-section-header statistics-header'></div>
+                <div class='statblock-section-header ecology-header'></div>
+                <div class='statblock-section-header special-abilities-header'></div>
             </div>
             <div class='creator'>
                 
@@ -1396,7 +1439,7 @@
                                         <option value='@{wisdom_mod}'>WIS</option>
                                         <option value='@{charisma_mod}'>CHA</option>
                                     </select>
-                                    <input hidden='true' type='text' name='attr_ability_value' value='0'>
+                                    <input hidden='true' type='text' name='attr_ability' value='0'>
                                     <span class='arith'>+</span>
                                     <input class='bab' name='attr_bab' readonly='true' title='@{bab}' value='0'>
                                     <input class='atk-misc misc' type='text' name='attr_bonus' placeholder='+@{attr}/2 + ?{Query}' value=''>
@@ -1415,7 +1458,7 @@
                                         <option value='@{wisdom_mod}'>WIS</option>
                                         <option value='@{charisma_mod}'>CHA</option>
                                     </select>
-                                    <input hidden='true' type='text' name='attr_damage_ability_value' value='0'>
+                                    <input hidden='true' type='text' name='attr_damage_ability' value='0'>
                                     <input class='atk-damage' type='text' name='attr_damage_bonus' placeholder='+@{attr}/2 + ?{Query}' value=''>
                                 </div>
                                 <div class='row'>
@@ -1455,7 +1498,7 @@
                                 <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                 <div class='row field-container mod-container'>
                                     <input class='field-tab macro-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
-                                    <textarea class='atk-description' name='attr_macro' title='@{repeating_attack_$X_attack_macro}'>@{whisper_state}&{template:sf_attack}{{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{ability_value}[ABILITY]+@{proficiency_value}[PROF]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{misc}@{bonus}]]}} {{damage1type=@{type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit1effect=@{crit}}} {{r2=[[1d20+@{bab}[BAB]+@{ability_value}[ABILITY]+@{proficiency_value}[PROF]+[[@{full_attack_penalty}]][FULL ATTACK]@{misc}@{bonus}]]}} {{damage2type=@{type}}} {{damage2=[[@{damage_dice}+@{damage_ability_value}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit2effect=@{crit}}} {{r3=[[1d20+@{bab}[BAB]+@{ability_value}[ABILITY]+@{proficiency_value}[PROF]+@{full_attack_penalty}[FULL ATTACK]@{misc}@{bonus}]]}} {{damage3type=@{type}}} {{damage3=[[@{damage_dice}+@{damage_ability_value}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit3effect=@{crit}}} {{r4=[[1d20+@{bab}[BAB]+@{ability_value}[ABILITY]+@{proficiency_value}[PROF]+@{full_attack_penalty}[FULL ATTACK]@{misc}@{bonus}]]}} {{damage4type=@{type}}} {{damage4=[[@{damage_dice}+@{damage_ability_value}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit4effect=@{crit}}} {{r5=[[1d20+@{bab}[BAB]+@{ability_value}[ABILITY]+@{proficiency_value}[PROF]+@{full_attack_penalty}[FULL ATTACK]@{misc}@{bonus}]]}} {{damage5type=@{type}}} {{damage5=[[@{damage_dice}+@{damage_ability_value}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit5effect=@{crit}}} {{range=@{range}}} {{notes=@{description}}}</textarea>
+                                    <textarea class='atk-description' name='attr_macro' title='@{repeating_attack_$X_attack_macro}'>@{whisper_state}&{template:sf_attack}{{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{ability}[ABILITY]+@{proficiency_value}[PROF]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{misc}@{bonus}]]}} {{damage1type=@{type}}} {{damage1=[[@{damage_dice}+@{damage_ability}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit1effect=@{crit}}} {{r2=[[1d20+@{bab}[BAB]+@{ability}[ABILITY]+@{proficiency_value}[PROF]+[[@{full_attack_penalty}]][FULL ATTACK]@{misc}@{bonus}]]}} {{damage2type=@{type}}} {{damage2=[[@{damage_dice}+@{damage_ability}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit2effect=@{crit}}} {{r3=[[1d20+@{bab}[BAB]+@{ability}[ABILITY]+@{proficiency_value}[PROF]+@{full_attack_penalty}[FULL ATTACK]@{misc}@{bonus}]]}} {{damage3type=@{type}}} {{damage3=[[@{damage_dice}+@{damage_ability}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit3effect=@{crit}}} {{r4=[[1d20+@{bab}[BAB]+@{ability}[ABILITY]+@{proficiency_value}[PROF]+@{full_attack_penalty}[FULL ATTACK]@{misc}@{bonus}]]}} {{damage4type=@{type}}} {{damage4=[[@{damage_dice}+@{damage_ability}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit4effect=@{crit}}} {{r5=[[1d20+@{bab}[BAB]+@{ability}[ABILITY]+@{proficiency_value}[PROF]+@{full_attack_penalty}[FULL ATTACK]@{misc}@{bonus}]]}} {{damage5type=@{type}}} {{damage5=[[@{damage_dice}+@{damage_ability}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability}[ABILITY]+@{damage_proficiency_value}[SPEC]@{damage_misc}@{damage_bonus}]]}} {{crit5effect=@{crit}}} {{range=@{range}}} {{notes=@{description}}}</textarea>
                                 </div>
                                 <div class='row'>
                                     <textarea class='atk-description' name='attr_description' title='@{repeating_attack_$X_description}' placeholder='Description' value=''></textarea>
@@ -1638,7 +1681,7 @@
                                             <option value='@{wisdom_mod}'>WIS</option>
                                             <option value='@{charisma_mod}'>CHA</option>
                                         </select>
-                                        <input hidden='true' name='attr_attack_ability_value' value='0'>
+                                        <input hidden='true' name='attr_attack_ability' value='0'>
                                         <span class='arith'>+</span>
                                         <input class='bab' name='attr_bab' readonly='true' title='@{bab}' value='0'>
                                         <input class='abi-misc' type='text' name='attr_attack_bonus' placeholder='+@{attr}/2 + ?{Query}'>
@@ -1660,7 +1703,7 @@
                                             <option value='@{wisdom_mod}'>WIS</option>
                                             <option value='@{charisma_mod}'>CHA</option>
                                         </select>
-                                        <input hidden='true' name='attr_damage_ability_value' value='0'>
+                                        <input hidden='true' name='attr_damage_ability' value='0'>
                                     </div>
                                     <div class='field row'>
                                         <span class='label' data-i18n='atk_type'>TYPE</span>
@@ -1735,7 +1778,7 @@
                                 <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                 <div class='row field-container mod-container'>
                                     <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
-                                    <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{source=@{source}}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
+                                    <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{source=@{source}}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
                                 </div>
                                 <div class='row'>
                                     <textarea class='abi-description' name='attr_description' title='@{repeatin_ability_$X_description}' placeholder='Description'></textarea>
@@ -2160,7 +2203,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_attack_ability_value' value='0'>
+                                                <input hidden='true' name='attr_attack_ability' value='0'>
                                                 <span class='arith'>+</span>
                                                 <input class='bab' name='attr_bab' readonly='true' title='@{bab}' value='0'>
                                                 <input class='abi-misc' type='text' name='attr_attack_bonus' placeholder='+@{attr}/2 + ?{Query}'>
@@ -2186,7 +2229,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_damage_ability_value' value='0'>
+                                                <input hidden='true' name='attr_damage_ability' value='0'>
                                             </div>
                                             <div class='field row'>
                                                 <span class='label' data-i18n='atk_type'>TYPE</span>
@@ -2255,7 +2298,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeating_ability_$X_description}' placeholder='Description'></textarea>
@@ -2338,7 +2381,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_attack_ability_value' value='0'>
+                                                <input hidden='true' name='attr_attack_ability' value='0'>
                                                 <span class='arith'>+</span>
                                                 <input class='bab' name='attr_bab' readonly='true' title='@{bab}' value='0'>
                                                 <input class='abi-misc' type='text' name='attr_attack_bonus' placeholder='+@{attr}/2 + ?{Query}'>
@@ -2364,7 +2407,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_damage_ability_value' value='0'>
+                                                <input hidden='true' name='attr_damage_ability' value='0'>
                                             </div>
                                             <div class='field row'>
                                                 <span class='label' data-i18n='atk_type'>TYPE</span>
@@ -2433,7 +2476,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeating_ability_$X_description}' placeholder='Description'></textarea>
@@ -2516,7 +2559,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_attack_ability_value' value='0'>
+                                                <input hidden='true' name='attr_attack_ability' value='0'>
                                                 <span class='arith'>+</span>
                                                 <input class='bab' name='attr_bab' readonly='true' title='@{bab}' value='0'>
                                                 <input class='abi-misc' type='text' name='attr_attack_bonus' placeholder='+@{attr}/2 + ?{Query}'>
@@ -2542,7 +2585,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_damage_ability_value' value='0'>
+                                                <input hidden='true' name='attr_damage_ability' value='0'>
                                             </div>
                                             <div class='field row'>
                                                 <span class='label' data-i18n='atk_type'>TYPE</span>
@@ -2611,7 +2654,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeating_ability_$X_description}' placeholder='Description'></textarea>
@@ -2706,7 +2749,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_attack_ability_value' value='0'>
+                                                <input hidden='true' name='attr_attack_ability' value='0'>
                                                 <span class='arith'>+</span>
                                                 <input class='bab' name='attr_bab' readonly='true' title='@{bab}' value='0'>
                                                 <input class='abi-misc' type='text' name='attr_attack_bonus' placeholder='+@{attr}/2 + ?{Query}'>
@@ -2732,7 +2775,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_damage_ability_value' value='0'>
+                                                <input hidden='true' name='attr_damage_ability' value='0'>
                                             </div>
                                             <div class='field row'>
                                                 <span class='label' data-i18n='atk_type'>TYPE</span>
@@ -2801,7 +2844,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeating_ability_$X_description}' placeholder='Description'></textarea>
@@ -2884,7 +2927,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_attack_ability_value' value='0'>
+                                                <input hidden='true' name='attr_attack_ability' value='0'>
                                                 <span class='arith'>+</span>
                                                 <input class='bab' name='attr_bab' readonly='true' title='@{bab}' value='0'>
                                                 <input class='abi-misc' type='text' name='attr_attack_bonus' placeholder='+@{attr}/2 + ?{Query}'>
@@ -2910,7 +2953,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_damage_ability_value' value='0'>
+                                                <input hidden='true' name='attr_damage_ability' value='0'>
                                             </div>
                                             <div class='field row'>
                                                 <span class='label' data-i18n='atk_type'>TYPE</span>
@@ -2979,7 +3022,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeating_ability_$X_description}' placeholder='Description'></textarea>
@@ -3062,7 +3105,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_attack_ability_value' value='0'>
+                                                <input hidden='true' name='attr_attack_ability' value='0'>
                                                 <span class='arith'>+</span>
                                                 <input class='bab' name='attr_bab' readonly='true' title='@{bab}' value='0'>
                                                 <input class='abi-misc' type='text' name='attr_attack_bonus' placeholder='+@{attr}/2 + ?{Query}'>
@@ -3088,7 +3131,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_damage_ability_value' value='0'>
+                                                <input hidden='true' name='attr_damage_ability' value='0'>
                                             </div>
                                             <div class='field row'>
                                                 <span class='label' data-i18n='atk_type'>TYPE</span>
@@ -3157,7 +3200,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeating_ability_$X_description}' placeholder='Description'></textarea>
@@ -3254,7 +3297,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_attack_ability_value' value='0'>
+                                                <input hidden='true' name='attr_attack_ability' value='0'>
                                                 <span class='arith'>+</span>
                                                 <input class='bab' name='attr_bab' readonly='true' title='@{bab}' value='0'>
                                                 <input class='abi-misc' type='text' name='attr_attack_bonus' placeholder='+@{attr}/2 + ?{Query}'>
@@ -3280,7 +3323,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_damage_ability_value' value='0'>
+                                                <input hidden='true' name='attr_damage_ability' value='0'>
                                             </div>
                                             <div class='field row'>
                                                 <span class='label' data-i18n='atk_type'>TYPE</span>
@@ -3349,7 +3392,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeating_ability_$X_description}' placeholder='Description'></textarea>
@@ -3432,7 +3475,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_attack_ability_value' value='0'>
+                                                <input hidden='true' name='attr_attack_ability' value='0'>
                                                 <span class='arith'>+</span>
                                                 <input class='bab' name='attr_bab' readonly='true' title='@{bab}' value='0'>
                                                 <input class='abi-misc' type='text' name='attr_attack_bonus' placeholder='+@{attr}/2 + ?{Query}'>
@@ -3458,7 +3501,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_damage_ability_value' value='0'>
+                                                <input hidden='true' name='attr_damage_ability' value='0'>
                                             </div>
                                             <div class='field row'>
                                                 <span class='label' data-i18n='atk_type'>TYPE</span>
@@ -3527,7 +3570,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeating_ability_$X_description}' placeholder='Description'></textarea>
@@ -3610,7 +3653,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_attack_ability_value' value='0'>
+                                                <input hidden='true' name='attr_attack_ability' value='0'>
                                                 <span class='arith'>+</span>
                                                 <input class='bab' name='attr_bab' readonly='true' title='@{bab}' value='0'>
                                                 <input class='abi-misc' type='text' name='attr_attack_bonus' placeholder='+@{attr}/2 + ?{Query}'>
@@ -3636,7 +3679,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_damage_ability_value' value='0'>
+                                                <input hidden='true' name='attr_damage_ability' value='0'>
                                             </div>
                                             <div class='field row'>
                                                 <span class='label' data-i18n='atk_type'>TYPE</span>
@@ -3705,7 +3748,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeating_ability_$X_description}' placeholder='Description'></textarea>
@@ -3788,7 +3831,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_attack_ability_value' value='0'>
+                                                <input hidden='true' name='attr_attack_ability' value='0'>
                                                 <span class='arith'>+</span>
                                                 <input class='bab' name='attr_bab' readonly='true' title='@{bab}' value='0'>
                                                 <input class='abi-misc' type='text' name='attr_attack_bonus' placeholder='+@{attr}/2 + ?{Query}'>
@@ -3814,7 +3857,7 @@
                                                     <option value='@{wisdom_mod}'>WIS</option>
                                                     <option value='@{charisma_mod}'>CHA</option>
                                                 </select>
-                                                <input hidden='true' name='attr_damage_ability_value' value='0'>
+                                                <input hidden='true' name='attr_damage_ability' value='0'>
                                             </div>
                                             <div class='field row'>
                                                 <span class='label' data-i18n='atk_type'>TYPE</span>
@@ -3883,7 +3926,7 @@
                                         <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
                                         <div class='row field-container mod-container'>
                                             <input class='field-tab' type='checkbox' name='attr_macro_checkbox' value='1' hidden='true'>
-                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability_value}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
+                                            <textarea class='field row abi-description' type='text' name='attr_macro'>@{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{source=@{source}}} {{title=@{name}}} {{level=[[[[@{level}]]d1cs>2cf>2]]}} {{saveflag=[[1d@{save_checkbox}]]}} {{activation=@{usage}}} {{duration=@{duration}}} {{targets=@{target}}} {{range=@{range}}} {{savedc=[[@{dc}]]}} {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}}{{fullattack=[[@{full_attack_query}*(@{full_attack_number})]]}} {{r1=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+[[@{full_attack_query}*(@{full_attack_penalty})]][FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage1type=@{attack_type}}} {{damage1=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit1effect=@{attack_crit}}}  {{r2=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage2type=@{attack_type}}} {{damage2=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit2effect=@{attack_crit}}} {{r3=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage3type=@{attack_type}}} {{damage3=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit3effect=@{attack_crit}}} {{r4=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage4type=@{attack_type}}} {{damage4=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit4effect=@{attack_crit}}} {{r5=[[1d20+@{bab}[BAB]+@{attack_ability}[ABILITY]+@{full_attack_penalty}[FULL ATTACK]@{attack_misc}@{attack_bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damage5type=@{attack_type}}} {{damage5=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}]]}} {{crit5effect=@{attack_crit}}}{{notes=@{description}}}</textarea>
                                         </div>
                                         <div class='row'>
                                             <textarea class='abi-description' name='attr_description' title='@{repeating_ability_$X_description}' placeholder='Description'></textarea>
@@ -4073,9 +4116,9 @@
     </rolltemplate>
     <!-- Attack Roll Templates -->
     <!-- Macro Text: 
-        @{whisper_state}&{template:sf_attack} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[@{level}d1]]}} {{r1=[[1d20+@{bab}[BAB]+@{ability_value}[ABILITY]@{misc}@{bonus}]]}} 
-        {{damagetype=@{type}}} {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}@{damage_bonus}]]}} 
-        {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}@{damage_bonus}]]}} {{crit1effect=@{crit}}}
+        @{whisper_state}&{template:sf_attack} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[@{level}d1]]}} {{r1=[[1d20+@{bab}[BAB]+@{ability}[ABILITY]@{misc}@{bonus}]]}} 
+        {{damagetype=@{type}}} {{damage1=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}@{damage_bonus}]]}} 
+        {{crit1damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}@{damage_bonus}]]}} {{crit1effect=@{crit}}}
         {{targets=}} {{range=}}
         {{notes=@{description}}}
     -->
@@ -4359,9 +4402,9 @@
     <!-- Spell Roll Templates -->
     <!-- @{whisper_state}&{template:sf_spell} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=@{name}}} {{level=[[@{level}d1}} {{activation}} {{duration=}} {{targets=}} {{range=}} {{saveflag=[[1d@{save_checkbox}]]}} {{savedc=[[@{dc}]]}} 
     {{savetype=@{save_type}}} {{effect=@{effect}}} {{saveeffect=@{save_effect}}} {{attackflag=[[1d@{attack_checkbox}]]}} 
-    {{r1=[[1d20+@{bab}[BAB]+@{ability_value}[ABILITY]@{misc}@{bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damagetype=@{type}}} 
-    {{damage1=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}@{damage_bonus}]]}} 
-    {{crit1damage=[[@{damage_dice}+@{damage_ability_value}[ABILITY]@{damage_misc}@{damage_bonus}]]}} {{crit1effect=@{crit_effect}}} 
+    {{r1=[[1d20+@{bab}[BAB]+@{ability}[ABILITY]@{misc}@{bonus}]]}} {{damageflag=[[1d@{damage_checkbox}]]}} {{damagetype=@{type}}} 
+    {{damage1=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}@{damage_bonus}]]}} 
+    {{crit1damage=[[@{damage_dice}+@{damage_ability}[ABILITY]@{damage_misc}@{damage_bonus}]]}} {{crit1effect=@{crit_effect}}} 
     {{notes=@{description}}} -->
     <rolltemplate class="sheet-rolltemplate-sf_spell">
         <span class='generic-header'>
@@ -5400,7 +5443,7 @@
     /*start starfinder.js*/
     var starfinder = starfinder || (function(){
         'use strict';
-        var version = 0.021509724456,
+        var version = 0.021509767726,
             sheetAttributes = [
                 //Class & Character attributes
                 'character_name','character_id','bab','character_level','race',
@@ -5448,7 +5491,7 @@
                 //Item attributes
                 'wealth','carried_bulk','encumber_bulk','overburden_bulk',
                 //sheet setting attributes
-                'resolve_source','stackable_buffs','sheet_type','half_specializations'
+                'resolve_source','stackable_buffs','sheet_type','half_specializations','drone'
             ],
             repeatingAttributes = [
                 {
@@ -6455,13 +6498,12 @@
             +'change:survival_ranks change:survival_class_skill change:survival_ability change:survival_acp '
             +'change:repeating_item change:repeating_attack change:repeating_profession change:repeating_buff change:repeating_ability change:repeating_spell '
             +'change:create_cantrip change:create_1st change:create_2nd change:create_3rd change:create_4th change:create_5th change:create_6th change:create_7th change:create_8th change:create_9th '
-            +'change:stackable_buffs change:half_specializations '
+            +'change:stackable_buffs change:half_specializations change:drone '
             +'remove:repeating_item remove:repeating_buff remove:repeating_ability',
             accessStarfinder);
         },
         
         updateSheet = function(event){
-            TAS.log('event: '+JSON.stringify(event));
             setAttrs({character_sheet:'Starfinder v'+version});
         },
         
@@ -6472,7 +6514,8 @@
                 sectionAggregate = [],
                 currSection,
                 attributes=[],
-                bonuses,setObj,
+                bonuses,
+                setObj={},
                 getID = () => {
                     currSection=cloneRepAttr.shift();
                     getSectionIDs('repeating_'+currSection.section,(itemIDArr)=>{
@@ -6500,17 +6543,38 @@
                     getAttrs(attributes,(objs)=>{
                         if(attribute.match(/^(?:rp|hp|sp)$/)){
                             healthHandler(objs);
+                        }else if(attribute.match(/create/)){
+                            let createSwitch = {
+                                'cantrip':{section:'_spell_',attrs:['_level','_cantrip_filter'],values:[0,'cantrip']},
+                                '1st':{section:'_spell_',attrs:['_level','_level_1_filter'],values:[1,1]},
+                                '2nd':{section:'_spell_',attrs:['_level','_level_2_filter'],values:[2,2]},
+                                '3rd':{section:'_spell_',attrs:['_level','_level_3_filter'],values:[3,3]},
+                                '4th':{section:'_spell_',attrs:['_level','_level_4_filter'],values:[4,4]},
+                                '5th':{section:'_spell_',attrs:['_level','_level_5_filter'],values:[5,5]},
+                                '6th':{section:'_spell_',attrs:['_level','_level_6_filter'],values:[6,6]},
+                                '7th':{section:'_spell_',attrs:['_level','_level_7_filter'],values:[7,7]},
+                                '8th':{section:'_spell_',attrs:['_level','_level_8_filter'],values:[8,8]},
+                                '9th':{section:'_spell_',attrs:['_level','_level_9_filter'],values:[9,9]}
+                            };
+                            let createTarget=createSwitch[attribute.replace(/create_/,'')];
+                            let rowID = generateRowID();
+                            _.each(_.range(createTarget.attrs.length),(n)=>{
+                                setObj['repeating'+createTarget.section+rowID+createTarget.attrs[n]]=createTarget.values[n];
+                            });
+                            setObj[attribute]=0;
+                            setObj=buildMenus(objs,setObj);
+                            setAttrs(setObj,{silent:true});
                         }else{
                             if(attribute.match(/frequency/)){
-                                setObj={};
                                 setObj[event.sourceAttribute.replace(/frequency/,'toggle_freq_dependency')]=objs[event.sourceAttribute];
                                 setObj[event.sourceAttribute.replace(/frequency/,'usage_freq_dependency')]=objs[event.sourceAttribute];
                                 setObj[event.sourceAttribute.replace(/frequency/,'uses_freq_dependency')]=objs[event.sourceAttribute];
+                            }else if(attribute==='sheet_type'){
+                                setObj.sheet_type_nav=event.newValue;
+                            }else if (attribute==='drone'){
+                                setObj=classLevelHandler(objs);
                             }else{
                                 setObj = attribute.match(/class_\d/) ? classHandler(objs,attribute) : attribute.match(/repeating_ability|repeating_spell/) ? abilityHandler(objs,attribute) : {};
-                            }
-                            if(attribute==='sheet_type'){
-                                setObj.sheet_type_nav=event.newValue;
                             }
                             if(setObj){
                                 bonuses=parseBuffs(objs);
@@ -6520,7 +6584,6 @@
                     });
                 };
                 
-            TAS.log('event: '+JSON.stringify(event));
             if(attribute.match(/show_options/)){
                 return;
             }
@@ -6545,28 +6608,6 @@
                     setObj[event.sourceAttribute]=objs[event.sourceAttribute];
                     setAttrs(setObj,{silent:true});
                 });
-            }else if(attribute.match(/create/)){
-                setObj={};
-                let createSwitch = {
-                    'cantrip':{section:'_spell_',attrs:['_level','_cantrip_filter'],values:[0,'cantrip']},
-                    '1st':{section:'_spell_',attrs:['_level','_level_1_filter'],values:[1,1]},
-                    '2nd':{section:'_spell_',attrs:['_level','_level_2_filter'],values:[2,2]},
-                    '3rd':{section:'_spell_',attrs:['_level','_level_3_filter'],values:[3,3]},
-                    '4th':{section:'_spell_',attrs:['_level','_level_4_filter'],values:[4,4]},
-                    '5th':{section:'_spell_',attrs:['_level','_level_5_filter'],values:[5,5]},
-                    '6th':{section:'_spell_',attrs:['_level','_level_6_filter'],values:[6,6]},
-                    '7th':{section:'_spell_',attrs:['_level','_level_7_filter'],values:[7,7]},
-                    '8th':{section:'_spell_',attrs:['_level','_level_8_filter'],values:[8,8]},
-                    '9th':{section:'_spell_',attrs:['_level','_level_9_filter'],values:[9,9]}
-                };
-                let createTarget=createSwitch[attribute.replace(/create_/,'')];
-                let rowID = generateRowID();
-                _.each(_.range(createTarget.attrs.length),(n)=>{
-                    setObj['repeating'+createTarget.section+rowID+createTarget.attrs[n]]=createTarget.values[n];
-                });
-                setObj[attribute]=0;
-                setObj=buildMenus(attributes,setObj);
-                setAttrs(setObj,{silent:true});
             }else{
                 getID();
             }
@@ -6574,7 +6615,7 @@
         
         healthHandler = function(attributes){
             var setObj = _.reduce(['sp','hp','rp'],(memo,h)=>{
-                memo.health_status+=(attributes[h]*1 <= 0 ? 1 : 0);
+                memo.health_status+=((attributes[h]*1 <= 0 && attributes[h]*1!==attributes[h+'_max']*1) ? 1 : 0);
                 return memo;
             },{health_status:0});
             setAttrs(setObj,{silent:true});
@@ -6618,13 +6659,13 @@
         
         classLevelHandler = function(attributes){
             var convertSave = {
-                    poor:(lvl)=>Math.floor(lvl/3),
-                    good:(lvl)=>lvl>0 ? (Math.floor(lvl/2) + 2) : 0
+                    poor:(lvl)=>attributes.drone*1===1 ? Math.round((lvl - 1)/4) : Math.floor(lvl/3),
+                    good:(lvl)=> 2+ (attributes.drone*1===1 ? Math.ceil((lvl*0.75 - 1)/2) : Math.floor(lvl/2))
                 },
                 temp;
             return _.reduce([1,2,3,4,5],(memo,n)=>{
                 memo.character_level=(memo.character_level||0)+(attributes['class_'+n+'_level']*1||0);
-                memo.bab+=Math.floor(attributes['class_'+n+'_bab']*attributes['class_'+n+'_level']||0);
+                memo.bab+=attributes.drone*1===1 ? Math.ceil((attributes['class_'+n+'_level']*0.75)||0) : Math.floor(attributes['class_'+n+'_bab']*attributes['class_'+n+'_level']||0);
                 memo.skill_points_max+=(attributes['class_'+n+'_level']*attributes['class_'+n+'_skills']||0);
                 _.each(['fort','ref','will'],(save)=>{
                     memo[save+'_base']+=convertSave[attributes['class_'+n+'_'+save]](attributes['class_'+n+'_level']*1||0);
@@ -6762,9 +6803,9 @@
                 if(setObj.spells_menu!==preMenu+'SPELLBOOKS}} {{buttons1='){
                     setObj.spells_menu+=' | ';
                 }
-                setObj.spells_menu+='['+HE(attributes[preClass+'name'])+'](~'+attributes.character_name+'|'+preClass+'spellbook)';
+                setObj.spells_menu+='['+HE(attributes[preClass+'name']).toUpperCase()+'](~'+attributes.character_name+'|'+preClass+'spellbook)';
                 let spellLevels = setObj[preClass+'max_spell']*1 + 1;
-                let classSpellBook = preMenu+attributes[preClass+'name']+' Spells}} ';
+                let classSpellBook = preMenu+attributes[preClass+'name'].toUpperCase()+' Spells}} ';
                 _.each(_.range(spellLevels),(r)=>{
                     let spellLevel = '{{buttons'+r+'='+(r===0 ? 'CANTRIPS' : 'LEVEL '+r)+' [[0@{'+preClass+(r===0 ? 'cantrips' : 'level_'+n+'_spells')+'_per_day}]] / [[0@{'+preClass+(r===0 ? 'cantrips' : 'level_'+n+'_spells')+'_per_day|max}]]\n';
                     sectionIDs=_.chain(_.keys(attributes))
@@ -6803,11 +6844,11 @@
             let racial_abilities = '{{buttons1=RACIAL\n';
             let feat_abilities = '{{buttons2=FEATS\n';
             let class_abilities = {
-                class_1_abilities:'{{buttons3='+attributes.class_1_name+'\n',
-                class_2_abilities:'{{buttons4='+attributes.class_2_name+'\n',
-                class_3_abilities:'{{buttons5='+attributes.class_3_name+'\n',
-                class_4_abilities:'{{buttons6='+attributes.class_4_name+'\n',
-                class_5_abilities:'{{buttons7='+attributes.class_5_name+'\n'
+                class_1_abilities:'{{buttons3='+attributes.class_1_name.toUpperCase()+'\n',
+                class_2_abilities:'{{buttons4='+attributes.class_2_name.toUpperCase()+'\n',
+                class_3_abilities:'{{buttons5='+attributes.class_3_name.toUpperCase()+'\n',
+                class_4_abilities:'{{buttons6='+attributes.class_4_name.toUpperCase()+'\n',
+                class_5_abilities:'{{buttons7='+attributes.class_5_name.toUpperCase()+'\n'
             }
             _.each(sectionIDs,(id)=>{
                 let preRepeat = 'repeating_ability_'+id+'_';
@@ -6979,7 +7020,8 @@
                             }
                         }
                     }catch(err){}
-                    m.misc+=(m.misc==='' ? '' : (_.contains(attributes.stackable_buffs.toLowerCase().split(/,|\n+/).push('untyped'),t.toLowerCase()) ? '+' : ','))+b.replace(/^\+/,'');
+                    TAS.log('b: '+b);
+                    m.misc+=(m.misc==='' ? '' : (_.contains(attributes.stackable_buffs.toLowerCase().split(/,|\n+/).push('untyped'),t.toLowerCase()) ? '+' : ','))+(b+'').replace(/^\+/,'');
                     return m;
                 },{buff:0,pen:0,misc:'',armor:0,acp:0});
                 memo.total+=tObj.buff+tObj.pen+tObj.acp;
@@ -7008,7 +7050,6 @@
                     'full_prep':(lvl)=>Math.min(Math.floor((lvl+ 1)/2),9),
                     'full_spont':(lvl)=>lvl*1===1 ? 1 : Math.floor(lvl/2)
                 };
-            TAS.log('bonusKeys: '+JSON.stringify(bonusKeys));
             //Caster Class buffing
             if((setObj.is_caster||attributes.is_caster)&&setObj.is_caster!==0){
                 setObj.caster_level=0;
@@ -7053,7 +7094,7 @@
                             if(attributes.resolve_source==='key'){
                                 rpAbility=_.reduce([1,2,3,4,5],(m,n)=>{
                                     if(attributes['class_'+n+'_level']>0){
-                                        m = _.max([m,(setObj[attributes['class_'+n+'_ability']]*1||attributes[attributes['class_'+n+'_ability']]*1)])
+                                        m = _.max([m,(setObj[attributes['class_'+n+'_ability'].replace(/@{|}/g,'')]*1||attributes[attributes['class_'+n+'_ability'].replace(/@{|}/g,'')]*1)])
                                     }
                                     return m;
                                 },0);
@@ -7070,9 +7111,6 @@
                             _.each(bonusKeys,(k)=>{
                                 if(k.startsWith(obj.attr+'|')||(k.startsWith('attack|')&&obj.attr.match(/(?:attack_)?total/))||(k.startsWith('damage|')&&obj.attr.match(/damage_total/))){
                                     let kSplit = k.replace(/[^|]+\|/,'').split(/\s*,\s*/g);
-                                    TAS.log(id+obj.attr);
-                                    TAS.log('k: '+k);
-                                    TAS.log('kSplit: '+JSON.stringify(kSplit));
                                     let objSpec = _.reduce(kSplit,(m,s)=>{
                                         let sSplit = s.split(/:/);
                                         m[sSplit[0]]=sSplit[1].replace(/_/g,' ');
@@ -7093,7 +7131,7 @@
                             bTotal=specificBonus.total + (attributes[id+(obj.repeating ? 'acp' : obj.attr+'_acp')]*1===1 ? calcBuffs(attributes,bonus.acp,setObj).total : 0);
                             abilityMax = _.min([attributeMod,specificBonus.max_dex*1]);
                             let abilityDiff = abilityMax - attributeMod;
-                            memo[id+obj.attr.replace(/_max/,'')+obj.moddable]=(bTotal+abilityDiff) > 0 ? 1 : ((bTotal+abilityDiff) < 0 ? -1 : 0);
+                            memo[id+obj.attr.replace(/_max|profession|/,'')+obj.moddable]=(bTotal+abilityDiff) > 0 ? 1 : ((bTotal+abilityDiff) < 0 ? -1 : 0);
                         }else{
                             abilityMax = attributeMod;
                         }
@@ -7179,10 +7217,17 @@
                 return memo;
             },setObj);
             setObj.skill_points_change = bTotal > 0 ? 1 : bTotal < 0 ? -1 : 0;
-            
+            if(attributes.drone*1===1){
+                setObj.sp_max=0;
+                setObj.hp_max=_.reduce(_.range(1,(setObj.character_level*1||attributes.character_level*1||0) + 1),(memo,l)=>{
+                    return memo + 10*(1+Math.floor(l/18));
+                },0);
+                setObj.rp_max=0;
+            }else{
+                setObj.rp_max=Math.max((setObj.rp_max*1+Math.max(Math.floor((setObj.character_level*1||attributes.character_level*1||0)/2),1)),1);
+            }
             setObj.sp=(attributes.sp*1||0)+((setObj.sp_max*1-attributes.sp_max*1)*1||0);
             setObj.hp=(attributes.hp*1||0)+((setObj.hp_max*1-attributes.hp_max*1)*1||0);
-            setObj.rp_max=Math.max((setObj.rp_max*1+Math.max(Math.floor((setObj.character_level*1||attributes.character_level*1||0)/2),1)),1);
             setObj.rp=(attributes.rp*1||0)+((setObj.rp_max*1-attributes.rp_max*1)*1||0);
             setObj.temp_hp=(attributes.temp_hp*1||0)+(setObj.temp_hp_max*1-attributes.temp_hp_max*1);
             //Encumbrance
