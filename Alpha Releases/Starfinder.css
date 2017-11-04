@@ -176,10 +176,10 @@ button[type=roll] {
     grid-row-gap:40px;
     align-items:start;
 }
-.sheet-npc{
+.sheet-starfinder > .sheet-npc{
     grid-area:settings;
 }
-.sheet-starship{
+.sheet-starfinder > .sheet-ship{
     grid-area:settings;
 }
 .sheet-name-container .sheet-section {
@@ -1348,7 +1348,6 @@ span.sheet-item-mods{
 .sheet-abi-dmg-dice,
 .sheet-abi-misc,
 .sheet-scalable-input{
-    
     width:5px;
     flex:1 1 auto;
 }
@@ -2024,15 +2023,40 @@ button .sheet-profession-name{
     position:absolute;
     content:'*' !important;
 }
-/*############################################################ NPC ############################################################*/
-.sheet-container.sheet-npc{
-    grid-template-columns:[statblock-start] 1fr [statblock-end creator-start] 1fr [creator-end];
-    grid-template-rows:[statblock-start creator-start] 1fr [statblock-end creator-end];
+/*############################################################ NPC STYLING ############################################################*/
+.sheet-starfinder > .sheet-container.sheet-npc{
+    grid-template-columns:[statblock-start] minmax(407.5px,1fr) [statblock-end creator-start] minmax(407.5px,1fr) [creator-end];
+    grid-template-rows:[statblock-start creator-start] auto [statblock-end creator-end];
+    align-items:start;
+    align-content:start;
     grid-gap:5px;
 }
 .sheet-statblock{
     grid-area:statblock;
-    outline:1px solid;
+    grid-template-columns:[statblock-header-start] 1fr [statblock-header-end];
+    grid-template-rows:[statblock-header-start] 20px [statblock-header-end];
+    grid-auto-rows:minmax(20px,auto);
+    grid-auto-columns:1fr;
+    display:grid;
+    grid-gap:0px;
+}
+.sheet-statblock-header{
+    grid-area:statblock-header;
+    background-color:black;
+    display:flex;
+}
+.sheet-statblock-header > input{
+    border-color:white !important;
+    color:white !important;
+}
+span.sheet-cr{
+    margin-left:5px;
+    margin-right:5px;
+    color:white !important;
+}
+input.sheet-cr{
+    width:20px;
+    margin-right:5px;
 }
 .sheet-creator{
     grid-area:creator;
