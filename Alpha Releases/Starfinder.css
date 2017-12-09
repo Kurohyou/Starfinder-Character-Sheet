@@ -5,7 +5,11 @@
 * {
     font-family:Aldrich,Copperplate,Monospace;
 }
-.repitem .sheet-row {
+.charsheet{
+    padding:0px!important;
+}
+.repitem .sheet-row,
+.sheet-statblock .sheet-row{
     justify-content:flex-start;
     display:flex;
 }
@@ -19,7 +23,7 @@ input[type=radio].sheet-settings:checked ~ .sheet-settings{
     display:grid;
 }
 .sheet-tab-button + span,
-.sheet-initiative-container button,
+.sheet-initiative-container button,n
 .sheet-label,
 button {
     font-family:Aldrich,Copperplate,Monospace;
@@ -47,6 +51,15 @@ textarea {
     font-size:10pt;
     padding:0px;
 }
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none;
+  margin: 0; 
+}
+input[type=number]{
+    -moz-appearance: textfield !important;
+    text-align:center;
+}
 textarea{
     resize:vertical;
 }
@@ -61,8 +74,7 @@ select {
     padding:0px 0px 0px 0px;
     color: black;
     position:relative;
-    top:-5px;
-    width:4em;
+    width:auto;
     font-size:7pt;
     font-weight:bold;
     text-align:center;
@@ -464,6 +476,7 @@ input.sheet-class-num-level{
 .sheet-spellclass-container .sheet-class-name{
     grid-area:name;
     text-align:center;
+    overflow:hidden;
 }
 .sheet-spellclass-container .sheet-class-num-level{
     grid-area:level;
@@ -629,7 +642,10 @@ input.sheet-class-num-level{
 	border-radius:;
 	overflow:hidden;
 }
-.repcontrol[data-groupname='repeating_spell']{
+.repitem{
+    overflow:hidden;
+}
+.sheet-section-container .repcontrol[data-groupname='repeating_spell']{
     width:260px;
     position:relative;
 }
@@ -639,30 +655,22 @@ input.sheet-class-num-level{
     top:0px;
     z-index:20;
 }
-.repcontrol[data-groupname='repeating_spell'] .repcontrol_add{
+.sheet-section-container .repcontrol[data-groupname='repeating_spell'] .repcontrol_add{
     display:none !important;
 }
 .sheet-pseudo-repcontrol{
     position:relative;
+    text-shadow:none !important;
+    top:-25px;
 }
-.sheet-pseudo-repcontrol input{
-    position:absolute;
-    opacity:0;
-    z-index:20;
-}
-.sheet-pseudo-repcontrol input,
-.sheet-pseudo-repcontrol span{
-    width:20px;
-    height:29px;
-    text-align:center;
-    top:-27px;
-    background-color:;
+label.sheet-pseudo-repcontrol input{
+    display:none;
 }
 .sheet-pseudo-repcontrol input:checked + span{
     background-color:black;
     color:white;
 }
-.sheet-pseudo-repcontrol.sheet-spell{
+.sheet-pseudo-repcontrol{
     width:260px;
 }
 .sheet-spellclass-container .sheet-class-name,
@@ -943,10 +951,19 @@ input[type=radio].sheet-tab-button.sheet-options:checked ~ .sheet-page.sheet-opt
     grid-area:saves;
     height:100%;
 }
-.sheet-equipment {
+.sheet-section-container.sheet-equipment {
     grid-area:equipment;
     min-height:320px;
     width:100%;
+    display:grid;
+    grid-template-columns:repeat(3,80px);
+    grid-template-rows:repeat(2,35px) auto;
+    grid-gap:5px;
+    justify-content:center;
+}
+.sheet-section-container.sheet-equipment .sheet-item-container{
+    grid-column:1/4;
+    position:relative;
 }
 .sheet-abilities-container {
     grid-area:abilities;
@@ -1254,11 +1271,7 @@ span.sheet-resist {
     margin:5px;
 }
 .sheet-credits-container input {
-    width:78px !important;
-}
-.sheet-item-container {
-    position:relative;
-    width:150px;
+    width:100% !important;
 }
 .sheet-item-name-col {
     width:100%;
@@ -1275,9 +1288,11 @@ span.sheet-resist {
     padding:0px;
     margin:0px;
 }
+.sheet-item-container .sheet-summary{
+    justify-content:center;
+}
 .repcontainer[data-groupname='repeating_item']  .repitem {
     position:relative;
-    width:125px;
     padding:0px;
     margin-left:5px;
     margin-right:5px;
@@ -1293,11 +1308,6 @@ span.sheet-resist {
     padding:0px;
     margin-top:5px;
     overflow-x:hidden;
-}
-.sheet-item .sheet-show-options {
-    position:absolute;
-    top:0px;
-    left:110px;
 }
 .sheet-item *,
 .sheet-attack *{
@@ -1329,6 +1339,9 @@ label.sheet-item-mods{
     position:absolute;
     left:0px;
     top:0px;
+}
+.repcontainer[data-groupname='repeating_buff'] .repitem textarea.sheet-buff-mod{
+    text-indent:37px !important;
 }
 span.sheet-buff-mod,
 span.sheet-item-mods{
@@ -1479,7 +1492,7 @@ textarea.sheet-abi-description{
     opacity:0;
     padding:1px;
 }
-.sheet-filter:checked + .sheet-filter-container{
+.sheet-filter:checked ~ .sheet-filter-container{
     display:block;
 }
 .sheet-field-tab:checked ~ .sheet-field.sheet-row{
@@ -1720,7 +1733,7 @@ input[type=checkbox]:checked +.sheet-buff-name {
 .repcontrol .repcontrol_edit:hover,
 .repcontrol .repcontrol_add:hover
 {
-	background-color: #EFEFEF;
+	background-color: transparent;
 }
 .itemcontrol {
 	z-index: 10;
@@ -1749,6 +1762,8 @@ input[type=checkbox]:checked +.sheet-buff-name {
 	width: 18px;
 	height: 18px;
 	z-index: 6;
+	top: -5px;
+	right: 0px;
 }
  
 .sheet-show-options + span
@@ -2025,7 +2040,7 @@ button .sheet-profession-name{
 }
 /*############################################################ NPC STYLING ############################################################*/
 .sheet-starfinder > .sheet-container.sheet-npc{
-    grid-template-columns:[statblock-start] minmax(407.5px,1fr) [statblock-end creator-start] minmax(407.5px,1fr) [creator-end];
+    grid-template-columns:[statblock-start] minmax(300px,1fr) [statblock-end creator-start] minmax(300px,1fr) [creator-end];
     grid-template-rows:[statblock-start creator-start] auto [statblock-end creator-end];
     align-items:start;
     align-content:start;
@@ -2033,21 +2048,159 @@ button .sheet-profession-name{
 }
 .sheet-statblock{
     grid-area:statblock;
-    grid-template-columns:[statblock-header-start] 1fr [statblock-header-end];
-    grid-template-rows:[statblock-header-start] 20px [statblock-header-end];
     grid-auto-rows:minmax(20px,auto);
     grid-auto-columns:1fr;
     display:grid;
-    grid-gap:0px;
+    grid-gap:5px;
 }
 .sheet-statblock-header{
-    grid-area:statblock-header;
     background-color:black;
     display:flex;
+    padding:2px 5px 0px;
+    color:white;
 }
-.sheet-statblock-header > input{
+.sheet-statblock-header > input.sheet-char-name{
+    border-bottom:0px transparent;
+    color:white !important;
+    font-weight:900;
+}
+.sheet-statblock-header > input.sheet-cr{
     border-color:white !important;
     color:white !important;
+    font-weight:900;
+}
+.sheet-statblock > .sheet-row > *{
+    margin-right:5px;
+}
+.sheet-statblock > .sheet-row{
+    max-width:100%;
+    overflow:hidden;
+    position:relative;
+    flex-wrap:wrap;
+}
+.sheet-statblock > .sheet-attack-row{
+    display:grid;
+    grid-template-columns:[label-start repcontrol-start] 60px [label-end repcontrol-end repeating-start] 1fr [repeating-end];
+    grid-template-rows:[label-start repeating-start] 20px [label-end repcontrol-start] minmax(20px,auto) [repeating-end repcontrol-end];
+}
+.sheet-statblock > .sheet-attack-row > .sheet-attack-label{
+    grid-area:label;
+}
+.sheet-statblock > .sheet-attack-row > .repcontainer[data-groupname='repeating_attack']{
+    grid-area:repeating;
+    max-height:initial;
+}
+.sheet-statblock > .sheet-attack-row > .repcontrol,
+.sheet-statblock > .sheet-attack-row > .sheet-pseudo-repcontrol{
+    grid-area:repcontrol;
+    width:initial;
+    position:relative;
+    top:-5px;
+}
+.sheet-statblock > .sheet-attack-row > .repcontrol{
+    justify-self:center;
+}
+.sheet-statblock > .sheet-attack-row > .sheet-pseudo-repcontrol{
+    justify-self:start;
+}
+.sheet-statblock > .sheet-attack-row .repcontainer[data-groupname='repeating_attack']{
+    width:auto;
+    height:auto;
+    display:flex;
+    justify-content:flex-start;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    margin:0px;
+}
+.sheet-statblock > .sheet-attack-row .repcontainer[data-groupname='repeating_attack'] .repitem{
+    width:auto;
+    margin:0px;
+    margin-right:5px;
+}
+.sheet-statblock > .sheet-row >.sheet-pseudo-repcontrol,
+.sheet-statblock > .sheet-row >.sheet-pseudo-repcontrol *{
+    width:initial;
+    position:relative;
+    top:-5px;
+    align-self:flex-end;
+}
+.sheet-statblock .sheet-pseudo-repcontrol > span{
+    padding:1px;
+    text-align:center;
+}
+.sheet-statblock .repcontrol[data-groupname='repeating_attack'] .repcontrol_edit:after,
+.sheet-statblock .repcontrol[data-groupname='repeating_spell'] .repcontrol_edit:after,
+.sheet-statblock .repcontrol[data-groupname='repeating_spell'] .repcontrol_add:before{
+    padding:2px;
+    position:relative;
+    top:-5px;
+    left:-5px;
+}
+.sheet-statblock .repcontrol[data-groupname='repeating_attack'] .repcontrol_edit,
+.sheet-statblock .repcontrol[data-groupname='repeating_spell'] .repcontrol_edit,
+.sheet-statblock .repcontrol[data-groupname='repeating_spell'] .repcontrol_add{
+    width:0px !important;
+    height:0px;
+}
+.sheet-statblock .repcontrol[data-groupname='repeating_attack'] .repcontrol_add{
+    display:none !important;
+}
+.sheet-attack-label{
+    width:60px;
+}
+.sheet-npcsummary{
+    display:flex;
+    flex-wrap:wrap;
+}
+.sheet-npcsummary > *:not(:last-child) {
+    margin-right:5px;
+}
+.sheet-statblock > .sheet-row > input[type='number']{
+    width:20px;
+}
+.sheet-statblock .sheet-row.sheet-special-abilities{
+    display:grid;
+    grid-template-columns:[header-start] 1fr [header-end];
+    grid-template-rows:[header-start]20px[header-end];
+}
+.sheet-statblock > .sheet-row > .sheet-npc-mod{
+    width:20px;
+    text-align:center;
+}
+.sheet-statblock .sheet-special-abilities-header{
+    grid-area:header;
+}
+.sheet-statblock .repcontrol[data-groupname='repeating_ability']{
+    grid-area:header;
+    justify-self:end;
+    align-self:stretch;
+    width:40px;
+    z-index:2;
+    position:relative;
+    overflow:hidden;
+}
+.sheet-statblock .repcontrol[data-groupname='repeating_ability'] .repcontrol_edit,
+.sheet-statblock .repcontrol[data-groupname='repeating_ability'] .repcontrol_add{
+    padding:0px 5px;
+    position:relative;
+}
+.sheet-statblock .repcontrol[data-groupname='repeating_ability'] .repcontrol_edit:after,
+.sheet-statblock .repcontrol[data-groupname='repeating_ability'] .repcontrol_add:before{
+    padding:0px;
+    position:relative;
+    left:-5px;
+}
+.sheet-statblock .repcontrol[data-groupname='repeating_spell'],
+.sheet-statblock .repcontainer[data-groupname='repeating_spell']{
+    width:100%;
+}
+.sheet-statblock .repcontainer[data-groupname='repeating_spell']{
+    display:flex;
+    flex-wrap:wrap;
+    height:auto;
+}
+.sheet-statblock .repcontainer[data-groupname='repeating_spell'] .repitem{
+    width:auto;
 }
 span.sheet-cr{
     margin-left:5px;
@@ -2058,9 +2211,158 @@ input.sheet-cr{
     width:20px;
     margin-right:5px;
 }
+.sheet-statblock > .sheet-row > span.sheet-xp{
+    margin-right:5px;
+}
+.sheet-statblock > .sheet-row > input.sheet-xp{
+    width:80px;
+}
+.sheet-statblock > .sheet-row > textarea.sheet-scalable-input{
+    height:auto;
+    min-height:60px;
+}
+.sheet-statblock .sheet-alignment{
+    width:20px !important;
+}
+.sheet-statblock-section-header{
+    background-color:#ededed;
+    min-width:100%;
+    max-height:20px;
+}
+.sheet-statblock-section-header > span{
+    font-weight:900;
+}
+.sheet-defense-header{
+    display:grid;
+    grid-template-columns:[label-start] auto [label-end hp-start] 1fr [hp-end];
+    grid-template-rows:[label-start hp-start] 20px [label-end hp-end];
+    grid-gap:5px;
+    justify-items:end;
+    align-items:end;
+}
+.sheet-hp-rp-container{
+    grid-area:hp;
+}
+.sheet-statblock .sheet-row span.sheet-dr{
+    width:auto;
+}
+.sheet-statblock .sheet-row .sheet-space{
+    width:50px;
+}
+.sheet-statblock .sheet-row .sheet-button-description{
+    max-height:90px;
+    overflow:hidden;
+}
+.sheet-statblock .sheet-row .sheet-skill-container{
+    width:auto;
+}
+.sheet-statblock .sheet-row .sheet-skill-container input[type='text']{
+    width:2em;
+}
 .sheet-creator{
     grid-area:creator;
-    outline:1px solid;
+    position:relative;
+    display:grid;
+    grid-template-columns:[content-start menu-start] 135px [menu-end import-start] 135px [import-end create-start]135px [create-end] 1fr [content-end];
+    grid-template-rows:[menu-start import-start create-start] 18px [menu-end import-end create-end content-start] auto [content-end];
+}
+.sheet-creator .sheet-in-play-tab{
+    position:initial;
+    width:100%;
+    height:100%;
+    z-index:20;
+}
+.sheet-creator .sheet-section.sheet-label{
+    position:initial;
+    top:initial;
+    left:initial;
+    background-image:url('http://imgsrv.roll20.net:5100/?src=cdn.rawgit.com/Kurohyou/Starfinder-Character-Sheet/533e5c9f/UnSelected%2520Starfinder%2520Header.png')!important;
+    color:#f86f1a;
+    text-shadow:none;
+}
+.sheet-creator .sheet-menu-head{
+    grid-area:menu;
+}
+.sheet-creator .sheet-import-head{
+    grid-area:import;
+}
+.sheet-creator .sheet-create-head{
+    grid-area:create;
+}
+.sheet-creator .sheet-in-play-tab:hover + h1{
+    text-shadow:0px 0px 10px #f86f1a,0px 0px 20px #fc6507;
+}
+.sheet-creator .sheet-in-play-tab:not(:checked) + h1{
+    color:white;
+}
+.sheet-creator .sheet-menu-tab:not(:checked) ~ .sheet-menus,
+.sheet-creator .sheet-import-tab:not(:checked) ~ .sheet-import,
+.sheet-creator .sheet-create-tab:not(:checked) ~ .sheet-create{
+    display:none;
+}
+.sheet-creator .sheet-in-play{
+    grid-area:content;
+    box-shadow:none;
+}
+.sheet-import-checkbox{
+    display:none;
+}
+.sheet-import{
+    display:grid;
+    grid-template-columns:[import-start warning-start statblock-start]55px[import-end export-start] 55px [export-end] repeat(2,auto) 1fr [warning-end statblock-end];
+    grid-template-rows:[warning-start] 20px [warning-end import-start export-start] 18px [import-end export-end statblock-start] auto [statblock-end];
+    grid-gap:5px;
+    padding-top:5px;
+}
+.sheet-experimental{
+    grid-area:warning;
+    /*background: repeating-linear-gradient(
+      45deg,
+      #FFFF00,
+      #FFFF00 10px,
+      #000000 10px
+    );*/
+    background: repeating-linear-gradient(
+      45deg,
+      #ff8100,
+      #ff8100 10px,
+      #000000 10px,
+      #000000 20px
+    );
+    text-align:center;
+    color:white;
+    font-size:13px !important;
+    font-weight:700;
+}
+.sheet-import label{
+    width:auto;
+    height:auto;
+    text-shadow:none;
+    color:black;
+}
+.sheet-import-checkbox + span{
+	background-color: #EFEFEF;
+	border: 1px solid black;
+	border-radius: 2px;
+	font-size: 12px;
+	padding:2px;
+}
+.sheet-import-checkbox:checked + span{
+    color:white;
+    background-color:black;
+}
+.sheet-import-label{
+    grid-area:import;
+}
+.sheet-export-label{
+    grid-area:export;
+    opacity:0;
+    cursor:default;
+}
+.sheet-statblock-text{
+    width:100%;
+    height:1100px;
+    grid-area:statblock;
 }
 /*############################################################ ROLL TEMPLATES ############################################################*/
 .sheet-rolltemplate-sf_generic,
