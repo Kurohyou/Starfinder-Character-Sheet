@@ -12020,6 +12020,7 @@
         HE = (function(){
             var entities={
                 //' ' : '&'+'nbsp'+';',
+                '*' : '&'+'#42'+';',
                 '&' : '&'+'amp'+';',
                 '<' : '&'+'lt'+';',
                 '>' : '&'+'gt'+';',
@@ -12099,7 +12100,6 @@
             on('change:item_compendium change:attack_compendium change:spell_compendium',internalCompendium);
             //ship specific listener
             on('change:repeating_system:shields change:repeating_system:armor change:repeating_system:countermeasure change:repeating_system:purpose change:repeating_system:pcu change:repeating_system:bp change:repeating_system:powered change:repeating_system:comp_bonus change:repeating_attack:pcu change:repeating_attack:bp change:repeating_attack:powered change:ship_computer',()=>{
-                TAS.log('change detected');
                 getID(JSON.parse(JSON.stringify(repeatingShipAttributes)),shipSystemHandler);
             });
             on('change:forward_shields change:port_shields change:aft_shields change:starboard_shields',shieldHandler);
@@ -12220,13 +12220,11 @@
                     'expansion':{section:'_system_',attrs:['_type','_purpose'],values:['expansion','expansion-bay']},
                 };
                 let createTarget=createSwitch[attribute.replace(/create_/,'')];
-                TAS.log('createTarget: '+JSON.stringify(createTarget));
                 let rowID = generateRowID();
                 _.each(_.range(createTarget.attrs.length),(n)=>{
                     setObj['repeating'+createTarget.section+rowID+createTarget.attrs[n]]=createTarget.values[n];
                     
                 });
-                TAS.log('setObj: '+JSON.stringify(setObj));
                 setObj[attribute]=0;
                 setAttrs(setObj,{silent:true},()=>{
                     setObj={};
@@ -12307,7 +12305,6 @@
                 }else{
                     computerQuery = '';
                 }
-                TAS.log('computerQuery:'+computerQuery);
                 setObj={
                     ship_pcu_max:pcu_max,
                     ship_pcu:pcu,
@@ -12317,7 +12314,6 @@
                     ac_armor:armor,
                     tl_countermeasures:countermeasure,
                 };
-                TAS.log('setObj: '+JSON.stringify(setObj));
                 setAttrs(setObj,{silent:true});
             });
         },
@@ -12427,9 +12423,9 @@
         shipCrewHandler = function(event,attribute){
             var people=event.newValue.split(/\s*,\s*/),
                 crewSwitch = {
-                    'engineer':(name,shipName)=>'@{'+name+'|engineering_ranks}[RNK]+@{'+name+'|engineering_ability}[ABI]@{'+name+'|engineering_misc}',
-                    'pilot':(name,shipName)=>'@{'+name+'|piloting_ranks}[RNK]+@{'+name+'|piloting_ability}[ABI]@{'+name+'|piloting_misc}@{'+shipName+'|engines_status}@{'+shipName+'|power_core_status}',
-                    'science_officer':(name,shipName)=>'@{'+name+'|computers_ranks}[RNK]+@{'+name+'|computers_ability}[ABI]@{'+name+'|computers_misc}@{'+shipName+'|sensors_status}@{'+shipName+'|power_core_status}',
+                    'engineer':(name,shipName)=>'@{'+name+'|engineering_ranks}[RNK]+[[({0,@{'+name+'|engineering_ranks}}>1) * @{'+name+'|engineering_class_skill}]][CS]+@{'+name+'|engineering_ability}[ABI]@{'+name+'|engineering_misc}',
+                    'pilot':(name,shipName)=>'@{'+name+'|piloting_ranks}[RNK]+[[({0,@{'+name+'|piloting_ranks}}>1) * @{'+name+'|piloting_class_skill}]][CS]+@{'+name+'|piloting_ability}[ABI]@{'+name+'|piloting_misc}@{'+shipName+'|engines_status}@{'+shipName+'|power_core_status}',
+                    'science_officer':(name,shipName)=>'@{'+name+'|computers_ranks}[RNK]+[[({0,@{'+name+'|computers_ranks}}>1) * @{'+name+'|computers_class_skill}]][CS]+@{'+name+'|computers_ability}[ABI]@{'+name+'|computers_misc}@{'+shipName+'|sensors_status}@{'+shipName+'|power_core_status}',
                 },
                 npcCrewSwitch = {
                     'engineer':(name)=>'',
@@ -12441,7 +12437,6 @@
                 matcher='',
                 setObj={},
                 values;
-            TAS.log('attribute: '+attribute);
             people=_.map(people,(p)=>{
                 matcher = p.match(/((?:\(\d+\)\s+)?[a-z][a-z\s]+[a-z])\s*(?:(?:\+|(?=\-))?(\-?\d+))?/i)||[];
                 return{actor:matcher[1],bonus:matcher[2]};
@@ -12449,19 +12444,20 @@
             getAttrs(['character_name'],(name)=>{
                 name=name.character_name;
                 _.each(people,(p)=>{
+                TAS.log(crewSwitch[attribute](p.actor.trim(),name));
                     if(p.bonus){
                         if(people.length>1){
-                            query+=(query.match(/=$/) ? '' : ' | ')+'['+p.actor.trim()+'](!/&#13;'+HE('&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=^{'+attribute.replace(/_/g,'-')+'}}} {{r1=[[1d20+'+p.bonus+npcCrewSwitch[attribute](name)+'@{'+name+'power_core_status}@{'+name+'|computer_query}'+(attribute==='pilot' ? '?{'+getTranslationByKey('helm-check')+'|'+getTranslationByKey('no')+', |'+getTranslationByKey('yes')+',&{tracker'+HE('}')+'}' : '')+']]}} {{r1name='+p.actor.trim()+'}}')+')';
+                            query+=(query.match(/=$/) ? '' : ' | ')+'['+p.actor.trim()+'](!/&#13;'+HE('&{template:sf_generic} {{name=@{'+name+'|character_name}}} {{characterid=@{'+name+'|character_id}}} {{title=^{'+attribute.replace(/_/g,'-')+'}}} {{r1=[[1d20+'+p.bonus+npcCrewSwitch[attribute](name)+'@{'+name+'power_core_status}@{'+name+'|computer_query}'+(attribute==='pilot' ? '?{'+getTranslationByKey('helm-check')+'|'+getTranslationByKey('no')+', |'+getTranslationByKey('yes')+',&{tracker'+HE('}')+'}' : '')+']]}} {{r1name='+p.actor.trim()+'}}')+')';
                         }else{
-                            query=' {{title='+getTranslationByKey(attribute.replace(/_/g,'-'))+'}} {{r1=[[1d20+'+p.bonus+npcCrewSwitch[attribute](name)+'@{power_core_status}@{'+name+'|computer_query}'+(attribute==='pilot' ? '?{'+getTranslationByKey('helm-check')+'|'+getTranslationByKey('no')+', |'+getTranslationByKey('yes')+',&{tracker'+HE('}')+'}' : '')+']]}} {{r1name='+p.actor;
+                            query=' {{title=^{'+attribute.replace(/_/g,'-')+'}}} {{r1=[[1d20+'+p.bonus+npcCrewSwitch[attribute](name)+'@{power_core_status}@{'+name+'|computer_query}'+(attribute==='pilot' ? '?{'+getTranslationByKey('helm-check')+'|'+getTranslationByKey('no')+', |'+getTranslationByKey('yes')+',&{tracker'+HE('}')+'}' : '')+']]}} {{r1name='+p.actor;
                         }
                     }else{
                         if(people.length>1 && attribute!=='captain'){
-                            query+=(query.match(/=$/) ? '' : ' | ')+'['+p.actor.trim()+'](!/&#13;'+HE('&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=^{'+attribute.replace(/_/g,'-')+'}}} {{r1=[[1d20+'+crewSwitch[attribute](p.actor.trim(),name)+'@{'+name+'power_core_status}@{'+name+'|computer_query}'+(attribute==='pilot' ? '?{'+getTranslationByKey('helm-check')+'|'+getTranslationByKey('no')+', |'+getTranslationByKey('yes')+',&{tracker'+HE('}')+'}' : '')+']]}} {{r1name='+p.actor+'}}')+')';
+                            query+=(query.match(/=$/) ? '' : ' | ')+'['+p.actor.trim()+'](!/&#13;'+HE('&{template:sf_generic} {{name=@{'+name+'|character_name}}} {{characterid=@{'+name+'|character_id}}} {{title=^{'+attribute.replace(/_/g,'-')+'}}} {{r1=[[1d20+'+crewSwitch[attribute](p.actor.trim(),name)+'@{'+name+'|power_core_status}@{'+name+'|computer_query}'+(attribute==='pilot' ? '?{'+getTranslationByKey('helm-check')+'|'+getTranslationByKey('no')+', |'+getTranslationByKey('yes')+',&{tracker'+HE('}')+'}' : '')+']]}} {{r1name='+p.actor+'}}')+')';
                         }else if(people.length===1 && attribute==='captain'){
                             _.each(skillList,(s)=>{
                                 if(s!=='profession'){
-                                    query+=(query.match(/=$/) ? '' : ' | ')+'[^{'+s.toLowerCase().replace(/_/g,'-')+'}](!/&#13;'+HE('&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}} {{title=^{'+s.toLowerCase().replace(/_/g,'-')+'}}} {{r1=[[1d20+@{'+p.actor.trim()+'|'+s+'_ranks}+'+'@{'+p.actor.trim()+'|'+s+'_ability}@{'+p.actor.trim()+'|'+s+'_misc}@{'+name+'|power_core_status}@{'+name+'|computer_query}]]}} {{r1name='+p.actor+'}}')+')';
+                                    query+=(query.match(/=$/) ? '' : ' | ')+'[^{'+s.toLowerCase().replace(/_/g,'-')+'}](!/&#13;'+HE('&{template:sf_generic} {{name=@{'+name+'|character_name}}} {{characterid=@{'+name+'|character_id}}} {{title=^{'+s.toLowerCase().replace(/_/g,'-')+'}}} {{r1=[[1d20+@{'+p.actor.trim()+'|'+s+'_ranks}+'+'@{'+p.actor.trim()+'|'+s+'_ability}@{'+p.actor.trim()+'|'+s+'_misc}@{'+name+'|power_core_status}@{'+name+'|computer_query}]]}} {{r1name='+p.actor+'}}')+')';
                                 }
                             });
                         }else if(people.length===1){
@@ -12469,7 +12465,7 @@
                         }
                     }
                 });
-                query='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}}'+query.replace(/(character_name|character_id)/g,'@{character_name}|$1')+'}}';
+                query='&{template:sf_generic} {{name=@{character_name}}} {{characterid=@{character_id}}}'+query+'}}';
                 TAS.log(query);
                 setObj[attribute+'_bonus']=query;
                 setAttrs(setObj,{silent:true});
