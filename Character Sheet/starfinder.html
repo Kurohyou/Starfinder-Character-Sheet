@@ -1,4 +1,4 @@
-<div class='starfinder'>
+﻿<div class='starfinder'>
     <input hidden='true' type='text' title='@{npc_init}' name='attr_npc_init' value=''>
     <input hidden='true' type='number' title='@{initiative_npc}' name='attr_initiative_npc'>
     <input hidden='true' type='number' title='@{bab}' name='attr_bab' value='0'>
@@ -42,7 +42,7 @@
                 <div class='row'>
                     <span class='label' data-i18n='rolls-are'>ROLLS ARE</span>
                     <label class='label'><input type='radio' title='@{whisper_state}' name='attr_whisper_state' value='' checked='checked'> <span class='label' data-i18n='public'>PUBLIC</span></label>
-                    <label class='label'><input type='radio' title='@{whisper_state}' name='attr_whisper_state' value='/w gm'> <span class='label' data-i18n='private'>PRIVATE</span></label>
+                    <label class='label'><input type='radio' title='@{whisper_state}' name='attr_whisper_state' value='/w gm '> <span class='label' data-i18n='private'>PRIVATE</span></label>
                 </div>
                 <div class='gutter'></div>
             </div>
@@ -1719,7 +1719,7 @@
                                     </div>
                                 </div>
                             </fieldset>
-                            <select class='compendium-select' title='@{item_compendium}' name="attr_item_compendium">
+                            <!--<select class='compendium-select' title='@{item_compendium}' name="attr_item_compendium">
                                 <option value='no-selection' data-i18n='crb-equipment'>CRB EQUIPMENT</option>
                                 <option value="Cryopike - Advanced" data-i18n="Cryopike_-_Advanced">CRYOPIKE - ADVANCED</option>
                                 <option value="Cryopike - Tactical" data-i18n="Cryopike_-_Tactical">CRYOPIKE - TACTICAL</option>
@@ -2407,7 +2407,7 @@
                                 <option value="Textiles (Common)" data-i18n="Textiles_(Common)">TEXTILES (COMMON)</option>
                                 <option value="Textiles (Fine)" data-i18n="Textiles_(Fine)">TEXTILES (FINE)</option>
                                 <option value="UPB (1000)" data-i18n="UPB_(1000)">UPB (1000)</option>
-                            </select>
+                            </select>-->
                         </div>
                     </div>
                     <div class='section-container always-glow border left'></div>
@@ -7275,6 +7275,7 @@
             <div class='section-container always-glow border top-right corner'></div>
         </div>
     </div>
+    <button class='disclaimer' name='roll_disclaimer' value="/w &#34;@{character_name}&#34; &{template:simple} {{title=Community Use Notice}} {{buttons0=This character sheet uses trademarks and/or copyrights owned by Paizo Inc., which are used under Paizo's Community Use Policy. We are expressly prohibited from charging you to use or access this content. This [website, character sheet, or whatever it is] is not published, endorsed, or specifically approved by Paizo Inc. For more information about Paizo's Community Use Policy, please visit [paizo.com/communityuse](paizo.com/communityuse). For more information about Paizo Inc. and Paizo products, please visit [paizo.com](www.paizo.com).}}">This character sheet uses trademarks and/or copyrights owned by Paizo Inc., which are used under Paizo's Community Use Policy. We are expressly prohibited from charging you to use or access this content. This character sheet is not published, endorsed, or specifically approved by Paizo Inc. For more information about Paizo's Community Use Policy, please visit paizo.com/communityuse. For more information about Paizo Inc. and Paizo products, please visit paizo.com.</button>
 </div>
 <div class='rolltemplates' hidden='true'>
     <!-- Roll Template Definitions
@@ -9189,7 +9190,7 @@
                'stealth',
                'survival'
             ],
-            equipment = {
+            /*equipment = {
                 "Cryopike - Advanced":{
                 "bulk":"2","cost":"34800","crit":"staggered","damage_dice":"2d8","type":"c","level":"12","sourcepage":"p.168","special":"powered (capacity 40-usage 2), reach","wield":"twohanded","name":"Cryopike - Advanced","category":"Advanced Melee Weapons"
                 },"Cryopike - Tactical":{
@@ -10563,7 +10564,7 @@
                 },"UPB (1000)":{
                 "bulk":"1","cost":"1000","sourcepage":"p.232","name":"UPB (1000)","category":"Trade Goods"
                 }
-            },
+            },*/
             attributeObjs=[
                 /*
                 {
@@ -12111,7 +12112,7 @@
             +'change:gunner change:captain change:engineer change:pilot change:science_officer change:speed change:maneuverability',
             accessStarfinder);
             //internal compendium
-            on('change:item_compendium change:attack_compendium change:spell_compendium',internalCompendium);
+            //on('change:item_compendium change:attack_compendium change:spell_compendium',internalCompendium);
             //ship specific listener
             on('change:ship_piloting_ranks change:repeating_system:shields change:repeating_system:armor change:repeating_system:countermeasure change:repeating_system:purpose change:repeating_system:pcu change:repeating_system:bp change:repeating_system:powered change:repeating_system:comp_bonus change:repeating_attack:pcu change:repeating_attack:bp change:repeating_attack:powered change:ship_computer change:size',()=>{
                 getID(JSON.parse(JSON.stringify(repeatingShipAttributes)),shipSystemHandler);
@@ -12121,7 +12122,13 @@
         },
         
         updateSheet = function(event){
-            setAttrs({character_sheet:'Starfinder v'+version});
+            var setObj = {character_sheet:'Starfinder v'+version};
+            getAttrs(['whisper_state'],(updateAttrs)=>{
+                if(updateAttrs.whisper_state === '/w gm'){
+                    setObj.whisper_state = '/w gm ';
+                }
+                setAttrs(setObj,{silent:true});
+            });
         },
         
         getID = function(cloneRepAttr,callback,sectionAggregate){
@@ -12169,21 +12176,19 @@
                                 setObj[event.sourceAttribute.replace(/frequency/,'uses_freq_dependency')]=objs[event.sourceAttribute];
                             }else if(attribute==='sheet_type'){
                                 setObj.sheet_type_nav=event.newValue;
+                                if(event.newValue==='npc'){
+                                    setObj.whisper_state='/w gm ';
+                                    setObj.npc_init='+@{initiative_npc}';
+                                }else{
+                                    setObj.whisper_state='';
+                                    setObj.npc_init='';
+                                }
                             }else if (attribute==='drone'){
                                 setObj=classLevelHandler(objs);
                             }else{
                                 setObj = attribute.match(/class_\d/) ? classHandler(objs,attribute) : attribute.match(/repeating_ability|repeating_spell/) ? abilityHandler(objs,attribute) : {};
                             }
                             if(setObj){
-                                if(attribute==='sheet_type'){
-                                    if(event.newValue==='npc'){
-                                        setObj.whisper_state='/w gm';
-                                        setObj.npc_init='+@{initiative_npc}';
-                                    }else{
-                                        setObj.whisper_state='';
-                                        setObj.npc_init='';
-                                    }
-                                }
                                 bonuses=parseBuffs(objs);
                                 applyBuffs(objs,bonuses,setObj);
                             }
@@ -12194,19 +12199,17 @@
                 return;
             }
             if(attribute==='tab_select'){
-                getAttrs(['tab_select'],(objs)=>{
-                    if(objs.tab_select==='options'){
-                        setObj.npcship_toggle='settings';
-                    }else if(objs.tab_select==='npc'){
-                        setObj.npcship_toggle='npc';
-                    }else if(objs.tab_select==='ship'){
-                        setObj.npcship_toggle='ship';
-                    }else{
-                        setObj.npcship_toggle='pc';
-                        setObj.tab=objs.tab_select;
-                    }
-                    setAttrs(setObj,{silent:true});
-                });
+                if(event.newValue==='options'){
+                    setObj.npcship_toggle='settings';
+                }else if(event.newValue==='npc'){
+                    setObj.npcship_toggle='npc';
+                }else if(event.newValue==='ship'){
+                    setObj.npcship_toggle='ship';
+                }else{
+                    setObj.npcship_toggle='pc';
+                    setObj.tab=event.newValue;
+                }
+                setAttrs(setObj,{silent:true});
             }else if(attribute.match(/(?:save|attack|mods|damage)_checkbox/)){
                 getAttrs([event.sourceAttribute],(objs)=>{
                     setObj[event.sourceAttribute]=objs[event.sourceAttribute];
@@ -13390,7 +13393,7 @@
         },
         
         importStatblock = function(){
-            var statblockRegex = /(.*?) \(?CR\s*(\d[\/\d]*)\)?\n+XP\s*([^\n]+)\n+(?:([^\n]+)\n+)?(LG|NG|CG|LN|N|CE|LE|NE|CN)\s+([^\s]+)\s+([^\n]+)\n+init\s*[+-]?(\d+);\s*(?:senses\s*([^;]+);\s*)?perception\s*[+-]?(\d+)\n+(?:aura\s+([^\n]+)\n+)?defen[sc]e\s+hp\s*(\d+)(?:\s+rp\s*(\d+))?\n+eac\s*(\d+);\s*kac\s*(\d+)(?:;\s*([^\n]+))?\n+fort\s*[+-]?(\d+);\s*ref\s*[+-]?(\d+);\s*will\s*[+-]?(\d+)(?:;\s*([^\n]+))?\n+(?:(?:defensive abilities\s+([^;]+))?(?:;\s*)?(?:DR\s*([^;]+))?(?:;\s*)?(?:immunities\s*([^;]+))?(?:;\s*)?(?:resistances\s*([^;]+))?(?:;\s*)?(?:SR\s*([^\n]+))?\s+)?(?:weaknesses\s*([^\n]+)\n+)?offen[cs]e\n+speed\s*([^\n]+)\n+(?:melee\s*([^\n]+)\n+)?(?:multiattack\s*([^\n]+)\n+)?(?:ranged\s*([^\n]+)\n+)?(?:(?:space\s*([^;\n]+))?(?:;\s*reach\s*([^\n]+))?\n+)?(?:offensive abilities\s*([^\n]+)\n+)?(?:spell-?like\s+abilities\s*\(cl\s*(\d+)[^)]+\)\n+((?:.|\n)*?(?=\n.*?(?=spells)spells|statistics))\n+)?(?:(.*?)(?=spells)spells\s+known\s*\(cl\s*(\d+)[^)]+\)\n+((?:.|\n)*?(?=statistics)))?statistics\n+str\s*\+?([-—–]?\d+|[-—–]);\s*dex\s*\+?([-—–]?\d+|[-—–]);\s*con\s*\+?([-—–]?\d+|[-—–]);\s*int\s*\+?([-—–]?\d+|[-—–]);\s*wis\s*\+?([-—–]?\d+|[-—–]);\s*cha\s*\+?([-—–]?\d+|[-—–])\n+(?:skills\s*([^\n]+)\n+)?(?:feats\s*([^\n]+)\n+)?(?:languages\s*([^\n]+)\n+)?(?:other abilities\s*([^\n]+)\n+)?(?:gear\s*([^\n]+)\n+)?(?:ecology\n+(?:environment\s+([^\n]+)\n+)?(?:organization\s*([^\n]+)\n+)?)?(?:special abilities\n+((?:.|\n)+))?/i,
+            var statblockRegex = /(.*?) \(?CR\s*(\d[\/\d]*)\)?\n+XP\s*([^\n]+)\n+(?:([^\n]+)\n+)?(LG|NG|CG|LN|N|CE|LE|NE|CN)\s+([^\s]+)\s+([^\n]+)\n+init\s*[+-]?(\d+);\s*(?:senses\s*([^;]+);\s*)?perception\s*[+-]?(\d+)\n+(?:aura\s+([^\n]+)\n+)?defen[sc]e\s+hp\s*(\d+)(?:\s+rp\s*(\d+))?\n+eac\s*(\d+);\s*kac\s*(\d+)(?:;\s*([^\n]+))?\n+fort\s*[+-]?(\d+);\s*ref\s*[+-]?(\d+);\s*will\s*[+-]?(\d+)(?:;\s*([^\n]+))?\n+(?:(?:defensive abilities\s+([^;]+))?(?:;\s*)?(?:DR\s*([^;]+))?(?:;\s*)?(?:immunities\s*([^;]+))?(?:;\s*)?(?:resistances\s*([^;]+))?(?:;\s*)?(?:SR\s*([^\n]+))?\s+)?(?:weaknesses\s*([^\n]+)\n+)?offen[cs]e\n+speed\s*([^\n]+)\n+(?:melee\s*([^\n]+)\n+)?(?:multiattack\s*([^\n]+)\n+)?(?:ranged\s*([^\n]+)\n+)?(?:(?:space\s*([^;\n]+))?(?:;\s*reach\s*([^\n]+))?\n+)?(?:offensive abilities\s*([^\n]+)\n+)?(?:spell-?like\s+abilities\s*\(cl\s*(\d+)[^)]+\)\n+((?:.|\n)*?(?=\n.*?(?=spells)spells|statistics))\n+)?(?:(.*?)(?=spells)spells\s+known\s*\(cl\s*(\d+)[^)]+\)\n+((?:.|\n)*?(?=statistics)))?statistics\n+str\s*\+?([\-]?\d+|[\-]);\s*dex\s*\+?([\-]?\d+|[\-]);\s*con\s*\+?([\-]?\d+|[\-]);\s*int\s*\+?([\-]?\d+|[\-]);\s*wis\s*\+?([\-]?\d+|[\-]);\s*cha\s*\+?([\-]?\d+|[\-])\n+(?:skills\s*([^\n]+)\n+)?(?:feats\s*([^\n]+)\n+)?(?:languages\s*([^\n]+)\n+)?(?:other abilities\s*([^\n]+)\n+)?(?:gear\s*([^\n]+)\n+)?(?:ecology\n+(?:environment\s+([^\n]+)\n+)?(?:organization\s*([^\n]+)\n+)?)?(?:special abilities\n+((?:.|\n)+))?/i,
                 abilityRegex = {
                     33:/([^,\n]+?(?=\s*\([^)]+\)|,|$))\s*(?:\((?:(\d+\-?ft).\s*(line|cone|burst|emanation|spread|cube)?,?)?\s*(?:(\d+d\d+[+\-\d\s]*)\s*(\w+)?,?)?\s*(?:(ref|fort|will|reflex|fortitude)?\s*dc\s*(\d+)\s*(\w+)?,?)?\s*([^)]+)?\))?/,
                     35:/([^,\n]+?(?=\s*\([^)]+\)|,|$))\s*(?:\((?:dc\s*(\d+))?\s*,?\s*(?:(\d)(?:st|th|nd)\s*[—\-]\s*level)?\))?/,
@@ -13441,7 +13444,8 @@
                         });
                     });
                     getAttrs(['statblock','statblock_source'],(objs)=>{
-                        objs.statblock=objs.statblock.replace(/\s+\n/g,'\n');
+                        objs.statblock=objs.statblock.replace(/\s+\n/g,'\n').replace(/tactics\s+(?:.|\s)+?(?=statistics)/i,'').replace(/—|–/g,'-');
+                        TAS.log('statblock: '+objs.statblock);
                         if(objs.statblock_source==='srd'){
                             objs.statblock=objs.statblock.replace(/(special abilities(?:.|\n)+)(ecology(?:.|\n)+)/i,'$2\n$1');
                         }
