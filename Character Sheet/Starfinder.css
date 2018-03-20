@@ -460,8 +460,8 @@ label:hover,
 .sheet-class-info .sheet-right-gutter{
     grid-area:1 / right-gutter-start / span 6 / right-gutter-end;
 }
-.sheet-class-info *{
-    width:100%;
+.sheet-class-info :not(div){
+    width:100% !important;
     height:100%;
 }
 input[type=radio].sheet-char-tab.sheet-class-details-tab:checked ~ .sheet-class-info {
